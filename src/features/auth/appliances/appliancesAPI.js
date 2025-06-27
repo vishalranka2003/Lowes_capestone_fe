@@ -1,6 +1,7 @@
 // ✅ appliancesAPI.js
 export const fetchUserAppliances = async (token) => {
-  const response = await fetch('http://localhost:8080/homeowner/appliances', {
+  const BASE_URL = process.env.REACT_APP_API_URL;
+  const response = await fetch(`${BASE_URL}/homeowner/appliances`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

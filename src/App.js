@@ -10,6 +10,7 @@ import { HomeownerDashboard } from './pages/HomeownerDashboard';
 import { TechnicianDashboard } from './pages/TechnicianDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { MyAppliances } from './pages/MyAppliances';
+import  MyServiceRequests  from './pages/MyServiceRequests';
 
 console.log('HomeownerDashboard:', HomeownerDashboard);
 console.log('TechnicianDashboard:', TechnicianDashboard);
@@ -42,6 +43,7 @@ function App() {
           }
         >
           <Route index element={<MyAppliances />} />
+          <Route path="service-requests" element={<MyServiceRequests />} />
         </Route>
 
         <Route

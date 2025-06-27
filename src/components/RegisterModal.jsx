@@ -230,10 +230,10 @@ export default function RegisterModal({
       if (form.invoice) {
         formData.append('invoice', form.invoice);
       }
-
+      const API_URL = process.env.REACT_APP_API_URL;
       const url = isEditMode
-        ? `http://localhost:8080/homeowner/edit/${existingAppliance.id}`
-        : `http://localhost:8080/homeowner/appliance`;
+        ? `${API_URL}/homeowner/edit/${existingAppliance.id}`
+        : `${API_URL}/homeowner/appliance`;
 
       const method = isEditMode ? 'PUT' : 'POST';
 

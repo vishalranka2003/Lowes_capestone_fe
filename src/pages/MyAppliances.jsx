@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchUserAppliances } from '../features/auth/appliances/appliancesAPI';
 import { ApplianceCard } from '../components/ApplianceCard';
 import RegisterModal from '../components/RegisterModal';
-import ConfirmDeleteModal from '../components/ConfirmDeleteModal'; // ✅ import
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import '../styles/MyAppliances.css';
 import axios from 'axios';
 
@@ -13,10 +14,11 @@ export const MyAppliances = () => {
   const [error, setError] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
-  const [showConfirmModal, setShowConfirmModal] = useState(false); // ✅ new state
-  const [applianceToDelete, setApplianceToDelete] = useState(null); // ✅ new state
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [applianceToDelete, setApplianceToDelete] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
 
   const loadAppliances = useCallback(async () => {
     try {
@@ -47,7 +49,8 @@ export const MyAppliances = () => {
 
   const confirmDeleteAppliance = async () => {
     try {
-      await axios.delete(`http://localhost:8080/homeowner/delete/${applianceToDelete}`, {
+      const API_URL = process.env.REACT_APP_API_URL;
+      await axios.delete(`${API_URL}/homeowner/delete/${applianceToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -77,13 +80,19 @@ export const MyAppliances = () => {
         <button className="register-btn" onClick={() => setShowRegisterModal(true)}>
           ➕ Register New Appliance
         </button>
+        <button
+          className="view-service-requests-btn"
+          onClick={() => navigate('/dashboard/homeowner/service-requests')}
+        >
+          View All Service Requests
+        </button>
       </div>
 
       {loading && <p className="status-text">Loading...</p>}
       {error && <p className="error-text">{error}</p>}
 
       {!loading && appliances.length === 0 && (
-        <p className="status-text">You haven’t registered any appliances yet.</p>
+        <p className="status-text">You haven't registered any appliances yet.</p>
       )}
 
       <div className="appliance-grid">
@@ -92,7 +101,7 @@ export const MyAppliances = () => {
             key={item.id}
             appliance={item}
             onEdit={() => handleEdit(item)}
-            onDelete={() => handleDelete(item.id)} // ✅ triggers modal
+            onDelete={() => handleDelete(item.id)}
           />
         ))}
       </div>
@@ -174,7 +183,7 @@ export const MyAppliances = () => {
 //       {error && <p className="error-text">{error}</p>}
 
 //       {!loading && appliances.length === 0 && (
-//         <p className="status-text">You haven’t registered any appliances yet.</p>
+//         <p className="status-text">You haven't registered any appliances yet.</p>
 //       )}
 
 //       <div className="appliance-grid">

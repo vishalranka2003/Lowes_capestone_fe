@@ -88,7 +88,7 @@ export const ApplianceCard = ({ appliance, onEdit, onDelete }) => {
         <button className="btn-outline" onClick={() => onEdit && onEdit(appliance)}>
           ✏️ Edit
         </button>
-        <button className="btn-outline">🔧 Service</button>
+        
         <button
           className="btn-outline delete-btn"
           onClick={() => onDelete && onDelete(appliance.id)}
