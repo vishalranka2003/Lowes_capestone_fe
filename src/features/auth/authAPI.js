@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:8080/api/auth';
+const API_URL = process.env.REACT_APP_API_URL;
 
 // Role-based Login API
 export const login = async (email, password, role) => {
-  let endpoint = '/login/homeowner';
+  let endpoint = '/api/auth/login/homeowner';
   if (role === 'ROLE_TECHNICIAN') endpoint = '/login/technician';
   if (role === 'ROLE_ADMIN') endpoint = '/login/admin';
 

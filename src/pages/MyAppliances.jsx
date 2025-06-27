@@ -48,8 +48,9 @@ export const MyAppliances = () => {
   };
 
   const confirmDeleteAppliance = async () => {
+    const API_URL = process.env.REACT_APP_API_URL;
     try {
-      await axios.delete(`http://localhost:8080/homeowner/delete/${applianceToDelete}`, {
+      await axios.delete(`${API_URL}/homeowner/delete/${applianceToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

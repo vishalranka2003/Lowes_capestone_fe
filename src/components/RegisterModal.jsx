@@ -168,11 +168,11 @@ export default function RegisterModal({
   token,
   existingAppliance, // <-- passed if in edit mode
 }) {
+  const API_URL = process.env.REACT_APP_API_URL;
   const isEditMode = !!existingAppliance;
 
   const [form, setForm] = useState({
     brand: '',
-    category: '',
     modelNumber: '',
     serialNumber: '',
     purchaseDate: '',
@@ -187,7 +187,6 @@ export default function RegisterModal({
     if (existingAppliance) {
       setForm({
         brand: existingAppliance.brand || '',
-        category: existingAppliance.category || '',
         modelNumber: existingAppliance.modelNumber || '',
         serialNumber: existingAppliance.serialNumber || '',
         purchaseDate: existingAppliance.purchaseDate || '',
@@ -215,7 +214,6 @@ export default function RegisterModal({
 
       const applianceData = {
         brand: form.brand,
-        category: form.category,
         modelNumber: form.modelNumber,
         serialNumber: form.serialNumber,
         purchaseDate: form.purchaseDate,
@@ -232,8 +230,8 @@ export default function RegisterModal({
       }
 
       const url = isEditMode
-        ? `http://localhost:8080/homeowner/edit/${existingAppliance.id}`
-        : `http://localhost:8080/homeowner/appliance`;
+        ? `${API_URL}/homeowner/edit/${existingAppliance.id}`
+        : `${API_URL}/homeowner/appliance`;
 
       const method = isEditMode ? 'PUT' : 'POST';
 

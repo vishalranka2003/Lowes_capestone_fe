@@ -12,13 +12,13 @@ export const Signup = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSignup = async () => {
-    const endpoint = `http://localhost:8080/api/auth/register/${role}`;
+    const endpoint = `${API_URL}/api/auth/register/${role}`;
     const body = {
       email: form.email,
       password: form.password,
