@@ -18,7 +18,7 @@ export const Signup = () => {
   };
 
   const handleSignup = async () => {
-    const endpoint = `http://localhost:8080/api/auth/register/${role}`;
+    const endpoint = `${process.env.REACT_APP_API_URL}/api/auth/register/${role}`;
     const body = {
       email: form.email,
       password: form.password,

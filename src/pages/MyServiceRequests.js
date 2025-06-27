@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../styles/MyServiceRequests.css';
 
-const API_URL = 'http://localhost:8080/homeowner';
+const API_URL = `${process.env.REACT_APP_API_URL}/homeowner`;
 
 const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }) => {
   const [form, setForm] = useState(
