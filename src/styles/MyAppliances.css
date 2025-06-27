@@ -1,0 +1,461 @@
+/* body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+   */
+   /* background: linear-gradient(135deg, #5b55e6 20%, #6e3b9f 50%); */
+  /* background: linear-gradient(-45deg,  #764ba2, #646ad7); */
+   /* background: linear-gradient(35deg, #6530a6, #7e47b5); */
+   /* background: linear-gradient(35deg, #6530a6, #e87fff);
+
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+} */
+/* body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  
+  background: radial-gradient(
+    circle at 70% 40%, 
+    #7a4bcd 0%, 
+    #6530a6 40%, 
+    #44258e 100%
+  );
+  
+  background-size: 200% 200%;
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
+
+/* body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+
+  background: radial-gradient(circle at 30% 30%, #8f5cf4 0%, transparent 25%),
+              radial-gradient(circle at 70% 60%, #5b3cc4 0%, transparent 35%),
+              linear-gradient(135deg, #3c1e70, #7a40c0);
+  
+  background-blend-mode: screen;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+
+  background: radial-gradient(circle at 30% 30%, rgba(134, 95, 211, 0.25) 0%, transparent 40%),
+              radial-gradient(circle at 70% 60%, rgba(108, 86, 181, 0.25) 0%, transparent 50%),
+              linear-gradient(135deg, #5e3c99, #7a40c0);
+  
+  background-blend-mode: screen;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  animation: gradientShift 25s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.appliances-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+/* 
+body {
+  background: #f0f4f8;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.appliances-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+} */
+
+.page-title {
+  font-size: 24px;
+  color: #3a5ddf;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.status-text {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.error-text {
+  text-align: center;
+  font-size: 14px;
+  color: red;
+  margin-top: 1rem;
+}
+
+.appliance-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin-top: 2rem;
+}
+
+
+.appliance-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.appliance-card {
+  background: linear-gradient(to bottom, #f9f9ff, #f4f4fa);
+
+ 
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.appliance-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.appliance-detail {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-badge.active {
+  background-color: #e6f4ea;
+  color: #2f9e44;
+}
+
+.status-badge.expiring {
+  background-color: #fff3cd;
+  color: #f59f00;
+}
+
+.status-badge.expired {
+  background-color: #f8d7da;
+  color: #d63333;
+}
+
+.text-green {
+  color: #2f9e44;
+}
+
+.text-orange {
+  color: #f59f00;
+}
+
+.text-red {
+  color: #d63333;
+}
+
+.progress-bar-bg {
+  background-color: #e0e0e0;
+  height: 6px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 4px 0 8px;
+}
+
+.progress-bar-fill {
+  height: 6px;
+  transition: width 0.3s ease;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.btn-outline {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: #f1f1f1;
+}
+
+.register-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+
+.register-btn:hover {
+  background-color: #434190;
+}
+
+.register-btn {
+   background-color: #5a67d8; /* Matches #667eea family */
+
+  /* background-color: #3a5ddf; */
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+/* 
+.register-btn:hover {
+  background-color: #2d4bb6;
+} */
+
+/* 1. Colored text for days left based on status (via parent .status-[...] classes) */
+
+.appliance-card.status-active .warranty-days-left {
+  color: #2f9e44;
+  font-weight: bold;
+  text-align: right;
+}
+
+.appliance-card.status-expiring .warranty-days-left {
+  color: #f59f00;
+  font-weight: bold;
+}
+
+.appliance-card.status-expired .warranty-days-left {
+  color: #d63333;
+  font-weight: bold;
+}
+
+/* 2. Progress bar fill colors based on status */
+.appliance-card.status-active .progress-bar-fill {
+  background-color: #2f9e44;
+}
+
+.appliance-card.status-expiring .progress-bar-fill {
+  background-color: #f59f00;
+}
+
+.appliance-card.status-expired .progress-bar-fill {
+  background-color: #d63333;
+}
+
+/* 3. Right-aligned and bold purchase/expiry dates */
+.purchase-expiry-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.purchase-expiry-row span:last-child {
+  font-weight: bold;
+  text-align: right;
+}
+
+/* 4. Styled status badges (with pseudo-icon feel) */
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-badge.active::before {
+  content: "✔";
+  color: #2f9e44;
+}
+
+.status-badge.expiring::before {
+  content: "⚠";
+  color: #f59f00;
+}
+
+.status-badge.expired::before {
+  content: "✖";
+  color: #d63333;
+}
+
+.warranty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.warranty-days-left {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.appliance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.appliance-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.appliance-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.appliance-model {
+  font-size: 14px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.dashboard-hero {
+  background: linear-gradient(135deg, #7866ea, #764ba2);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* @keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
+
+.btn-outline {
+  border: 1px solid #bbb;
+  background: #fefefe;
+}
+
+.btn-outline:hover {
+  background-color: #eee;
+}
+
+.delete-btn {
+  color: #e53935;
+  border: 1px solid #e53935;
+  background-color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+  color: white;
+}
+
+.delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.view-service-requests-btn {
+  background: linear-gradient(90deg, #2563eb 60%, #1d4ed8 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(37,99,235,0.08);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  outline: none;
+}
+.view-service-requests-btn:hover, .view-service-requests-btn:focus {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 3px 12px rgba(37,99,235,0.15);
+  transform: translateY(-1px) scale(1.02);
+}
