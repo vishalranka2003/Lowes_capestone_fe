@@ -11,6 +11,11 @@ import { TechnicianDashboard } from './pages/TechnicianDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { MyAppliances } from './pages/MyAppliances';
 import  MyServiceRequests  from './pages/MyServiceRequests';
+import { AdminDashboardLayout } from './pages/admin/AdminDashboardLayout';
+import {Technicians}  from './pages/admin/Technicians';
+import { ServiceRequests } from './pages/admin/ServiceRequests';
+import { Appliances } from './pages/admin/Appliances';
+
 
 console.log('HomeownerDashboard:', HomeownerDashboard);
 console.log('TechnicianDashboard:', TechnicianDashboard);
@@ -55,14 +60,21 @@ function App() {
           }
         />
 
-        <Route
-          path="/dashboard/admin"
-          element={
-            <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
+<Route
+  path="/dashboard/admin"
+  element={
+    <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+      <AdminDashboardLayout />
+      
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<AdminDashboard />} />
+  <Route path="technicians" element={<Technicians />} />
+  <Route path="service-requests" element={<ServiceRequests/>}/>
+  <Route path="appliances" element={<Appliances/>}/>
+
+</Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
