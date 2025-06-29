@@ -51,12 +51,6 @@ export const AdminDashboard = () => {
     { title: 'Supported Appliance Models', value: stats.totalAppliances },
   ];
 
-  const technicians = [
-    { name: 'Sneha Iyer', available: true },
-    { name: 'Aman Verma', available: false },
-    { name: 'Raj Malhotra', available: true },
-  ];
-
   return (
     <div className="admin-dashboard">
       <h2 className="dashboard-title">Admin Overview</h2>
@@ -73,7 +67,7 @@ export const AdminDashboard = () => {
       <section className="dashboard-section">
         <h3 className="section-title">Recent Service Requests</h3>
         <div className="requests-table">
-          <div className="table-row table-header">
+          <div className="dashboard-row dashboard-header">
             <div>Request Id</div>
             <div>Created At</div>
             <div>Homeowner</div>
@@ -82,7 +76,7 @@ export const AdminDashboard = () => {
             <div>Status</div>
           </div>
           {recentRequests.map((req, idx) => (
-            <div className="table-row" key={idx}>
+            <div className="dashboard-row" key={idx}>
               <div>{req.id}</div> {/* ✅ Request ID */}
               <div>
                 {new Date(req.createdAt).toLocaleString('en-IN', {

@@ -41,7 +41,7 @@ export const Technicians = () => {
       </div>
 
       <div className="requests-table">
-        <div className="table-row table-header">
+        <div className="dashboard-row dashboard-header">
           <div>Name</div>
           <div>Email</div>
           <div>Phone Number</div>
@@ -49,7 +49,7 @@ export const Technicians = () => {
         </div>
 
         {filteredTechnicians.map((tech, idx) => (
-          <div className="table-row" key={idx}>
+          <div className="dashboard-row" key={idx}>
             <div>{tech.firstName} {tech.lastName}</div>
             <div>{tech.email}</div>
             <div>{tech.phoneNumber}</div>
