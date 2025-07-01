@@ -15,6 +15,7 @@ import { AdminDashboardLayout } from './pages/admin/AdminDashboardLayout';
 import {Technicians}  from './pages/admin/Technicians';
 import { ServiceRequests } from './pages/admin/ServiceRequests';
 import { Appliances } from './pages/admin/Appliances';
+import { TechnicianDetails } from './pages/admin/TechnicianDetails';
 
 
 console.log('HomeownerDashboard:', HomeownerDashboard);
@@ -73,6 +74,7 @@ function App() {
   <Route path="technicians" element={<Technicians />} />
   <Route path="service-requests" element={<ServiceRequests/>}/>
   <Route path="appliances" element={<Appliances/>}/>
+  <Route path="technicians/:id" element={<TechnicianDetails />} />
 
 </Route>
 

@@ -1,0 +1,121 @@
+.details-container {
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .details-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .details-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .technician-card-box {
+    flex: 1;
+    min-width: 280px;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+    font-size: 15px;
+  }
+  
+  .info-label {
+    font-weight: 600;
+    color: #3b82f6;
+    min-width: 120px;
+  }
+  
+  .info-value {
+    text-align: right;
+    flex: 1;
+    color: #374151;
+  }
+  
+  .chart-box {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .section-block {
+    margin-top: 2rem;
+  }
+  
+  .section-heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1f2937;
+  }
+  
+  .request-card {
+    background: #ffffff;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  .back-btn {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .back-btn:hover {
+    background-color: #2563eb;
+  }
+  
+  @media (max-width: 768px) {
+    .details-section {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .chart-box {
+      max-width: 100%;
+    }
+  }
+  

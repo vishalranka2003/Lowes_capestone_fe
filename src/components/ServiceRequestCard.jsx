@@ -1,4 +1,3 @@
-// src/components/ServiceRequestCard.jsx
 import React, { useState } from 'react';
 import '../styles/ServiceCard.css';
 
@@ -11,13 +10,15 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
     }
   };
 
+  // Format appliance display text
+  const formattedApplianceTitle = request.serialNumber
+    ? `${request.applianceName} ${request.serialNumber}`
+    : request.applianceName;
+
   return (
     <div className="service-card">
       <div className="service-header">
-        <h2 className="service-title">
-          {request.applianceName}{' '}
-          <span style={{ fontWeight: 'normal' }}>({request.serialNumber})</span>
-        </h2>
+        <h2 className="service-title">{formattedApplianceTitle}</h2>
         <span className={`status-badge status-${request.status.toLowerCase()}`}>
           {request.status.replace('_', ' ').toLowerCase()}
         </span>
