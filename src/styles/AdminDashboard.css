@@ -5,7 +5,10 @@
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
   background: #f9fafb;
+  height: 100vh;
+  overflow: hidden; /* Prevent double scrollbars */
 }
+
 
 .admin-sidebar {
   width: 250px;
@@ -57,12 +60,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  height: 100vh;
 }
 
 .admin-header {
   padding: 24px;
   background: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .admin-content {
@@ -160,15 +168,6 @@
   word-break: break-word;
 }
 
-/* Optional: tweak status badge */
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  display: inline-block;
-}
 
 /* STATUS COLORS - modern palette */
 .status-badge {
@@ -183,33 +182,35 @@
 
 /* BOLDER STATUS COLORS */
 .status-requested {
-  background-color: #f59e0b; /* Amber-500 */
+  background-color: #f97316 !important; /* Orange-500 */
+  color: white !important;
 }
 
 .status-assigned {
-  background-color: #0ea5e9; /* Sky-500 */
+  background-color: #3b82f6 !important; /* Blue-500 */
+  color: white !important;
 }
 
 .status-in_progress {
-  background-color: #facc15; /* Yellow-400 */
-  color: #1e293b; /* Dark text for contrast */
+  background-color: #eab308 !important; /* Yellow-500 */
+  color: #1f2937 !important; /* Gray-800 for contrast */
 }
 
 .status-completed {
-  background-color: #22c55e; /* Green-500 */
+  background-color: #10b981 !important; /* Emerald-500 */
+  color: white !important;
 }
 
 .status-cancelled {
-  background-color: #b91c1c;  /* Strong red */
-  color: white;
+  background-color: #ef4444 !important; /* Red-500 */
+  color: white !important;
 }
 
 .status-rescheduled {
-  background-color: #8b5cf6; /* Violet-500 */
+  background-color: #8b5cf6 !important; /* Violet-500 */
+  color: white !important;
 }
 
-
-  
   .tech-list {
     display: flex;
     flex-wrap: wrap;

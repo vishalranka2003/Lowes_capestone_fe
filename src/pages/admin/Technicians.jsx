@@ -1,30 +1,63 @@
 // src/pages/admin/TechnicianList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/AdminDashboard.css';
+import { TechnicianCard } from '../../components/TechnicianCard';
+import { AssignedRequestsModal } from '../../components/AssignedRequestsModal';
+import '../../styles/TechnicianCard.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 export const Technicians = () => {
   const [search, setSearch] = useState('');
   const [technicians, setTechnicians] = useState([]);
+  const [availableIds, setAvailableIds] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assignedRequests, setAssignedRequests] = useState([]);
+
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
+    const fetchData = async () => {
+      try {
+        const [allTechsRes, availableTechsRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/admin/all-technicians`, { headers }),
+          axios.get(`${API_BASE_URL}/admin/available-technicians`, { headers })
+        ]);
 
-    axios.get(`${API_BASE_URL}/admin/all-technicians`, { headers })
-      .then((res) => {
-        setTechnicians(res.data); // assuming res.data is the array of technicians
-      })
-      .catch((err) => {
-        console.error('Failed to fetch technicians:', err);
-      });
+        setTechnicians(allTechsRes.data);
+        setAvailableIds(availableTechsRes.data.map(t => t.id));
+      } catch (err) {
+        console.error('Failed to load technician data:', err);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const filteredTechnicians = technicians.filter((tech) =>
-    (`${tech.firstName} ${tech.lastName}`.toLowerCase().includes(search.toLowerCase()) ||
-    tech.specialization.toLowerCase().includes(search.toLowerCase()))
+  const handleViewRequests = async (technicianId) => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/admin/technician-assigned-requests`, {
+        headers,
+        params: { technicianId }
+      });
+      setAssignedRequests(res.data);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error('Error fetching assigned requests:', err);
+      alert('Could not load assigned requests.');
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setAssignedRequests([]);
+  };
+
+  const filtered = technicians.filter((tech) =>
+    `${tech.firstName} ${tech.lastName}`.toLowerCase().includes(search.toLowerCase()) ||
+    tech.specialization.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -40,25 +73,24 @@ export const Technicians = () => {
         />
       </div>
 
-      <div className="requests-table">
-        <div className="dashboard-row dashboard-header">
-          <div>Name</div>
-          <div>Email</div>
-          <div>Phone Number</div>
-          <div>Specialization</div>
-        </div>
-
-        {filteredTechnicians.map((tech, idx) => (
-          <div className="dashboard-row" key={idx}>
-            <div>{tech.firstName} {tech.lastName}</div>
-            <div>{tech.email}</div>
-            <div>{tech.phoneNumber}</div>
-            <div>
-              {tech.specialization}
-            </div>
-          </div>
+      <div className="card-grid">
+        {filtered.map((tech) => (
+          <TechnicianCard
+            key={tech.id}
+            technician={tech}
+            isAvailable={availableIds.includes(tech.id)}
+            onViewRequests={handleViewRequests}
+          />
         ))}
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <AssignedRequestsModal
+          requests={assignedRequests}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 };
