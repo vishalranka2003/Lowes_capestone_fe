@@ -4,12 +4,10 @@ import '../styles/ServiceCard.css';
 
 export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }) => {
   const [selectedTechnician, setSelectedTechnician] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleAllocate = () => {
     if (selectedTechnician) {
       onAllocate(request.id, selectedTechnician);
-      setShowDropdown(false);
     }
   };
 
@@ -17,9 +15,10 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
     <div className="service-card">
       <div className="service-header">
         <h2 className="service-title">
-          {request.applianceName} <span style={{ fontWeight: 'normal' }}>({request.serialNumber})</span>
+          {request.applianceName}{' '}
+          <span style={{ fontWeight: 'normal' }}>({request.serialNumber})</span>
         </h2>
-        <span className={`status-badge status-${request.status}`}>
+        <span className={`status-badge status-${request.status.toLowerCase()}`}>
           {request.status.replace('_', ' ').toLowerCase()}
         </span>
       </div>
