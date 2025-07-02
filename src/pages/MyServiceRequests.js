@@ -160,7 +160,7 @@ const MyServiceRequests = () => {
   const [appliances, setAppliances] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const filters = ['All', 'Requested', 'Completed', 'Cancelled'];
+  const filters = ['All', 'Requested', 'In Progress', 'Completed', 'Cancelled'];
 
   const fetchRequests = async () => {
     setLoading(true);
@@ -198,8 +198,15 @@ const MyServiceRequests = () => {
     if (activeFilter === 'All') {
       setFilteredRequests(requests);
     } else {
+      const filterMap = {
+        'Requested': 'requested',
+        'In Progress': 'in_progress',
+        'Completed': 'completed',
+        'Cancelled': 'cancelled',
+      };
+      const statusToMatch = filterMap[activeFilter] || activeFilter.toLowerCase();
       const filtered = requests.filter(req => 
-        (req.status || 'requested').toLowerCase() === activeFilter.toLowerCase()
+        (req.status || 'requested').toLowerCase() === statusToMatch
       );
       setFilteredRequests(filtered);
     }
@@ -231,6 +238,7 @@ const MyServiceRequests = () => {
     const statusLower = (status || 'requested').toLowerCase();
     switch (statusLower) {
       case 'requested': return 'bg-yellow-100 text-yellow-800';
+      case 'in_progress': return 'bg-blue-100 text-blue-800';
       case 'completed': return 'bg-green-100 text-green-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -319,7 +327,9 @@ const MyServiceRequests = () => {
                         <h3 className="service-request-card-title">
                           Request #{req.id || `SR${String(req.id).padStart(3, '0')}`}
                         </h3>
-                        <span className={`service-request-status status-${(req.status === 'Scheduled' ? 'requested' : (req.status || 'requested')).toLowerCase().replace(/\s/g, '-')}`}>{req.status === 'Scheduled' ? 'Requested' : (req.status || 'Requested')}</span>
+                        <span className={`service-request-status status-${(req.status === 'Scheduled' ? 'requested' : (req.status || 'requested')).toLowerCase().replace(/\s/g, '-').replace('_', '-')}`}>{
+                          req.status === 'Scheduled' ? 'Requested' : (req.status ? req.status.replace('_', ' ') : 'Requested')
+                        }</span>
                       </div>
                       <div className="service-request-appliance-details">
                         <strong>Appliance:</strong> {req.applianceInfo || req.serialNumber}
@@ -341,25 +351,31 @@ const MyServiceRequests = () => {
                     </div>
                   </div>
                   <div className="service-request-card-actions">
-                    {req.status?.toLowerCase() !== 'cancelled' && (
-                      <>
-                        <button
-                          onClick={() => {
-                            setEditRequest(req);
-                            setShowForm(true);
-                          }}
-                          className="service-request-action-btn"
-                        >
-                          Reschedule
-                        </button>
-                        <button
-                          onClick={() => handleCancel(req.id)}
-                          className="service-request-action-btn cancel"
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    )}
+                    {(() => {
+                      const status = (req.status || '').toLowerCase();
+                      if (status === 'cancelled' || status === 'in_progress' || status === 'completed') {
+                        return null;
+                      }
+                      return (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditRequest(req);
+                              setShowForm(true);
+                            }}
+                            className="service-request-action-btn"
+                          >
+                            Reschedule
+                          </button>
+                          <button
+                            onClick={() => handleCancel(req.id)}
+                            className="service-request-action-btn cancel"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
               );
