@@ -283,3 +283,45 @@
   .btn-primary:hover {
     background-color: #2563eb;
   }
+
+  /* Service-History Css */
+
+  .admin-service-history {
+    padding: 20px;
+  }
+  
+  .button-group button {
+    margin-right: 25px;
+    padding: 8px 16px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .button-group button:hover {
+    background-color: #0034a3;
+  }
+  
+  .button-group button.selected {
+    background-color: #0c3782;
+    color: white;
+    border: 1px solid #01060f;
+  }
+
+  .history-search {
+    margin: 20px 0;
+  }
+  
+  .history-search input {
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .history-table {
+    margin-top: 20px;
+  }
+  

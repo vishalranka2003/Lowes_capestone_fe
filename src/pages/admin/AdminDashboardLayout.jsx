@@ -1,7 +1,7 @@
 // src/pages/admin/AdminDashboardLayout.js
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Users, Wrench, Monitor } from 'lucide-react';
+import { LayoutDashboard, Users, Wrench, Monitor, History } from 'lucide-react';
 import '../../styles/AdminDashboard.css';
 
 export const AdminDashboardLayout = () => {
@@ -25,6 +25,10 @@ export const AdminDashboardLayout = () => {
           <NavLink to="/dashboard/admin/appliances" className="nav-link">
             <Monitor className="nav-icon" />
             Appliances
+          </NavLink>
+          <NavLink to="/dashboard/admin/service-history" className="nav-link">
+            <History className="nav-icon" />
+            Service History
           </NavLink>
         </nav>
       </aside>

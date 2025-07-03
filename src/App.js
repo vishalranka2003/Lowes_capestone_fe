@@ -16,6 +16,7 @@ import {Technicians}  from './pages/admin/Technicians';
 import { ServiceRequests } from './pages/admin/ServiceRequests';
 import { Appliances } from './pages/admin/Appliances';
 import { TechnicianDetails } from './pages/admin/TechnicianDetails';
+import { AdminServiceHistory } from './pages/admin/AdminServiceHistory';
 
 
 console.log('HomeownerDashboard:', HomeownerDashboard);
@@ -75,6 +76,7 @@ function App() {
   <Route path="service-requests" element={<ServiceRequests/>}/>
   <Route path="appliances" element={<Appliances/>}/>
   <Route path="technicians/:id" element={<TechnicianDetails />} />
+  <Route path="service-history" element={<AdminServiceHistory />} />
 
 </Route>
 
