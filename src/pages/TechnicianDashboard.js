@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/TechnicianDashboard.css';
 
+import CompletionFormModal from '../components/CompletionFormModal.jsx';
+import ViewCompletionFormModal from '../components/ViewCompletionFormModal.jsx';
+
 const TechnicianDashboard = () => {
   const [stats, setStats] = useState(null);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+
+  const [showFormForRequest, setShowFormForRequest] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -127,7 +134,7 @@ const TechnicianDashboard = () => {
                 <div className="technician-row technician-header-row">
                   <div>ID</div>
                   <div>Appliance</div>
-                  <div>Issue</div>
+                  <div>Issue Description</div>
                   <div>Homeowner</div>
                   <div>Status</div>
                   <div>Preferred Slot</div>
@@ -159,30 +166,37 @@ const TechnicianDashboard = () => {
                         </span>
                       </div>
                       <div>{new Date(request.preferredSlot).toLocaleString()}</div>
-                      <div>
-                        {request.status !== 'COMPLETED' && (
-                          <>
-                            {request.status === 'ASSIGNED' && (
-                              <button
-                                className="tech-button"
-                                onClick={() =>
-                                  handleStatusUpdate(request.id, 'IN_PROGRESS')
-                                }
-                              >
-                                Mark In Progress
-                              </button>
-                            )}
-                            {request.status === 'IN_PROGRESS' && (
-                              <button
-                                className="tech-button"
-                                onClick={() =>
-                                  handleStatusUpdate(request.id, 'COMPLETED')
-                                }
-                              >
-                                Mark Completed
-                              </button>
-                            )}
-                          </>
+                      <div className="tech-actions">
+                        {request.status === 'ASSIGNED' && (
+                          <button
+                            className="tech-button"
+                            onClick={() =>
+                              handleStatusUpdate(request.id, 'IN_PROGRESS')
+                            }
+                          >
+                            Mark In Progress
+                          </button>
+                        )}
+
+                        {request.status === 'IN_PROGRESS' && (
+                          <button
+                            className="tech-button"
+                            onClick={() => setShowFormForRequest(request.id)}
+                          >
+                            Mark Completed
+                          </button>
+                        )}
+
+                        {request.status === 'COMPLETED' && (
+                          <button
+                            className="tech-button"
+                            onClick={() => {
+                              setSelectedRequestId(request.id);
+                              setShowViewModal(true);
+                            }}
+                          >
+                            View Completion
+                          </button>
                         )}
                       </div>
                     </div>
@@ -193,6 +207,24 @@ const TechnicianDashboard = () => {
           )}
         </div>
       </main>
+
+      {showFormForRequest && (
+        <CompletionFormModal
+          requestId={showFormForRequest}
+          onSuccess={() => {
+            handleStatusUpdate(showFormForRequest, 'COMPLETED');
+            setShowFormForRequest(null);
+          }}
+          onClose={() => setShowFormForRequest(null)}
+        />
+      )}
+
+      {showViewModal && selectedRequestId && (
+        <ViewCompletionFormModal
+          requestId={selectedRequestId}
+          onClose={() => setShowViewModal(false)}
+        />
+      )}
     </div>
   );
 };
