@@ -10,13 +10,9 @@ export const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [technicianNames, setTechnicianNames] = useState([]);
 
-
   useEffect(() => {
     const token = localStorage.getItem('token');
-
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
+    const headers = { Authorization: `Bearer ${token}` };
 
     Promise.all([
       axios.get(`${API_BASE_URL}/admin/stats`, { headers }),
@@ -24,13 +20,14 @@ export const AdminDashboard = () => {
       axios.get(`${API_BASE_URL}/admin/available-technicians`, { headers })
     ])
       .then(([statsRes, recentRes, techRes]) => {
-      setStats(statsRes.data);
-      setRecentRequests(recentRes.data.body);
-      const names = techRes.data.map(t => `${t.firstName} ${t.lastName}`);
-      setTechnicianNames(names);
-      setLoading(false)
+        setStats(statsRes.data);
+        // API now returns a raw array for recent requests
+        setRecentRequests(recentRes.data);
+        const names = techRes.data.map(t => `${t.firstName} ${t.lastName}`);
+        setTechnicianNames(names);
+        setLoading(false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching admin dashboard data:', error);
         setLoading(false);
       });
@@ -41,7 +38,9 @@ export const AdminDashboard = () => {
   }
 
   if (!stats) {
-    return <div className="text-center mt-10 text-red-500">Failed to load dashboard data.</div>;
+    return <div className="text-center mt-10 text-red-500">
+      Failed to load dashboard data.
+    </div>;
   }
 
   const summaryData = [
@@ -75,9 +74,9 @@ export const AdminDashboard = () => {
             <div>Technician</div>
             <div>Status</div>
           </div>
-          {recentRequests.map((req, idx) => (
+          {Array.isArray(recentRequests) && recentRequests.map((req, idx) => (
             <div className="dashboard-row" key={idx}>
-              <div>{req.id}</div> {/* ✅ Request ID */}
+              <div>{req.id}</div>
               <div>
                 {new Date(req.createdAt).toLocaleString('en-IN', {
                   day: '2-digit',
@@ -86,20 +85,21 @@ export const AdminDashboard = () => {
                   hour: '2-digit',
                   minute: '2-digit'
                 })}
-              </div> {/* ✅ Created At */}
+              </div>
               <div>{req.homeownerName}</div>
               <div>{req.applianceName} ({req.serialNumber})</div>
               <div>{req.technicianName || '—'}</div>
               <div>
                 <span className={`status-badge status-${req.status.toLowerCase()}`}>
-                  {req.status.replace('_', ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                  {req.status.replace(/_/g, ' ').toLowerCase()
+                               .replace(/\b\w/g, c => c.toUpperCase())}
                 </span>
               </div>
             </div>
           ))}
-
         </div>
       </section>
+
       <section className="dashboard-section">
         <h3 className="section-title">Technician Availability</h3>
         <div className="tech-list">
