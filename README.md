@@ -1,5 +1,4 @@
 # Service Pro
-
 A comprehensive appliance warranty tracking and service management platform that helps homeowners manage their appliance warranties and schedule maintenance services with certified technicians.
 
 ## Features
