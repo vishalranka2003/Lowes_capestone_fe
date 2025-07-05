@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../features/auth/authAPI';
 import { loginSuccess } from '../features/auth/authSlice';
-import '../styles/Login.css'; // ✅ Import the CSS
+import { Shield } from 'lucide-react';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -34,44 +34,89 @@ export const Login = () => {
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-card">
-        <h1 className="brand-title">🔵 WarrantyWise</h1>
-        <h2 className="welcome-msg">Welcome Back</h2>
-        <p className="instruction-text">Sign in to your account</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <div className="flex items-center space-x-2 text-blue-600">
+                <Shield className="h-8 w-8" />
+                <span className="text-2xl font-bold text-gray-900">Service Pro</span>
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+            <p className="text-gray-600">Sign in to your account</p>
+          </div>
 
-        <div className="role-tabs">
-          <button className={role === 'ROLE_HOMEOWNER' ? 'active' : ''} onClick={() => setRole('ROLE_HOMEOWNER')}>Homeowner</button>
-          <button className={role === 'ROLE_TECHNICIAN' ? 'active' : ''} onClick={() => setRole('ROLE_TECHNICIAN')}>Technician</button>
-          <button className={role === 'ROLE_ADMIN' ? 'active' : ''} onClick={() => setRole('ROLE_ADMIN')}>Admin</button>
+          {/* Role Tabs */}
+          <div className="flex space-x-1 mb-6 bg-gray-100 rounded-lg p-1">
+            {[
+              { key: 'ROLE_HOMEOWNER', label: 'Homeowner' },
+              { key: 'ROLE_TECHNICIAN', label: 'Technician' },
+              { key: 'ROLE_ADMIN', label: 'Admin' }
+            ].map((roleOption) => (
+              <button
+                key={roleOption.key}
+                onClick={() => setRole(roleOption.key)}
+                className={`flex-1 py-2 px-3 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  role === roleOption.key
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {roleOption.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Form */}
+          <div className="space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            />
+
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center text-gray-600">
+                <input type="checkbox" className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                Remember me
+              </label>
+              <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+                Forgot password?
+              </a>
+            </div>
+
+            <button 
+              onClick={handleLogin} 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Sign In
+            </button>
+
+            {error && (
+              <p className="text-red-600 text-sm text-center">{error}</p>
+            )}
+          </div>
+
+          {/* Signup Link */}
+          <p className="text-center text-gray-600 text-sm mt-6">
+            Don't have an account?{' '}
+            <a href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+              Sign up
+            </a>
+          </p>
         </div>
-
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="input-field"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-          className="input-field"
-        />
-
-        <div className="options-row">
-          <label><input type="checkbox" /> Remember me</label>
-          <a href="#">Forgot password?</a>
-        </div>
-
-        <button onClick={handleLogin} className="login-btn">Sign In</button>
-        {error && <p className="error-text">{error}</p>}
-
-        <p className="signup-redirect">
-          Don't have an account? <a href="/signup">Sign up</a>
-        </p>
       </div>
     </div>
   );
