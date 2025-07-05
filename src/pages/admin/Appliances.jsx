@@ -1,7 +1,6 @@
 // src/pages/admin/Appliances.js
 import React, { useEffect, useState } from 'react';
 import { AdminApplianceCard } from '../../components/AdminApplianceCard';
-import '../../styles/ApplianceCard.css';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
@@ -29,20 +28,26 @@ export const Appliances = () => {
   }, []);
 
   return (
-    <div className="admin-dashboard">
-      <h2 className="dashboard-title">Appliances</h2>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8">Appliances</h2>
 
-      {loading ? (
-        <div className="text-center mt-10">Loading appliances...</div>
-      ) : appliances.length === 0 ? (
-        <div className="text-center mt-10 text-gray-500">No appliances found.</div>
-      ) : (
-        <div className="card-grid">
-          {appliances.map((appliance) => (
-            <AdminApplianceCard key={appliance.id} appliance={appliance} />
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-gray-600">Loading appliances...</div>
+          </div>
+        ) : appliances.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-500">No appliances found.</div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {appliances.map((appliance) => (
+              <AdminApplianceCard key={appliance.id} appliance={appliance} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

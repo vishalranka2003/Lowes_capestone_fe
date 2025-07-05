@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ServiceRequestCard } from '../../components/ServiceRequestCard';
-import '../../styles/ServiceCard.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 export const ServiceRequests = () => {
   const [serviceRequests, setServiceRequests] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     const token = localStorage.getItem('token');
@@ -32,10 +32,12 @@ export const ServiceRequests = () => {
             }))
           : []
       );
+      setLoading(false);
     } catch (err) {
       console.error('Error loading service request data:', err);
       setServiceRequests([]);
       setAvailableTechnicians([]);
+      setLoading(false);
     }
   };
 
@@ -43,38 +45,53 @@ export const ServiceRequests = () => {
     fetchData();
   }, []);
 
-  return (
-    <div className="admin-dashboard">
-      <h2 className="dashboard-title">Service Requests</h2>
-      <div className="card-grid">
-        {Array.isArray(serviceRequests) &&
-          serviceRequests.map((req) => (
-            <ServiceRequestCard
-              key={req.id}
-              request={req}
-              availableTechnicians={availableTechnicians}
-              onAllocate={handleAllocate}
-            />
-          ))}
-      </div>
-    </div>
-  );
-
-  // Allocation handler must be declared inside component
-  async function handleAllocate(requestId, technicianId) {
+  const handleAllocate = async (requestId, technicianId) => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      await axios.post(
-        `${API_BASE_URL}/admin/assign-technician`,
-        null,
-        { params: { technicianId, requestId }, headers }
-      );
+      await axios.post(`${API_BASE_URL}/admin/assign-technician`, null, {
+        params: { technicianId, requestId },
+        headers,
+      });
       fetchData(); // Refresh after assigning
     } catch (err) {
       console.error('Allocation failed:', err);
       alert('Failed to assign technician.');
     }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading service requests...</div>
+      </div>
+    );
   }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8">Service Requests</h2>
+        
+        {serviceRequests.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+            <p className="text-gray-600 text-lg">No service requests available at the moment.</p>
+            <p className="text-gray-500 text-sm mt-2">New requests will appear here when homeowners submit them.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {serviceRequests.map((req) => (
+              <ServiceRequestCard
+                key={req.id}
+                request={req}
+                availableTechnicians={availableTechnicians}
+                onAllocate={handleAllocate}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };

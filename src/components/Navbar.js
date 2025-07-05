@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../features/auth/authSlice';
 import { Shield, User, LogOut } from 'lucide-react';
-import '../styles/Navbar.css';
 
 export const Navbar = () => {
   const { username } = useSelector((state) => state.auth);
@@ -16,45 +15,59 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        {/* Brand Section */}
-        <Link to="/" className="navbar-brand">
-          <Shield className="brand-icon" />
-          <span className="brand-text">WarrantyTracker</span>
-        </Link>
+    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Brand Section */}
+          <Link to="/" className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+            <Shield className="h-8 w-8" />
+            <span className="text-xl font-semibold text-gray-900">Service Pro</span>
+          </Link>
 
-        {/* Menu Section */}
-        <div className="navbar-menu">
-          {username ? (
-            // If logged in
-            <div className="user-section">
-              <div className="user-greeting">
-                <User className="user-icon" />
-                <span className="username">Hello, {username}</span>
+          {/* Menu Section */}
+          <div className="flex items-center space-x-6">
+            {username ? (
+              // If logged in
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <User className="h-5 w-5 text-blue-600" />
+                  <span className="font-medium">Hello, {username}</span>
+                </div>
+
+                {/* Dashboard Button */}
+                <Link 
+                  to="/dashboard" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
+
+                <button 
+                  onClick={handleLogout} 
+                  className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </button>
               </div>
-
-              {/* 🚀 Dashboard Button */}
-              <Link to="/dashboard" className="dashboard-button">
-                Dashboard
-              </Link>
-
-              <button onClick={handleLogout} className="logout-button">
-                <LogOut className="logout-icon" />
-                Logout
-              </button>
-            </div>
-          ) : (
-            // If not logged in
-            <div className="auth-links">
-              <Link to="/login" className="auth-link login-link">
-                Login
-              </Link>
-              <Link to="/signup" className="auth-link signup-link">
-                Signup
-              </Link>
-            </div>
-          )}
+            ) : (
+              // If not logged in
+              <div className="flex items-center space-x-3">
+                <Link 
+                  to="/login" 
+                  className="text-blue-600 hover:text-blue-700 font-medium px-4 py-2 rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200"
+                >
+                  Signup
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
