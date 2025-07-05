@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../features/auth/authAPI';
 import { loginSuccess } from '../features/auth/authSlice';
 import '../styles/Login.css'; // ✅ Import the CSS
-
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,10 @@ export const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { token } = useSelector((state) => state.auth); 
+if (token) {
+  return <Navigate to="/dashboard" replace />;
+    }
   const handleLogin = async () => {
     try {
       const res = await login(email, password, role);
@@ -61,11 +65,7 @@ export const Login = () => {
           className="input-field"
         />
 
-        <div className="options-row">
-          <label><input type="checkbox" /> Remember me</label>
-          <a href="#">Forgot password?</a>
-        </div>
-
+        
         <button onClick={handleLogin} className="login-btn">Sign In</button>
         {error && <p className="error-text">{error}</p>}
 

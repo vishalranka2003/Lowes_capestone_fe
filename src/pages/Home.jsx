@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Calendar, Wrench, Users, ArrowRight, CheckCircle } from 'lucide-react';
 import '../styles/Home.css';
-
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 export const Home = () => {
+    const { token } = useSelector((state) => state.auth);
+ if (token) {
+  return <Navigate to="/dashboard" replace />;
+    }
+
   const features = [
     {
       icon: Shield,

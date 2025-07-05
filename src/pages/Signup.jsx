@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Signup.css'; // ✅ Import styling
-
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 export const Signup = () => {
+    const { token } = useSelector((state) => state.auth);
+
   const [role, setRole] = useState('homeowner');
   const [form, setForm] = useState({
     username: '', email: '', password: '',
@@ -12,7 +15,9 @@ export const Signup = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
