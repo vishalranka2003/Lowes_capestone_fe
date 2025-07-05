@@ -176,7 +176,7 @@ const MyServiceRequests = () => {
   const [appliances, setAppliances] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const filters = ['All', 'Requested', 'Completed', 'Cancelled'];
+  const filters = ['All', 'Requested', 'Assigned', 'In Progress', 'Completed', 'Cancelled', 'Rescheduled'];
 
   const fetchRequests = async () => {
     setLoading(true);
@@ -215,15 +215,17 @@ const MyServiceRequests = () => {
       setFilteredRequests(requests);
     } else {
       const filterMap = {
-        'Requested': 'requested',
-        'In Progress': 'in_progress',
-        'Completed': 'completed',
-        'Cancelled': 'cancelled',
+        'Requested': 'REQUESTED',
+        'Assigned': 'ASSIGNED',
+        'In Progress': 'IN_PROGRESS',
+        'Completed': 'COMPLETED',
+        'Cancelled': 'CANCELLED',
+        'Rescheduled': 'RESCHEDULED',
       };
-      const statusToMatch = filterMap[activeFilter] || activeFilter.toLowerCase();
-      const filtered = requests.filter(req => 
-        (req.status || 'requested').toLowerCase() === statusToMatch
-      );
+              const statusToMatch = filterMap[activeFilter] || activeFilter.toUpperCase();
+        const filtered = requests.filter(req => 
+          (req.status || 'REQUESTED').toUpperCase() === statusToMatch
+        );
       setFilteredRequests(filtered);
     }
   }, [activeFilter, requests]);
@@ -251,13 +253,22 @@ const MyServiceRequests = () => {
   };
 
   const getStatusColor = (status) => {
-    const statusLower = (status || 'requested').toLowerCase();
-    switch (statusLower) {
-      case 'requested': return 'bg-yellow-100 text-yellow-800';
-      
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+    const statusUpper = (status || 'REQUESTED').toUpperCase();
+    switch (statusUpper) {
+      case 'REQUESTED': 
+        return 'bg-amber-100 text-amber-800 border border-amber-200';
+      case 'ASSIGNED':
+        return 'bg-blue-100 text-blue-800 border border-blue-200';
+      case 'IN_PROGRESS': 
+        return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
+      case 'COMPLETED': 
+        return 'bg-green-100 text-green-800 border border-green-200';
+      case 'CANCELLED': 
+        return 'bg-red-100 text-red-800 border border-red-200';
+      case 'RESCHEDULED':
+        return 'bg-purple-100 text-purple-800 border border-purple-200';
+      default: 
+        return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
 
@@ -353,8 +364,8 @@ const MyServiceRequests = () => {
                         <h3 className="text-lg font-semibold text-gray-900">
                           Request #{req.id || `SR${String(req.id).padStart(3, '0')}`}
                         </h3>
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(req.status)}`}>
-                          {req.status === 'Scheduled' ? 'Requested' : (req.status || 'Requested')}
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(req.status || 'REQUESTED')}`}>
+                          {req.status ? req.status.replace('_', ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : 'Requested'}
                         </span>
                       </div>
                       <div className="text-gray-600 mb-4">
@@ -376,26 +387,32 @@ const MyServiceRequests = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex space-x-4 mt-6 pt-4 border-t border-gray-100">
-                    {req.status?.toLowerCase() !== 'cancelled' && (
-                      <>
-                        <button
-                          onClick={() => {
-                            setEditRequest(req);
-                            setShowForm(true);
-                          }}
-                          className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
-                        >
-                          Reschedule
-                        </button>
-                        <button
-                          onClick={() => handleCancel(req.id)}
-                          className="text-red-600 hover:text-red-700 font-medium text-sm transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    )}
+                  <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
+                    {(() => {
+                      const status = (req.status || '').toUpperCase();
+                      if (status === 'CANCELLED' || status === 'IN_PROGRESS' || status === 'COMPLETED') {
+                        return null;
+                      }
+                      return (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditRequest(req);
+                              setShowForm(true);
+                            }}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                          >
+                            Reschedule
+                          </button>
+                          <button
+                            onClick={() => handleCancel(req.id)}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
               );

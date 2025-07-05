@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 
@@ -11,7 +11,45 @@ export const Signup = () => {
     firstName: '', lastName: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Helper function to get dashboard route based on role
+  const getDashboardRoute = (userRole) => {
+    switch (userRole) {
+      case 'ROLE_ADMIN':
+        return '/dashboard/admin';
+      case 'ROLE_TECHNICIAN':
+        return '/dashboard/technician';
+      case 'ROLE_HOMEOWNER':
+        return '/dashboard/homeowner';
+      default:
+        return '/dashboard/homeowner';
+    }
+  };
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    const role = localStorage.getItem('role');
+    
+    if (token && username && role) {
+      try {
+        const dashboardRoute = getDashboardRoute(role);
+        navigate(dashboardRoute);
+        return;
+      } catch (error) {
+        console.error('Error parsing user info:', error);
+        // Clear invalid data
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+      }
+    }
+    
+    setIsLoading(false);
+  }, [navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -52,6 +90,15 @@ export const Signup = () => {
       setError('Network error');
     }
   };
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

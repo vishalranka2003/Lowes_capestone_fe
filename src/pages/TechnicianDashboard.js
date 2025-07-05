@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Wrench, Clock, CheckCircle, List, User, Calendar } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
+import CompletionFormModal from '../components/CompletionFormModal.jsx';
+import ViewCompletionFormModal from '../components/ViewCompletionFormModal.jsx';
+import { Clock, List, Wrench, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const TechnicianDashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const navigate = useNavigate();
 
-  // Get user data from localStorage
+  const [showFormForRequest, setShowFormForRequest] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
   const username = localStorage.getItem('username') || 'User';
-  const role = localStorage.getItem('role') || 'Technician';
+  const role = localStorage.getItem('role') || 'Homeowner';
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    localStorage.clear();
-    dispatch(logout());
-    navigate('/');
-  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
 
     Promise.all([
-      axios.get('/technician/stats', { headers }),
-      axios.get('/technician/assigned-requests', { headers }),
+      axios.get(`${API_BASE_URL}/technician/stats`, { headers }),
+      axios.get(`${API_BASE_URL}/technician/assigned-requests`, { headers }),
     ])
       .then(([statsRes, requestsRes]) => {
         setStats(statsRes.data);
@@ -46,15 +45,16 @@ const TechnicianDashboard = () => {
 
   const handleStatusUpdate = (requestId, newStatus) => {
     const token = localStorage.getItem('token');
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
 
     axios
       .put(
-        '/technician/update-status',
+        `${API_BASE_URL}/technician/update-status`,
         { requestId, status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
-        return axios.get('/technician/assigned-requests', {
+        return axios.get(`${API_BASE_URL}/technician/assigned-requests`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       })
@@ -75,17 +75,11 @@ const TechnicianDashboard = () => {
     });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'ASSIGNED':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'IN_PROGRESS':
-        return 'bg-blue-100 text-blue-800';
-      case 'COMPLETED':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(logout());
+    navigate('/');
   };
 
   return (
@@ -209,72 +203,118 @@ const TechnicianDashboard = () => {
             <>
               {loading && (
                 <div className="flex items-center justify-center py-12">
-                  <div className="text-gray-600">Loading...</div>
+                  <div className="text-gray-600">Loading requests...</div>
                 </div>
               )}
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg mb-6">
-                  Error: {error}
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                  <div className="text-red-800">Error: {error}</div>
                 </div>
               )}
 
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {activeTab === 'assigned' && 'Assigned Requests'}
+                  {activeTab === 'in-progress' && 'In Progress Requests'}
+                  {activeTab === 'completed' && 'Completed Requests'}
+                </h2>
+                <p className="text-gray-600">
+                  {activeTab === 'assigned' && 'Requests that have been assigned to you by the admin.'}
+                  {activeTab === 'in-progress' && 'Requests that you are currently working on.'}
+                  {activeTab === 'completed' && 'Requests that you have completed.'}
+                </p>
+              </div>
+              
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200 bg-gray-50">
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">ID</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Appliance</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Issue</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Homeowner</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Status</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Preferred Slot</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Actions</th>
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appliance</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue Description</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Homeowner</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preferred Slot</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="bg-white divide-y divide-gray-200">
                       {getRequestsForTab().length === 0 && !loading ? (
                         <tr>
-                          <td colSpan="7" className="text-center py-8 text-gray-500">
+                          <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
                             No requests to show.
                           </td>
                         </tr>
                       ) : (
                         getRequestsForTab().map(request => (
-                          <tr key={request.id} className="border-b border-gray-100 hover:bg-gray-50">
-                            <td className="py-3 px-4 text-sm text-gray-900">{request.id}</td>
-                            <td className="py-3 px-4 text-sm text-gray-600">{request.applianceInfo}</td>
-                            <td className="py-3 px-4 text-sm text-gray-600">{request.issueDescription}</td>
-                            <td className="py-3 px-4 text-sm text-gray-600">{request.homeownerName}</td>
-                            <td className="py-3 px-4">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
-                                {request.status}
+                          <tr key={request.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              #{request.id}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {request.applianceInfo}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900 max-w-xs">
+                              <div className="truncate" title={request.issueDescription}>
+                                {request.issueDescription}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {request.homeownerName}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                  request.status === 'ASSIGNED'
+                                    ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                    : request.status === 'IN_PROGRESS'
+                                    ? 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                                    : request.status === 'COMPLETED'
+                                    ? 'bg-green-100 text-green-800 border border-green-200'
+                                    : 'bg-gray-100 text-gray-800 border border-gray-200'
+                                }`}
+                              >
+                                {request.status.replace('_', ' ')}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-600">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                               {new Date(request.preferredSlot).toLocaleString()}
                             </td>
-                            <td className="py-3 px-4">
-                              {request.status !== 'COMPLETED' && (
-                                <>
-                                  {request.status === 'ASSIGNED' && (
-                                    <button
-                                      className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                                      onClick={() => handleStatusUpdate(request.id, 'IN_PROGRESS')}
-                                    >
-                                      Mark In Progress
-                                    </button>
-                                  )}
-                                  {request.status === 'IN_PROGRESS' && (
-                                    <button
-                                      className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-                                      onClick={() => handleStatusUpdate(request.id, 'COMPLETED')}
-                                    >
-                                      Mark Completed
-                                    </button>
-                                  )}
-                                </>
-                              )}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex gap-2">
+                                {request.status === 'ASSIGNED' && (
+                                  <button
+                                    className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs font-medium"
+                                    onClick={() =>
+                                      handleStatusUpdate(request.id, 'IN_PROGRESS')
+                                    }
+                                  >
+                                    Start Work
+                                  </button>
+                                )}
+
+                                {request.status === 'IN_PROGRESS' && (
+                                  <button
+                                    className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs font-medium"
+                                    onClick={() => setShowFormForRequest(request.id)}
+                                  >
+                                    Complete
+                                  </button>
+                                )}
+
+                                {request.status === 'COMPLETED' && (
+                                  <button
+                                    className="px-3 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-xs font-medium"
+                                    onClick={() => {
+                                      setSelectedRequestId(request.id);
+                                      setShowViewModal(true);
+                                    }}
+                                  >
+                                    View Details
+                                  </button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))
@@ -287,6 +327,24 @@ const TechnicianDashboard = () => {
           )}
         </div>
       </main>
+
+      {showFormForRequest && (
+        <CompletionFormModal
+          requestId={showFormForRequest}
+          onSuccess={() => {
+            handleStatusUpdate(showFormForRequest, 'COMPLETED');
+            setShowFormForRequest(null);
+          }}
+          onClose={() => setShowFormForRequest(null)}
+        />
+      )}
+
+      {showViewModal && selectedRequestId && (
+        <ViewCompletionFormModal
+          requestId={selectedRequestId}
+          onClose={() => setShowViewModal(false)}
+        />
+      )}
     </div>
   );
 };

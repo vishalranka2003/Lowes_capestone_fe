@@ -20,17 +20,23 @@ export const ServiceRequests = () => {
         axios.get(`${API_BASE_URL}/admin/available-technicians`, { headers }),
       ]);
 
-      setServiceRequests(requestsRes.data.body);
+      // API now returns a raw array for service requests
+      setServiceRequests(Array.isArray(requestsRes.data) ? requestsRes.data : []);
+
       setAvailableTechnicians(
-        techsRes.data.map((t) => ({
-          id: t.id,
-          name: `${t.firstName} ${t.lastName}`,
-          specialization: t.specialization,
-        }))
+        Array.isArray(techsRes.data)
+          ? techsRes.data.map((t) => ({
+              id: t.id,
+              name: `${t.firstName} ${t.lastName}`,
+              specialization: t.specialization,
+            }))
+          : []
       );
+      setLoading(false);
     } catch (err) {
       console.error('Error loading service request data:', err);
-    } finally {
+      setServiceRequests([]);
+      setAvailableTechnicians([]);
       setLoading(false);
     }
   };
@@ -69,8 +75,9 @@ export const ServiceRequests = () => {
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Service Requests</h2>
         
         {serviceRequests.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600">No service requests available.</p>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+            <p className="text-gray-600 text-lg">No service requests available at the moment.</p>
+            <p className="text-gray-500 text-sm mt-2">New requests will appear here when homeowners submit them.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

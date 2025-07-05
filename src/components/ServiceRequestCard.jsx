@@ -16,21 +16,21 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
     : request.applianceName;
 
   const getStatusColors = (status) => {
-    switch (status.toLowerCase()) {
-      case 'requested':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'assigned':
-        return 'bg-blue-100 text-blue-800';
-      case 'in_progress':
-        return 'bg-sky-100 text-sky-800';
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      case 'rescheduled':
-        return 'bg-purple-100 text-purple-800';
+    switch (status.toUpperCase()) {
+      case 'REQUESTED':
+        return 'bg-amber-100 text-amber-800 border border-amber-200';
+      case 'ASSIGNED':
+        return 'bg-blue-100 text-blue-800 border border-blue-200';
+      case 'IN_PROGRESS':
+        return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
+      case 'COMPLETED':
+        return 'bg-green-100 text-green-800 border border-green-200';
+      case 'CANCELLED':
+        return 'bg-red-100 text-red-800 border border-red-200';
+      case 'RESCHEDULED':
+        return 'bg-purple-100 text-purple-800 border border-purple-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
 

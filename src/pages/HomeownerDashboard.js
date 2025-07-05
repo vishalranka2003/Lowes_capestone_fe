@@ -1,11 +1,10 @@
 import React from 'react';
-import { Outlet, useLocation, NavLink, useNavigate } from 'react-router-dom';
-import { Home, Package, Wrench, User, LogOut } from 'lucide-react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Home, Package, Wrench, LogOut } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 
 export const HomeownerDashboard = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   
   // Get user data from localStorage

@@ -82,7 +82,7 @@ export const MyAppliances = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-end gap-4 mb-8">
           <button 
             className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
             onClick={() => setShowRegisterModal(true)}
