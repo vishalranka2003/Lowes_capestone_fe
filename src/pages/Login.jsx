@@ -138,15 +138,7 @@ export const Login = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
             />
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center text-gray-600">
-                <input type="checkbox" className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                Remember me
-              </label>
-              {/* <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
-                Forgot password?
-              </a> */}
-            </div>
+            
 
             <button 
               onClick={handleLogin} 
