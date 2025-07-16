@@ -38,7 +38,7 @@ export const Home = () => {
               Your complete solution for appliance management and maintenance scheduling.
             </p>
             <div className="hero-buttons">
-              <Link to="/register" className="cta-button primary">
+              <Link to="/signup" className="cta-button primary">
                 Get Started Free
                 <ArrowRight className="button-icon" />
               </Link>
@@ -89,7 +89,7 @@ export const Home = () => {
             <p className="cta-description">
               Join thousands of homeowners who trust Warranty Tracker to manage their appliances
             </p>
-            <Link to="/register" className="cta-button primary large">
+            <Link to="/signup" className="cta-button primary large">
               Start Your Free Trial
               <ArrowRight className="button-icon" />
             </Link>

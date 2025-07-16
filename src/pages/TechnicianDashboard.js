@@ -15,6 +15,8 @@ const TechnicianDashboard = () => {
   const [showFormForRequest, setShowFormForRequest] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState(null);
+  const [serviceHistory, setServiceHistory] = useState([]);
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -35,6 +37,32 @@ const TechnicianDashboard = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (activeTab !== 'service-history') return;
+
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const fetchServiceHistory = async () => {
+      try {
+        const profileRes = await axios.get('/technician/profile', { headers });
+        const technicianId = profileRes.data.id;
+
+        const historyRes = await axios.get(
+          `/technician/service-history/${technicianId}`,
+          { headers }
+        );
+
+        setServiceHistory(Array.isArray(historyRes.data) ? historyRes.data : []);
+      } catch (err) {
+        console.error('Failed to load service history:', err);
+        setServiceHistory([]);
+      }
+    };
+
+    fetchServiceHistory();
+  }, [activeTab]);
 
   const handleStatusUpdate = (requestId, newStatus) => {
     const token = localStorage.getItem('token');
@@ -95,12 +123,18 @@ const TechnicianDashboard = () => {
           >
             Completed
           </button>
+          <button
+            className={`nav-link ${activeTab === 'service-history' ? 'active' : ''}`}
+            onClick={() => setActiveTab('service-history')}
+          >
+            Service History
+          </button>
         </nav>
       </aside>
 
       <main className="technician-main">
         <header className="technician-header">
-          <h2>Welcome, Technician</h2>
+          <h2 className="dashboard-title">Welcome, Technician</h2>
           <p>Manage your assigned service requests</p>
         </header>
 
@@ -125,7 +159,7 @@ const TechnicianDashboard = () => {
             </div>
           )}
 
-          {activeTab !== 'overview' && (
+          {activeTab !== 'overview' && activeTab !== 'service-history' && (
             <>
               {loading && <div>Loading...</div>}
               {error && <div>Error: {error}</div>}
@@ -204,6 +238,34 @@ const TechnicianDashboard = () => {
                 )}
               </div>
             </>
+          )}
+          
+          {activeTab === 'service-history' && (
+            <div className="history-table">
+              <h3 className="technician-dashboard-title">My Service History</h3>
+              <div className="technician-row technician-header-row">
+                <div>ID</div>
+                <div>Appliance</div>
+                <div>Issue</div>
+                <div>Homeowner</div>
+                <div>Status</div>
+                <div>Date</div>
+              </div>
+              {serviceHistory.length > 0 ? (
+                serviceHistory.map((item, idx) => (
+                  <div key={idx} className="technician-row">
+                    <div>{item.id}</div>
+                    <div>{item.applianceInfo}</div>
+                    <div>{item.issueDescription}</div>
+                    <div>{item.homeownerName}</div>
+                    <div>{item.status}</div>
+                    <div>{new Date(item.serviceDate).toLocaleString('en-IN')}</div>
+                  </div>
+                ))
+              ) : (
+                <div className="technician-row">No service history found.</div>
+              )}
+            </div>
           )}
         </div>
       </main>

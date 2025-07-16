@@ -22,7 +22,7 @@ export const AdminDashboard = () => {
       .then(([statsRes, recentRes, techRes]) => {
         setStats(statsRes.data);
         // API now returns a raw array for recent requests
-        setRecentRequests(recentRes.data);
+        setRecentRequests(recentRes.data.body);
         const names = techRes.data.map(t => `${t.firstName} ${t.lastName}`);
         setTechnicianNames(names);
         setLoading(false);

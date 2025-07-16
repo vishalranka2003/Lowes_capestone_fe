@@ -1,27 +1,26 @@
 // src/App.js
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
-import { Signup } from './pages/Signup';
-import { Dashboard } from './pages/Dashboard';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { HomeownerDashboard } from './pages/HomeownerDashboard';
-import  TechnicianDashboard from './pages/TechnicianDashboard';
-import { AdminDashboard } from './pages/AdminDashboard';
-import { MyAppliances } from './pages/MyAppliances';
-import  MyServiceRequests  from './pages/MyServiceRequests';
-import { AdminDashboardLayout } from './pages/admin/AdminDashboardLayout';
-import {Technicians}  from './pages/admin/Technicians';
-import { ServiceRequests } from './pages/admin/ServiceRequests';
-import { Appliances } from './pages/admin/Appliances';
-import { TechnicianDetails } from './pages/admin/TechnicianDetails';
-import { AdminServiceHistory } from './pages/admin/AdminServiceHistory';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
+import { Dashboard } from "./pages/Dashboard";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { HomeownerDashboard } from "./pages/HomeownerDashboard";
+import TechnicianDashboard from "./pages/TechnicianDashboard";
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { MyAppliances } from "./pages/MyAppliances";
+import MyServiceRequests from "./pages/MyServiceRequests";
+import { AdminDashboardLayout } from "./pages/admin/AdminDashboardLayout";
+import { Technicians } from "./pages/admin/Technicians";
+import { ServiceRequests } from "./pages/admin/ServiceRequests";
+import { Appliances } from "./pages/admin/Appliances";
+import { TechnicianDetails } from "./pages/admin/TechnicianDetails";
+import { AdminServiceHistory } from "./pages/admin/AdminServiceHistory";
 
-
-console.log('HomeownerDashboard:', HomeownerDashboard);
-console.log('TechnicianDashboard:', TechnicianDashboard);
-console.log('AdminDashboard:', AdminDashboard);
+console.log("HomeownerDashboard:", HomeownerDashboard);
+console.log("TechnicianDashboard:", TechnicianDashboard);
+console.log("AdminDashboard:", AdminDashboard);
 
 function App() {
   return (
@@ -35,7 +34,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['ROLE_HOMEOWNER', 'ROLE_TECHNICIAN', 'ROLE_ADMIN']}>
+            <ProtectedRoute
+              allowedRoles={["ROLE_HOMEOWNER", "ROLE_TECHNICIAN", "ROLE_ADMIN"]}
+            >
               <Dashboard />
             </ProtectedRoute>
           }
@@ -44,7 +45,7 @@ function App() {
         <Route
           path="/dashboard/homeowner"
           element={
-            <ProtectedRoute allowedRoles={['ROLE_HOMEOWNER']}>
+            <ProtectedRoute allowedRoles={["ROLE_HOMEOWNER"]}>
               <HomeownerDashboard />
             </ProtectedRoute>
           }
@@ -56,29 +57,27 @@ function App() {
         <Route
           path="/dashboard/technician"
           element={
-            <ProtectedRoute allowedRoles={['ROLE_TECHNICIAN']}>
+            <ProtectedRoute allowedRoles={["ROLE_TECHNICIAN"]}>
               <TechnicianDashboard />
             </ProtectedRoute>
           }
         />
 
-<Route
-  path="/dashboard/admin"
-  element={
-    <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
-      <AdminDashboardLayout />
-      
-    </ProtectedRoute>
-  }
->
-  <Route index element={<AdminDashboard />} />
-  <Route path="technicians" element={<Technicians />} />
-  <Route path="service-requests" element={<ServiceRequests/>}/>
-  <Route path="appliances" element={<Appliances/>}/>
-  <Route path="technicians/:id" element={<TechnicianDetails />} />
-  <Route path="service-history" element={<AdminServiceHistory />} />
-
-</Route>
+        <Route
+          path="/dashboard/admin"
+          element={
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
+              <AdminDashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="technicians" element={<Technicians />} />
+          <Route path="service-requests" element={<ServiceRequests />} />
+          <Route path="appliances" element={<Appliances />} />
+          <Route path="technicians/:id" element={<TechnicianDetails />} />
+          <Route path="service-history" element={<AdminServiceHistory />} />
+        </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

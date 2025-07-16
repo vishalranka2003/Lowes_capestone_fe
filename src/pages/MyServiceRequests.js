@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import '../styles/MyServiceRequests.css';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import "../styles/MyServiceRequests.css";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/homeowner`;
 
-const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }) => {
+const ServiceRequestForm = ({
+  onClose,
+  onSubmit,
+  initialData,
+  applianceOptions,
+}) => {
   const [form, setForm] = useState(
     initialData || {
-      serialNumber: '',
-      issueDescription: '',
-      preferredSlot: '',
+      serialNumber: "",
+      issueDescription: "",
+      preferredSlot: "",
     }
   );
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -24,12 +29,12 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setError('');
+    setError("");
     try {
       await onSubmit(form);
       onClose();
     } catch (err) {
-      setError('Failed to submit request.');
+      setError("Failed to submit request.");
     } finally {
       setSubmitting(false);
     }
@@ -38,15 +43,12 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
   return (
     <div className="service-request-modal-overlay">
       <div className="service-request-modal-container">
-        <button 
-          className="service-request-modal-close" 
-          onClick={onClose}
-        >
+        <button className="service-request-modal-close" onClick={onClose}>
           ×
         </button>
-        
+
         <h2 className="service-request-modal-title">
-          {initialData ? 'Update Service Request' : 'Create Service Request'}
+          {initialData ? "Update Service Request" : "Create Service Request"}
         </h2>
         <p className="service-request-modal-desc">
           Submit a new service request for your appliance.
@@ -73,15 +75,22 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
           </div>
 
           <div className="service-request-modal-field">
-            <label className="service-request-modal-label">Preferred Date</label>
+            <label className="service-request-modal-label">
+              Preferred Date
+            </label>
             <input
               type="date"
               name="preferredSlot"
-              value={form.preferredSlot ? form.preferredSlot.split('T')[0] : ''}
+              value={form.preferredSlot ? form.preferredSlot.split("T")[0] : ""}
               onChange={(e) => {
                 const date = e.target.value;
-                const time = form.preferredSlot ? form.preferredSlot.split('T')[1] || '09:00' : '09:00';
-                setForm(prev => ({ ...prev, preferredSlot: `${date}T${time}` }));
+                const time = form.preferredSlot
+                  ? form.preferredSlot.split("T")[1] || "09:00"
+                  : "09:00";
+                setForm((prev) => ({
+                  ...prev,
+                  preferredSlot: `${date}T${time}`,
+                }));
               }}
               className="service-request-modal-input"
               required
@@ -89,13 +98,24 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
           </div>
 
           <div className="service-request-modal-field">
-            <label className="service-request-modal-label">Preferred Time</label>
+            <label className="service-request-modal-label">
+              Preferred Time
+            </label>
             <select
               name="preferredTime"
-              value={form.preferredSlot ? form.preferredSlot.split('T')[1] || '09:00' : '09:00'}
+              value={
+                form.preferredSlot
+                  ? form.preferredSlot.split("T")[1] || "09:00"
+                  : "09:00"
+              }
               onChange={(e) => {
-                const date = form.preferredSlot ? form.preferredSlot.split('T')[0] : new Date().toISOString().split('T')[0];
-                setForm(prev => ({ ...prev, preferredSlot: `${date}T${e.target.value}` }));
+                const date = form.preferredSlot
+                  ? form.preferredSlot.split("T")[0]
+                  : new Date().toISOString().split("T")[0];
+                setForm((prev) => ({
+                  ...prev,
+                  preferredSlot: `${date}T${e.target.value}`,
+                }));
               }}
               className="service-request-modal-input"
               required
@@ -114,7 +134,9 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
           </div>
 
           <div className="service-request-modal-field">
-            <label className="service-request-modal-label">Issue Description</label>
+            <label className="service-request-modal-label">
+              Issue Description
+            </label>
             <textarea
               name="issueDescription"
               value={form.issueDescription}
@@ -126,7 +148,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
           </div>
 
           {error && <div className="service-request-modal-error">{error}</div>}
-          
+
           <div className="service-request-modal-actions">
             <button
               type="button"
@@ -140,7 +162,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
               className="service-request-modal-btn submit"
               disabled={submitting}
             >
-              {submitting ? 'Submitting...' : 'Submit Request'}
+              {submitting ? "Submitting..." : "Submit Request"}
             </button>
           </div>
         </form>
@@ -154,13 +176,36 @@ const MyServiceRequests = () => {
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editRequest, setEditRequest] = useState(null);
   const [appliances, setAppliances] = useState([]);
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [showApplianceSearch, setShowApplianceSearch] = useState(false);
+  const [applianceIdInput, setApplianceIdInput] = useState("");
+  const [applianceServiceHistory, setApplianceServiceHistory] = useState([]);
+  const [activeView, setActiveView] = useState("default"); // 'default' | 'history' | 'appliance'
+  const [searchBtnPressed, setSearchBtnPressed] = useState(false);
 
-  const filters = ['All', 'Requested', 'In Progress', 'Completed', 'Cancelled'];
+
+  const filters = ["All", "Requested", "In Progress", "Completed", "Cancelled"];
+
+  const handleFetchByApplianceId = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.get(
+        `${API_URL}/service-history/appliance/${applianceIdInput}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setApplianceServiceHistory(res.data);
+    } catch (err) {
+      console.error("Failed to fetch appliance history", err);
+      setApplianceServiceHistory([]);
+      alert("Could not find service history for this appliance.");
+    }
+  };
 
   const fetchRequests = async () => {
     setLoading(true);
@@ -171,7 +216,7 @@ const MyServiceRequests = () => {
       setRequests(res.data);
       setFilteredRequests(res.data);
     } catch (err) {
-      setError('Failed to load service requests.');
+      setError("Failed to load service requests.");
     } finally {
       setLoading(false);
     }
@@ -195,18 +240,19 @@ const MyServiceRequests = () => {
   }, []);
 
   useEffect(() => {
-    if (activeFilter === 'All') {
+    if (activeFilter === "All") {
       setFilteredRequests(requests);
     } else {
       const filterMap = {
-        'Requested': 'requested',
-        'In Progress': 'in_progress',
-        'Completed': 'completed',
-        'Cancelled': 'cancelled',
+        Requested: "requested",
+        "In Progress": "in_progress",
+        Completed: "completed",
+        Cancelled: "cancelled",
       };
-      const statusToMatch = filterMap[activeFilter] || activeFilter.toLowerCase();
-      const filtered = requests.filter(req => 
-        (req.status || 'requested').toLowerCase() === statusToMatch
+      const statusToMatch =
+        filterMap[activeFilter] || activeFilter.toLowerCase();
+      const filtered = requests.filter(
+        (req) => (req.status || "requested").toLowerCase() === statusToMatch
       );
       setFilteredRequests(filtered);
     }
@@ -227,7 +273,7 @@ const MyServiceRequests = () => {
   };
 
   const handleCancel = async (id) => {
-    if (!window.confirm('Cancel this service request?')) return;
+    if (!window.confirm("Cancel this service request?")) return;
     await axios.delete(`${API_URL}/service-request/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -235,37 +281,46 @@ const MyServiceRequests = () => {
   };
 
   const getStatusColor = (status) => {
-    const statusLower = (status || 'requested').toLowerCase();
+    const statusLower = (status || "requested").toLowerCase();
     switch (statusLower) {
-      case 'requested': return 'bg-yellow-100 text-yellow-800';
-      case 'in_progress': return 'bg-blue-100 text-blue-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "requested":
+        return "bg-yellow-100 text-yellow-800";
+      case "in_progress":
+        return "bg-blue-100 text-blue-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Not scheduled';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
+    if (!dateString) return "Not scheduled";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
     });
   };
 
   const formatDateTime = (dateString) => {
-    if (!dateString) return 'Not scheduled';
+    if (!dateString) return "Not scheduled";
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
-    }) + ' at ' + date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
+    return (
+      date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      }) +
+      " at " +
+      date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+    );
   };
 
   return (
@@ -276,110 +331,237 @@ const MyServiceRequests = () => {
           <div className="service-requests-header-row">
             <div>
               <h1 className="service-requests-title">Service Requests</h1>
-              <p className="service-requests-desc">Manage your appliance service requests and appointments.</p>
+              <p className="service-requests-desc">
+                Manage your appliance service requests and appointments.
+              </p>
             </div>
-            <button
-              className="service-requests-new-btn"
-              onClick={() => {
-                setEditRequest(null);
-                setShowForm(true);
-              }}
-            >
-              <span className="service-requests-new-btn-plus">+</span>
-              New Request
-            </button>
+          </div>
+          <div className="service-requests-button-div">
+            <div className="service-requests-newReq">
+              <button
+                className="service-requests-new-btn"
+                onClick={() => {
+                  setEditRequest(null);
+                  setShowForm(true);
+                }}
+              >
+                <span className="service-requests-new-btn-plus">+</span>
+                New Request
+              </button>
+            </div>
+
+            <div className="service-requests-myReqHistory">
+              <button
+                className="service-requests-new-btn"
+                onClick={() => {
+                  setActiveView("history");
+                  setShowApplianceSearch(false);
+                  setApplianceServiceHistory([]);
+                  setApplianceIdInput('');
+                }}
+              >
+                My Request History
+              </button>
+            </div>
+            {/* View by Appliance ID Button and Input */}
+            <div className="service-requests-reqByApp">
+              <button
+                className="service-requests-new-btn"
+                onClick={() => {
+                  setShowApplianceSearch(!showApplianceSearch);
+                  setActiveView("appliance");
+                  setApplianceIdInput('');
+                  setApplianceServiceHistory([]);
+                }}
+              >
+                View by Appliance ID
+              </button>
+
+              {showApplianceSearch && (
+                <form
+                  onSubmit={handleFetchByApplianceId}
+                  style={{ display: "flex", gap: "0.5rem" }}
+                >
+                  <input
+                    type="text"
+                    value={applianceIdInput}
+                    onChange={(e) => setApplianceIdInput(e.target.value)}
+                    placeholder="Enter Appliance ID"
+                    className="service-request-search-input"
+                    required
+                  />
+                  <button type="submit" className="service-request-action-btn" onClick={()=>setSearchBtnPressed(true)}>
+                    Search
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Filter Tabs */}
-        <div className="service-requests-tabs">
-          <nav className="service-requests-tabs-nav">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`service-requests-tab${activeFilter === filter ? ' active' : ''}`}
-              >
-                {filter}
-              </button>
-            ))}
-          </nav>
-        </div>
+        {activeView === "history" && (
+          <>
+            <div className="service-requests-tabs">
+              <nav className="service-requests-tabs-nav">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`service-requests-tab${
+                      activeFilter === filter ? " active" : ""
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </nav>
+            </div>
 
-        {/* Content */}
-        {loading ? (
-          <div className="service-requests-loading">Loading service requests...</div>
-        ) : error ? (
-          <div className="service-requests-error">{error}</div>
-        ) : filteredRequests.length === 0 ? (
-          <div className="service-requests-empty">No service requests found for "{activeFilter}" status.</div>
-        ) : (
-          <div className="service-requests-list">
-            {filteredRequests.map((req) => {
-              const appl = appliances.find((a) =>
-                a.serialNumber === req.serialNumber
-              );
-              return (
-                <div key={req.id} className="service-request-card">
-                  <div className="service-request-card-row">
-                    <div className="service-request-card-main">
-                      <div className="service-request-card-header">
-                        <h3 className="service-request-card-title">
-                          Request #{req.id || `SR${String(req.id).padStart(3, '0')}`}
-                        </h3>
-                        <span className={`service-request-status status-${(req.status === 'Scheduled' ? 'requested' : (req.status || 'requested')).toLowerCase().replace(/\s/g, '-').replace('_', '-')}`}>{
-                          req.status === 'Scheduled' ? 'Requested' : (req.status ? req.status.replace('_', ' ') : 'Requested')
-                        }</span>
+            {/* Content */}
+            {loading ? (
+              <div className="service-requests-loading">
+                Loading service requests...
+              </div>
+            ) : error ? (
+              <div className="service-requests-error">{error}</div>
+            ) : filteredRequests.length === 0 ? (
+              <div className="service-requests-empty">
+                No service requests found for "{activeFilter}" status.
+              </div>
+            ) : (
+              <div className="service-requests-list">
+                {filteredRequests.map((req) => {
+                  const appl = appliances.find(
+                    (a) => a.serialNumber === req.serialNumber
+                  );
+                  return (
+                    <div key={req.id} className="service-request-card">
+                      <div className="service-request-card-row">
+                        <div className="service-request-card-main">
+                          <div className="service-request-card-header">
+                            <h3 className="service-request-card-title">
+                              Request #
+                              {req.id || `SR${String(req.id).padStart(3, "0")}`}
+                            </h3>
+                            <span
+                              className={`service-request-status status-${(req.status ===
+                              "Scheduled"
+                                ? "requested"
+                                : req.status || "requested"
+                              )
+                                .toLowerCase()
+                                .replace(/\s/g, "-")
+                                .replace("_", "-")}`}
+                            >
+                              {req.status === "Scheduled"
+                                ? "Requested"
+                                : req.status
+                                ? req.status.replace("_", " ")
+                                : "Requested"}
+                            </span>
+                          </div>
+                          <div className="service-request-appliance-details">
+                            <strong>Appliance:</strong>{" "}
+                            {req.applianceInfo || req.serialNumber}
+                          </div>
+                          <div className="service-request-details-grid">
+                            <div>
+                              <h4 className="service-request-detail-label">
+                                Issue
+                              </h4>
+                              <p className="service-request-detail-value">
+                                {req.issueDescription}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="service-request-detail-label">
+                                Request Date
+                              </h4>
+                              <p className="service-request-detail-value">
+                                {formatDate(req.createdAt || req.preferredSlot)}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="service-request-detail-label">
+                                Scheduled Date
+                              </h4>
+                              <p className="service-request-detail-value">
+                                {formatDateTime(req.preferredSlot)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="service-request-appliance-details">
-                        <strong>Appliance:</strong> {req.applianceInfo || req.serialNumber}
-                      </div>
-                      <div className="service-request-details-grid">
-                        <div>
-                          <h4 className="service-request-detail-label">Issue</h4>
-                          <p className="service-request-detail-value">{req.issueDescription}</p>
-                        </div>
-                        <div>
-                          <h4 className="service-request-detail-label">Request Date</h4>
-                          <p className="service-request-detail-value">{formatDate(req.createdAt || req.preferredSlot)}</p>
-                        </div>
-                        <div>
-                          <h4 className="service-request-detail-label">Scheduled Date</h4>
-                          <p className="service-request-detail-value">{formatDateTime(req.preferredSlot)}</p>
-                        </div>
+                      <div className="service-request-card-actions">
+                        {(() => {
+                          const status = (req.status || "").toLowerCase();
+                          if (
+                            status === "cancelled" ||
+                            status === "in_progress" ||
+                            status === "completed"
+                          ) {
+                            return null;
+                          }
+                          return (
+                            <>
+                              <button
+                                onClick={() => {
+                                  setEditRequest(req);
+                                  setShowForm(true);
+                                }}
+                                className="service-request-action-btn"
+                              >
+                                Reschedule
+                              </button>
+                              <button
+                                onClick={() => handleCancel(req.id)}
+                                className="service-request-action-btn cancel"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+
+        {activeView === "appliance" && applianceServiceHistory.length > 0 && (
+          <div className="service-history-results">
+            <h3>Service History for Appliance ID: {applianceIdInput}</h3>
+            {applianceServiceHistory.map((entry) => (
+              <div key={entry.id} className="service-request-card">
+                <div className="service-request-card-main">
+                  <div className="service-request-card-header">
+                    <h4>Request ID: {entry.id}</h4>
+                    <span
+                      className={`service-request-status status-${entry.status.toLowerCase()}`}
+                    >
+                      {entry.status.replace(/_/g, " ")}
+                    </span>
                   </div>
-                  <div className="service-request-card-actions">
-                    {(() => {
-                      const status = (req.status || '').toLowerCase();
-                      if (status === 'cancelled' || status === 'in_progress' || status === 'completed') {
-                        return null;
-                      }
-                      return (
-                        <>
-                          <button
-                            onClick={() => {
-                              setEditRequest(req);
-                              setShowForm(true);
-                            }}
-                            className="service-request-action-btn"
-                          >
-                            Reschedule
-                          </button>
-                          <button
-                            onClick={() => handleCancel(req.id)}
-                            className="service-request-action-btn cancel"
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      );
-                    })()}
+                  <div>
+                    <strong>Issue:</strong> {entry.issueDescription}
+                  </div>
+                  <div>
+                    <strong>Preferred Slot:</strong>{" "}
+                    {new Date(entry.preferredSlot).toLocaleString()}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeView === "appliance" && applianceServiceHistory.length <= 0 && applianceIdInput.length > 0 && searchBtnPressed &&(
+          <div className="service-requests-empty">
+            No service requests found for given Appliance Id.
           </div>
         )}
 
