@@ -75,7 +75,7 @@ export const ApplianceCard = ({ appliance, onEdit, onDelete }) => {
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
-          {brand} {category}
+          {brand}: {category}
         </h3>
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColors(status)}`}>
           {status.charAt(0).toUpperCase() + status.slice(1)}
