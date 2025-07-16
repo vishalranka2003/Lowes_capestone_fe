@@ -17,6 +17,7 @@ import { ServiceRequests } from './pages/admin/ServiceRequests';
 import { Appliances } from './pages/admin/Appliances';
 import { TechnicianDetails } from './pages/admin/TechnicianDetails';
 import { Notifications } from './pages/admin/Notifications';
+import { AdminServiceHistory } from './pages/admin/AdminServiceHistory';
 
 console.log('HomeownerDashboard:', HomeownerDashboard);
 console.log('TechnicianDashboard:', TechnicianDashboard);
@@ -88,6 +89,7 @@ function App() {
             <Route path="appliances" element={<Appliances/>}/>
             <Route path="notifications" element={<Notifications />} />
             <Route path="technicians/:id" element={<TechnicianDetails />} />
+            <Route path="service-history" element={<AdminServiceHistory />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

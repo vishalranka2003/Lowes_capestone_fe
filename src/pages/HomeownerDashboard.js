@@ -46,6 +46,7 @@ export const HomeownerDashboard = () => {
               <Package className="h-5 w-5" />
               <span className="font-medium">My Appliances</span>
             </NavLink>
+
             
             <NavLink 
               to="/dashboard/homeowner/service-requests" 
@@ -60,6 +61,7 @@ export const HomeownerDashboard = () => {
               <Wrench className="h-5 w-5" />
               <span className="font-medium">Service Requests</span>
             </NavLink>
+            
           </nav>
         </div>
         

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import CompletionFormModal from '../components/CompletionFormModal.jsx';
 import ViewCompletionFormModal from '../components/ViewCompletionFormModal.jsx';
-import { Clock, List, Wrench, CheckCircle } from 'lucide-react';
+import { Clock, List, Wrench, CheckCircle, History, Package, User, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const TechnicianDashboard = () => {
@@ -13,7 +13,7 @@ const TechnicianDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('service-history');
 
   const [showFormForRequest, setShowFormForRequest] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
@@ -21,6 +21,7 @@ const TechnicianDashboard = () => {
   const username = localStorage.getItem('username') || 'User';
   const role = localStorage.getItem('role') || 'Homeowner';
   const dispatch = useDispatch();
+  const [serviceHistory, setServiceHistory] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -123,6 +124,17 @@ const TechnicianDashboard = () => {
           <nav className="px-4">
             <button
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
+                activeTab === 'service-history' 
+                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+              onClick={() => setActiveTab('service-history')}
+            >
+              <History className="h-5 w-5" />
+              <span className="font-medium">Service History</span>
+            </button>
+            <button
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                 activeTab === 'overview' 
                   ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -165,6 +177,7 @@ const TechnicianDashboard = () => {
               <CheckCircle className="h-5 w-5" />
               <span className="font-medium">Completed</span>
             </button>
+            
           </nav>
         </div>
         {/* User Info at bottom */}
@@ -353,29 +366,58 @@ const TechnicianDashboard = () => {
           )}
           
           {activeTab === 'service-history' && (
-            <div className="history-table">
-              <h3 className="technician-dashboard-title">My Service History</h3>
-              <div className="technician-row technician-header-row">
-                <div>ID</div>
-                <div>Appliance</div>
-                <div>Issue</div>
-                <div>Homeowner</div>
-                <div>Status</div>
-                <div>Date</div>
-              </div>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">My Service History</h3>
               {serviceHistory.length > 0 ? (
-                serviceHistory.map((item, idx) => (
-                  <div key={idx} className="technician-row">
-                    <div>{item.id}</div>
-                    <div>{item.applianceInfo}</div>
-                    <div>{item.issueDescription}</div>
-                    <div>{item.homeownerName}</div>
-                    <div>{item.status}</div>
-                    <div>{new Date(item.serviceDate).toLocaleString('en-IN')}</div>
-                  </div>
-                ))
+                <div className="space-y-4">
+                  {serviceHistory.map((item, idx) => (
+                    <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-600">ID:</span>
+                            <span className="text-sm text-gray-900">{item.id}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-600">Issue:</span>
+                            <span className="text-sm text-gray-900">{item.issueDescription}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-600">Status:</span>
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                              item.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                              item.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Package className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-600">Appliance:</span>
+                            <span className="text-sm text-gray-900">{item.applianceInfo}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-600">Homeowner:</span>
+                            <span className="text-sm text-gray-900">{item.homeownerName}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-600">Date:</span>
+                            <span className="text-sm text-gray-900">{new Date(item.serviceDate).toLocaleString('en-IN')}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               ) : (
-                <div className="technician-row">No service history found.</div>
+                <div className="text-center py-8">
+                  <p className="text-gray-600">No service history found.</p>
+                </div>
               )}
             </div>
           )}

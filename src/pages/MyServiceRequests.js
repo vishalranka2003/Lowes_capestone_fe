@@ -2,27 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { X, Plus } from 'lucide-react';
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import "../styles/MyServiceRequests.css";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/homeowner`;
 
-const ServiceRequestForm = ({
-  onClose,
-  onSubmit,
-  initialData,
-  applianceOptions,
-}) => {
+const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }) => {
   const [form, setForm] = useState(
     initialData || {
-      serialNumber: "",
-      issueDescription: "",
-      preferredSlot: "",
+      serialNumber: '',
+      issueDescription: '',
+      preferredSlot: '',
     }
   );
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -33,12 +24,12 @@ const ServiceRequestForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setError("");
+    setError('');
     try {
       await onSubmit(form);
       onClose();
     } catch (err) {
-      setError("Failed to submit request.");
+      setError('Failed to submit request.');
     } finally {
       setSubmitting(false);
     }
@@ -179,19 +170,13 @@ const MyServiceRequests = () => {
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editRequest, setEditRequest] = useState(null);
   const [appliances, setAppliances] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [showApplianceSearch, setShowApplianceSearch] = useState(false);
-  const [applianceIdInput, setApplianceIdInput] = useState("");
-  const [applianceServiceHistory, setApplianceServiceHistory] = useState([]);
-  const [activeView, setActiveView] = useState("default"); // 'default' | 'history' | 'appliance'
-  const [searchBtnPressed, setSearchBtnPressed] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('All');
 
-
-  const filters = ['All', 'Requested', 'Assigned', 'In Progress', 'Completed', 'Cancelled', 'Rescheduled'];
+  const filters = ['All', 'Requested', 'In Progress', 'Completed', 'Cancelled'];
 
   const fetchRequests = async () => {
     setLoading(true);
@@ -202,7 +187,7 @@ const MyServiceRequests = () => {
       setRequests(res.data);
       setFilteredRequests(res.data);
     } catch (err) {
-      setError("Failed to load service requests.");
+      setError('Failed to load service requests.');
     } finally {
       setLoading(false);
     }
@@ -226,7 +211,7 @@ const MyServiceRequests = () => {
   }, []);
 
   useEffect(() => {
-    if (activeFilter === "All") {
+    if (activeFilter === 'All') {
       setFilteredRequests(requests);
     } else {
       const filterMap = {
@@ -260,7 +245,7 @@ const MyServiceRequests = () => {
   };
 
   const handleCancel = async (id) => {
-    if (!window.confirm("Cancel this service request?")) return;
+    if (!window.confirm('Cancel this service request?')) return;
     await axios.delete(`${API_URL}/service-request/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -288,30 +273,26 @@ const MyServiceRequests = () => {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Not scheduled";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
+    if (!dateString) return 'Not scheduled';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
     });
   };
 
   const formatDateTime = (dateString) => {
-    if (!dateString) return "Not scheduled";
+    if (!dateString) return 'Not scheduled';
     const date = new Date(dateString);
-    return (
-      date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      }) +
-      " at " +
-      date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      })
-    );
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    }) + ' at ' + date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
   };
 
   return (
