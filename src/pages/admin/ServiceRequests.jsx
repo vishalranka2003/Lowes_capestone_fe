@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ServiceRequestCard } from '../../components/ServiceRequestCard';
+import { Search } from 'lucide-react';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -9,6 +10,7 @@ export const ServiceRequests = () => {
   const [serviceRequests, setServiceRequests] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   const fetchData = async () => {
     const token = localStorage.getItem('token');
@@ -69,19 +71,39 @@ export const ServiceRequests = () => {
     );
   }
 
+  const filtered = serviceRequests.filter((req) =>
+    req.homeownerName.toLowerCase().includes(search.toLowerCase()) ||
+    req.applianceName.toLowerCase().includes(search.toLowerCase()) ||
+    req.status.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Service Requests</h2>
-        
-        {serviceRequests.length === 0 ? (
+        {/* Search Bar */}
+        <div className="mb-8">
+          <div className="relative max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search by homeowner, appliance, or status..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+        {filtered.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-            <p className="text-gray-600 text-lg">No service requests available at the moment.</p>
+            <p className="text-gray-600 text-lg">{search ? 'No service requests found matching your search.' : 'No service requests available at the moment.'}</p>
             <p className="text-gray-500 text-sm mt-2">New requests will appear here when homeowners submit them.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {serviceRequests.map((req) => (
+            {filtered.map((req) => (
               <ServiceRequestCard
                 key={req.id}
                 request={req}
