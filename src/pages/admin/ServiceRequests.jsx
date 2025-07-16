@@ -23,7 +23,7 @@ export const ServiceRequests = () => {
       ]);
 
       // API now returns a raw array for service requests
-      setServiceRequests(Array.isArray(requestsRes.data) ? requestsRes.data : []);
+      setServiceRequests(Array.isArray(requestsRes.data.body) ? requestsRes.data.body : []);
 
       setAvailableTechnicians(
         Array.isArray(techsRes.data)

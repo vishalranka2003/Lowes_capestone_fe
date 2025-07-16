@@ -1,7 +1,7 @@
 // src/pages/admin/AdminDashboardLayout.js
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Wrench, Monitor, Bell, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, Wrench, Monitor, Bell, Shield, History } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 
@@ -102,6 +102,20 @@ export const AdminDashboardLayout = () => {
             >
               <Bell className="h-5 w-5" />
               <span className="font-medium">Notifications</span>
+            </NavLink>
+
+            <NavLink 
+              to="/dashboard/admin/service-history" 
+              className={({ isActive }) => 
+                `flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
+                  isActive 
+                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+            >
+              <History className="h-5 w-5" />
+              <span className="font-medium">Service History</span>
             </NavLink>
           </nav>
         </div>
