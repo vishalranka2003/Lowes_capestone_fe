@@ -1,4 +1,5 @@
 import React from 'react';
+import { Edit, Trash2 } from 'lucide-react';
 
 export const ApplianceCard = ({ appliance, onEdit, onDelete }) => {
   const currentDate = new Date();
@@ -30,70 +31,110 @@ export const ApplianceCard = ({ appliance, onEdit, onDelete }) => {
   const brand = capitalize(appliance.brand || 'Unknown');
   const category = capitalize(appliance.category || '');
 
-  return (
-    <div className={`appliance-card status-${status}`}>
-      <div className="flex-space-between">
-        <h2
-          className="appliance-name"
-          style={{ color: 'black', fontWeight: 'bold', fontSize: '18px' }}
-        >
-          {brand} {category}
-        </h2>
+  const getStatusColors = (status) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'expiring':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'expired':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
 
-        <span className={`status-badge ${status}`}>
+  const getProgressColors = (status) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-500';
+      case 'expiring':
+        return 'bg-yellow-500';
+      case 'expired':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getDaysLeftColor = (status) => {
+    switch (status) {
+      case 'active':
+        return 'text-green-600';
+      case 'expiring':
+        return 'text-yellow-600';
+      case 'expired':
+        return 'text-red-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+      {/* Header */}
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">
+          {brand} {category}
+        </h3>
+        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColors(status)}`}>
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </span>
       </div>
 
-      <p className="appliance-detail">Model: {appliance.modelNumber}</p>
+      {/* Model */}
+      <p className="text-gray-600 text-sm mb-4">Model: {appliance.modelNumber}</p>
 
-      <div className="warranty-header">
-        <span className="appliance-detail">Warranty Status</span>
-        <span
-          className={`warranty-days-left ${
-            status === 'active'
-              ? 'text-green'
-              : status === 'expiring'
-              ? 'text-orange'
-              : 'text-red'
-          }`}
-        >
+      {/* Warranty Status */}
+      <div className="flex justify-between items-center mb-3">
+        <span className="text-sm text-gray-600">Warranty Status</span>
+        <span className={`text-sm font-medium ${getDaysLeftColor(status)}`}>
           {isExpired
             ? `Expired ${Math.abs(daysLeft)} days ago`
             : `${daysLeft} day(s) left`}
         </span>
       </div>
 
-      <div className="progress-bar-bg">
+      {/* Progress Bar */}
+      <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
         <div
-          className="progress-bar-fill"
+          className={`h-2 rounded-full transition-all duration-300 ${getProgressColors(status)}`}
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
 
-      <div className="purchase-expiry-row">
-        <span className="appliance-detail">Purchased:</span>
-        <span className="appliance-detail">
-          {purchaseDate.toLocaleDateString()}
-        </span>
-      </div>
-      <div className="purchase-expiry-row">
-        <span className="appliance-detail">Warranty Expires:</span>
-        <span className="appliance-detail">
-          {expiryDate.toLocaleDateString()}
-        </span>
+      {/* Dates */}
+      <div className="space-y-2 mb-6">
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">Purchased:</span>
+          <span className="text-gray-900 font-medium">
+            {purchaseDate.toLocaleDateString()}
+          </span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">Warranty Expires:</span>
+          <span className="text-gray-900 font-medium">
+            {expiryDate.toLocaleDateString()}
+          </span>
+        </div>
       </div>
 
-      <div className="action-buttons">
-        <button className="btn-outline" onClick={() => onEdit && onEdit(appliance)}>
-          ✏️ Edit
+      {/* Action Buttons */}
+      <div className="flex space-x-3">
+        <button 
+          onClick={() => onEdit && onEdit(appliance)}
+          className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+        >
+          <Edit className="h-4 w-4" />
+          <span>Edit</span>
         </button>
         
         <button
-          className="btn-outline delete-btn"
           onClick={() => onDelete && onDelete(appliance.id)}
+          className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 text-red-600 border border-red-600 rounded-lg hover:bg-red-50 transition-colors duration-200"
         >
-          🗑️ Delete
+          <Trash2 className="h-4 w-4" />
+          <span>Delete</span>
         </button>
       </div>
     </div>

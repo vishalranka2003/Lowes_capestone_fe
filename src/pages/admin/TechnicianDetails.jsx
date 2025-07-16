@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import '../../styles/TechnicianDetailsAdmin.css';
+import { ArrowLeft, User, Mail, Phone, Wrench, Clock } from 'lucide-react';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 const COLORS = ['#facc15', '#3b82f6', '#22c55e'];
@@ -64,106 +64,140 @@ export const TechnicianDetails = () => {
   ];
 
   return (
-    <div className="details-container">
-      <button onClick={() => navigate(-1)} className="back-btn">← Go Back</button>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium mb-6 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Go Back</span>
+        </button>
 
-      <h2 className="details-title">
-        Technician: {technician?.firstName} {technician?.lastName}
-      </h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-8">
+          Technician: {technician?.firstName} {technician?.lastName}
+        </h2>
 
-      <div className="details-section">
-        <div className="technician-card-box">
-          <div className="info-row">
-            <span className="info-label">Email:</span>
-            <span className="info-value">{technician.email}</span>
+        {/* Technician Info and Chart */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          {/* Technician Info Card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <User className="h-5 w-5 text-blue-600" />
+              Technician Information
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <Mail className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-600">Email:</span>
+                <span className="text-gray-900 font-medium">{technician.email}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Phone className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-600">Phone:</span>
+                <span className="text-gray-900 font-medium">{technician.phoneNumber}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Wrench className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-600">Specialization:</span>
+                <span className="text-gray-900 font-medium">{technician.specialization}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Clock className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-600">Experience:</span>
+                <span className="text-gray-900 font-medium">{technician.experience} years</span>
+              </div>
+            </div>
           </div>
-          <div className="info-row">
-            <span className="info-label">Phone:</span>
-            <span className="info-value">{technician.phoneNumber}</span>
-          </div>
-          <div className="info-row">
-            <span className="info-label">Specialization:</span>
-            <span className="info-value">{technician.specialization}</span>
-          </div>
-          <div className="info-row">
-            <span className="info-label">Experience:</span>
-            <span className="info-value">{technician.experience} years</span>
+
+          {/* Chart */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Request Statistics</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                >
+                  {chartData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="chart-box">
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {chartData.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
+        {/* Request Sections */}
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Assigned Requests */}
+          <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Assigned Requests</h3>
+            {assigned.length === 0 ? (
+              <p className="text-gray-500">No assigned requests.</p>
+            ) : (
+              <div className="space-y-3">
+                {assigned.map((req) => (
+                  <div key={req.id} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="text-sm"><span className="font-medium">ID:</span> {req.id}</div>
+                    <div className="text-sm"><span className="font-medium">Status:</span> {req.status}</div>
+                    <div className="text-sm"><span className="font-medium">Appliance:</span> {req.applianceInfo}</div>
+                    <div className="text-sm"><span className="font-medium">Homeowner:</span> {req.homeownerName}</div>
+                  </div>
                 ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+              </div>
+            )}
+          </section>
+
+          {/* In Progress */}
+          <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">In Progress</h3>
+            {inProgress.length === 0 ? (
+              <p className="text-gray-500">No requests in progress.</p>
+            ) : (
+              <div className="space-y-3">
+                {inProgress.map((req) => (
+                  <div key={req.id} className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-sm"><span className="font-medium">ID:</span> {req.id}</div>
+                    <div className="text-sm"><span className="font-medium">Status:</span> {req.status}</div>
+                    <div className="text-sm"><span className="font-medium">Appliance:</span> {req.applianceInfo}</div>
+                    <div className="text-sm"><span className="font-medium">Homeowner:</span> {req.homeownerName}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Completed */}
+          <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Completed</h3>
+            {completed.length === 0 ? (
+              <p className="text-gray-500">No completed requests.</p>
+            ) : (
+              <div className="space-y-3">
+                {completed.map((req) => (
+                  <div key={req.id} className="p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div className="text-sm"><span className="font-medium">ID:</span> {req.id}</div>
+                    <div className="text-sm"><span className="font-medium">Status:</span> {req.status}</div>
+                    <div className="text-sm"><span className="font-medium">Appliance:</span> {req.applianceInfo}</div>
+                    <div className="text-sm"><span className="font-medium">Homeowner:</span> {req.homeownerName}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       </div>
-
-      <section className="section-block">
-        <h3 className="section-heading">Assigned Requests</h3>
-        {assigned.length === 0 ? (
-          <p>No assigned requests.</p>
-        ) : (
-          assigned.map((req) => (
-            <div key={req.id} className="request-card">
-              <div><strong>ID:</strong> {req.id}</div>
-              <div><strong>Status:</strong> {req.status}</div>
-              <div><strong>Appliance:</strong> {req.applianceInfo}</div>
-              <div><strong>Homeowner:</strong> {req.homeownerName}</div>
-            </div>
-          ))
-        )}
-      </section>
-
-      <section className="section-block">
-        <h3 className="section-heading">In Progress</h3>
-        {inProgress.length === 0 ? (
-          <p>No requests in progress.</p>
-        ) : (
-          inProgress.map((req) => (
-            <div key={req.id} className="request-card">
-              <div><strong>ID:</strong> {req.id}</div>
-              <div><strong>Status:</strong> {req.status}</div>
-              <div><strong>Appliance:</strong> {req.applianceInfo}</div>
-              <div><strong>Homeowner:</strong> {req.homeownerName}</div>
-            </div>
-          ))
-        )}
-      </section>
-
-      <section className="section-block">
-        <h3 className="section-heading">Completed</h3>
-        {completed.length === 0 ? (
-          <p>No completed requests.</p>
-        ) : (
-          completed.map((req) => (
-            <div key={req.id} className="request-card">
-              <div><strong>ID:</strong> {req.id}</div>
-              <div><strong>Status:</strong> {req.status}</div>
-              <div><strong>Appliance:</strong> {req.applianceInfo}</div>
-              <div><strong>Homeowner:</strong> {req.homeownerName}</div>
-            </div>
-          ))
-        )}
-      </section>
     </div>
   );
 };
