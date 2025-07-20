@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
+import { ForgotPassword } from './pages/ForgotPassword'; 
+import { ResetPassword } from './pages/ResetPassword'; 
 import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -44,7 +46,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
+           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/dashboard"
             element={

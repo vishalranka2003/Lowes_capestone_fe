@@ -3,17 +3,35 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../features/auth/authAPI';
 import { loginSuccess } from '../features/auth/authSlice';
-import { Shield } from 'lucide-react';
-
+import { Shield, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('ROLE_HOMEOWNER');
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [touched, setTouched] = useState({ email: false, password: false });
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.54, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.18
+      }
+    }
+  };
 
   // Helper function to get dashboard route based on role
   const getDashboardRoute = (userRole) => {
@@ -29,12 +47,10 @@ export const Login = () => {
     }
   };
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
-    
     if (token && username && role) {
       try {
         const dashboardRoute = getDashboardRoute(role);
@@ -42,31 +58,85 @@ export const Login = () => {
         return;
       } catch (error) {
         console.error('Error parsing user info:', error);
-        // Clear invalid data
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('role');
       }
     }
-    
     setIsLoading(false);
   }, [navigate]);
 
+  // Validation helpers
+  const validateEmail = (value) => {
+    if (!value.trim()) return 'Email is required';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) return 'Please enter a valid email address';
+    return '';
+  };
+
+  const validatePassword = (value) => {
+    if (!value.trim()) return 'Password is required';
+    return '';
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleEmailBlur = () => {
+    setTouched((prev) => ({ ...prev, email: true }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      email: validateEmail(email)
+    }));
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handlePasswordBlur = () => {
+    setTouched((prev) => ({ ...prev, password: true }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      password: validatePassword(password)
+    }));
+  };
+
+  const validateForm = () => {
+    const errors = {
+      email: validateEmail(email),
+      password: validatePassword(password)
+    };
+    setFieldErrors(errors);
+    setTouched({ email: true, password: true });
+    return !errors.email && !errors.password;
+  };
+
+  const getFieldClassName = (fieldName) => {
+    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-180 text-sm";
+    if (touched[fieldName] && fieldErrors[fieldName]) {
+      return `${baseClass} border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30`;
+    }
+    return `${baseClass} border-gray-300 dark:border-gray-600`;
+  };
+
   const handleLogin = async () => {
+    setError('');
+    if (!validateForm()) {
+      return;
+    }
     try {
       const res = await login(email, password, role);
-      if (!res || res.error || !res.token) {
-        setError('Login failed. Check your role or credentials.');
+      if (res.error || !res.token) { // Check for res.error now
+        setError(res.message || 'Login failed. Check your role or credentials.'); // Use res.message
         return;
       }
-    
-      
       dispatch(loginSuccess({
         token: res.token,
         username: res.username,
         role: res.role,
       }));
-      
       const dashboardRoute = getDashboardRoute(res.role);
       navigate(dashboardRoute);
     } catch (err) {
@@ -75,92 +145,158 @@ export const Login = () => {
     }
   };
 
-  // Show loading state while checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
-      </div>
+      <motion.div
+        className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center"
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+      >
+        <div className="text-gray-600 dark:text-gray-300 text-sm">Loading...</div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="bg-white rounded-xl shadow-lg p-8">
+    <motion.div
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-13 px-5 sm:px-6 lg:px-10"
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
+    >
+      <motion.div className="max-w-lg w-full space-y-8" variants={fadeInUp}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="flex items-center space-x-2 text-blue-600">
-                <Shield className="h-8 w-8" />
-                <span className="text-2xl font-bold text-gray-900">Service Pro</span>
-              </div>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-            <p className="text-gray-600">Sign in to your account</p>
-          </div>
+          <motion.div className="text-center mb-8" variants={fadeInUp}>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Welcome to Service Pro</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Sign in to your account</p>
+          </motion.div>
 
           {/* Role Tabs */}
-          <div className="flex space-x-1 mb-6 bg-gray-100 rounded-lg p-1">
+          <motion.div className="flex space-x-2 mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-2" variants={fadeInUp}>
             {[
               { key: 'ROLE_HOMEOWNER', label: 'Homeowner' },
               { key: 'ROLE_TECHNICIAN', label: 'Technician' },
               { key: 'ROLE_ADMIN', label: 'Admin' }
             ].map((roleOption) => (
-              <button
+              <motion.button
                 key={roleOption.key}
                 onClick={() => setRole(roleOption.key)}
-                className={`flex-1 py-2 px-3 text-sm font-medium rounded-md transition-colors duration-200 ${
+                className={`flex-1 py-3 px-3 text-sm font-medium rounded-md transition-colors duration-180 ${
                   role === roleOption.key
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                 }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {roleOption.label}
-              </button>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
 
           {/* Form */}
-          <div className="space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-            />
+          <motion.div className="space-y-5" variants={staggerContainer}>
+            <motion.div variants={fadeInUp}>
+              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Email Address
+              </label>
+              <input
+                id="login-email"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
+                placeholder="Enter your email"
+                className={getFieldClassName('email')}
+              />
+              {touched.email && fieldErrors.email && (
+                <motion.div
+                  className="flex items-center mt-2 text-xs text-red-600 dark:text-red-400"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.27 }}
+                >
+                  <AlertCircle className="h-4 w-4 mr-2" />
+                  {fieldErrors.email}
+                </motion.div>
+              )}
+            </motion.div>
+            <motion.div variants={fadeInUp}>
+              <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Password
+              </label>
+              <input
+                id="login-password"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
+                placeholder="Enter your password"
+                className={getFieldClassName('password')}
+              />
+              {touched.password && fieldErrors.password && (
+                <motion.div
+                  className="flex items-center mt-2 text-xs text-red-600 dark:text-red-400"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.27 }}
+                >
+                  <AlertCircle className="h-4 w-4 mr-2" />
+                  {fieldErrors.password}
+                </motion.div>
+              )}
+            </motion.div>
 
-            
-
-            <button 
-              onClick={handleLogin} 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            <motion.button
+              onClick={handleLogin}
+              className="w-full bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm"
+              variants={fadeInUp}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Sign In
-            </button>
+              Sign in
+            </motion.button>
 
             {error && (
-              <p className="text-red-600 text-sm text-center">{error}</p>
+              <motion.div
+                className="flex items-center justify-center mt-5 p-3 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.27 }}
+              >
+                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mr-3" />
+                <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
+
+          {/* Forgot Password Link - NEW */}
+          <motion.p
+            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-4"
+            variants={fadeInUp}
+          >
+            <button
+              onClick={() => navigate('/forgot-password')}
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium bg-transparent border-none p-0 cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          </motion.p>
 
           {/* Signup Link */}
-          <p className="text-center text-gray-600 text-sm mt-6">
+          <motion.p
+            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-6"
+            variants={fadeInUp}
+          >
             Don't have an account?{' '}
-            <a href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/signup" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
               Sign up
             </a>
-          </p>
+          </motion.p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

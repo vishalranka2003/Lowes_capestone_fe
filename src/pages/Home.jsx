@@ -27,24 +27,31 @@ export const Home = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-br from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20 px-6 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-7 gap-8 items-center min-h-[32rem] justify-center">
             {/* Hero Text */}
-            <div className="space-y-8">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                Welcome to <span className="text-blue-100">Service Pro</span>
-              </h1>
-              <p className="text-xl text-blue-100 leading-relaxed max-w-2xl">
-                Track your appliances, manage service requests, and never miss a warranty again. 
-                Your complete solution for appliance management and maintenance scheduling.
-              </p>
+            <div className="space-y-8 animate-fade-in-up animation-delay-200 flex flex-col justify-center h-full items-start col-span-7 lg:col-span-4">
+              <div className="flex items-center space-x-3 mb-6">
+                <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mr-2">
+                  <Shield className="h-7 w-7 text-blue-600" />
+                </span>
+                <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white drop-shadow-xl">
+                  Service Pro
+                </h1>
+              </div>
+              <div className="text-gray-700 dark:text-gray-200 text-xl font-medium mb-6 max-w-2xl">
+                Effortlessly manage, track, and protect all your home appliances in one place.
+              </div>
+              <div className="text-gray-400 dark:text-gray-400 text-base mb-6 max-w-2xl">
+                Trusted by thousands of homeowners and certified technicians across the country.
+              </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
                   to="/signup" 
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-lg"
                 >
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -53,19 +60,34 @@ export const Home = () => {
             </div>
 
             {/* Hero Visual */}
-            <div className="flex justify-center">
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl max-w-sm w-full">
-                <div className="flex justify-end mb-6">
-                  <span className="inline-flex items-center px-4 py-2 bg-green-500/20 text-green-100 rounded-full text-sm font-medium">
+            <div className="flex justify-end items-center h-full animate-fade-in-up animation-delay-400 col-span-7 lg:col-span-3">
+              <div className="bg-white/90 dark:bg-gray-800/90 rounded-2xl p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 flex flex-col justify-center">
+                <img
+                  src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80"
+                  alt="Modern TV"
+                  className="rounded-xl w-40 h-40 object-cover mx-auto mb-4 border-4 border-blue-200 dark:border-blue-900 shadow"
+                />
+                <div className="flex items-center justify-between mb-2 w-full">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mt-0">Apple iPhone 16 Pro</h3>
+                  <span className="inline-flex items-center px-4 py-2 bg-green-500/30 dark:bg-green-500/20 text-green-800 dark:text-green-200 rounded-full text-sm font-medium ml-3">
                     <CheckCircle className="mr-2 h-4 w-4" />
                     Active
                   </span>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-white">Samsung Refrigerator</h3>
-                  <p className="text-blue-100">Warranty expires in 45 days</p>
-                  <div className="w-full bg-white/20 rounded-full h-2">
-                    <div className="bg-green-400 h-2 rounded-full" style={{ width: '75%' }}></div>
+                <div className="space-y-4 mt-0">
+                  <div className="space-y-2">
+                    <p className="text-gray-600 dark:text-gray-200 text-sm">
+                      <span className="font-medium">Model:</span> RF28R7351SG
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-200 text-sm">
+                      <span className="font-medium">Warranty Start:</span> Jan 15, 2024
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-200 text-sm">
+                      <span className="font-medium">Warranty Expires:</span> Jan 15, 2026 (45 days left)
+                    </p>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                    <div className="bg-green-400 h-2 rounded-full transition-all duration-500" style={{ width: '75%' }}></div>
                   </div>
                 </div>
               </div>
@@ -75,30 +97,32 @@ export const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-16 px-6 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 animate-fade-in-up animation-delay-200">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Why Choose Service Pro?
             </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+            <div className="w-24 h-1 bg-blue-600 dark:bg-blue-500 mx-auto rounded"></div>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="text-center p-6 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-6">
-                  <feature.icon className="h-8 w-8" />
+              <div 
+                key={index} 
+                className="bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 shadow-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fade-in-up"
+                style={{ animationDelay: `${(index + 3) * 200}ms` }}
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full mb-6">
+                  <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-200 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-
     </main>
   );
 };
