@@ -176,7 +176,7 @@ const MyServiceRequests = () => {
   const [appliances, setAppliances] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const filters = ['All', 'Requested', 'In Progress', 'Completed', 'Cancelled'];
+  const filters = ['All', 'Requested','Assigned', 'In Progress', 'Completed', 'Cancelled'];
 
   const fetchRequests = async () => {
     setLoading(true);
