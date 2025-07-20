@@ -5,7 +5,6 @@ import { login } from '../features/auth/authAPI';
 import { loginSuccess } from '../features/auth/authSlice';
 import { Shield, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -129,8 +128,8 @@ export const Login = () => {
     }
     try {
       const res = await login(email, password, role);
-      if (!res || res.error || !res.token) {
-        setError('Login failed. Check your role or credentials.');
+      if (res.error || !res.token) { // Check for res.error now
+        setError(res.message || 'Login failed. Check your role or credentials.'); // Use res.message
         return;
       }
       dispatch(loginSuccess({
@@ -170,12 +169,6 @@ export const Login = () => {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           {/* Header */}
           <motion.div className="text-center mb-8" variants={fadeInUp}>
-            <div className="flex justify-center mb-5">
-              {/* <div className="flex items-center space-x-3 text-blue-600 dark:text-blue-400">
-                <Shield className="h-10 w-10" />
-                <span className="text-3xl font-bold text-gray-900 dark:text-white">Service Pro</span>
-              </div> */}
-            </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Welcome to Service Pro</h2>
             <p className="text-sm text-gray-600 dark:text-gray-300">Sign in to your account</p>
           </motion.div>
@@ -278,6 +271,19 @@ export const Login = () => {
               </motion.div>
             )}
           </motion.div>
+
+          {/* Forgot Password Link - NEW */}
+          <motion.p
+            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-4"
+            variants={fadeInUp}
+          >
+            <button
+              onClick={() => navigate('/forgot-password')}
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium bg-transparent border-none p-0 cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          </motion.p>
 
           {/* Signup Link */}
           <motion.p
