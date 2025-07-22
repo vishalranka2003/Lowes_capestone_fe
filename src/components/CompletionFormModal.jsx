@@ -168,7 +168,7 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
               ) : (
                 <>
                   <CheckCircle className="h-4 w-4" />
-                  <span>Submit & Complete</span>
+                  <span>Submit</span>
                 </>
               )}
             </button>
