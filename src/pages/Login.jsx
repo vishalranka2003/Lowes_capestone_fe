@@ -114,11 +114,11 @@ export const Login = () => {
   };
 
   const getFieldClassName = (fieldName) => {
-    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-180 text-sm";
+    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-180 text-sm";
     if (touched[fieldName] && fieldErrors[fieldName]) {
-      return `${baseClass} border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30`;
+      return `${baseClass} border-red-400 bg-red-50`;
     }
-    return `${baseClass} border-gray-300 dark:border-gray-600`;
+    return `${baseClass} border-gray-300`;
   };
 
   const handleLogin = async () => {
@@ -148,33 +148,33 @@ export const Login = () => {
   if (isLoading) {
     return (
       <motion.div
-        className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center"
+        className="min-h-screen bg-gray-50 flex items-center justify-center"
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
       >
-        <div className="text-gray-600 dark:text-gray-300 text-sm">Loading...</div>
+        <div className="text-gray-600 text-sm">Loading...</div>
       </motion.div>
     );
   }
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-13 px-5 sm:px-6 lg:px-10"
+      className="min-h-screen bg-gray-50 flex items-center justify-center py-13 px-5 sm:px-6 lg:px-10"
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
     >
       <motion.div className="max-w-lg w-full space-y-8" variants={fadeInUp}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Header */}
           <motion.div className="text-center mb-8" variants={fadeInUp}>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Welcome to Service Pro</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Sign in to your account</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Welcome to Service Pro</h2>
+            <p className="text-sm text-gray-600">Sign in to your account</p>
           </motion.div>
 
           {/* Role Tabs */}
-          <motion.div className="flex space-x-2 mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-2" variants={fadeInUp}>
+          <motion.div className="flex space-x-2 mb-6 bg-gray-100 rounded-lg p-2" variants={fadeInUp}>
             {[
               { key: 'ROLE_HOMEOWNER', label: 'Homeowner' },
               { key: 'ROLE_TECHNICIAN', label: 'Technician' },
@@ -185,8 +185,8 @@ export const Login = () => {
                 onClick={() => setRole(roleOption.key)}
                 className={`flex-1 py-3 px-3 text-sm font-medium rounded-md transition-colors duration-180 ${
                   role === roleOption.key
-                    ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -199,7 +199,7 @@ export const Login = () => {
           {/* Form */}
           <motion.div className="space-y-5" variants={staggerContainer}>
             <motion.div variants={fadeInUp}>
-              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
               </label>
               <input
@@ -213,7 +213,7 @@ export const Login = () => {
               />
               {touched.email && fieldErrors.email && (
                 <motion.div
-                  className="flex items-center mt-2 text-xs text-red-600 dark:text-red-400"
+                  className="flex items-center mt-2 text-xs text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.27 }}
@@ -224,7 +224,7 @@ export const Login = () => {
               )}
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <input
@@ -238,7 +238,7 @@ export const Login = () => {
               />
               {touched.password && fieldErrors.password && (
                 <motion.div
-                  className="flex items-center mt-2 text-xs text-red-600 dark:text-red-400"
+                  className="flex items-center mt-2 text-xs text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.27 }}
@@ -251,7 +251,7 @@ export const Login = () => {
 
             <motion.button
               onClick={handleLogin}
-              className="w-full bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
               variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -261,25 +261,25 @@ export const Login = () => {
 
             {error && (
               <motion.div
-                className="flex items-center justify-center mt-5 p-3 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg"
+                className="flex items-center justify-center mt-5 p-3 bg-red-50 border border-red-300 rounded-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.27 }}
               >
-                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mr-3" />
-                <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                <AlertCircle className="h-4 w-4 text-red-600 mr-3" />
+                <p className="text-red-600 text-sm">{error}</p>
               </motion.div>
             )}
           </motion.div>
 
           {/* Forgot Password Link - NEW */}
           <motion.p
-            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-4"
+            className="text-center text-gray-600 text-sm mt-4"
             variants={fadeInUp}
           >
             <button
               onClick={() => navigate('/forgot-password')}
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium bg-transparent border-none p-0 cursor-pointer"
+              className="text-blue-600 hover:text-blue-700 font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Forgot password?
             </button>
@@ -287,11 +287,11 @@ export const Login = () => {
 
           {/* Signup Link */}
           <motion.p
-            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-6"
+            className="text-center text-gray-600 text-sm mt-6"
             variants={fadeInUp}
           >
             Don't have an account?{' '}
-            <a href="/signup" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+            <a href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign up
             </a>
           </motion.p>

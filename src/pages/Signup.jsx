@@ -265,11 +265,11 @@ export const Signup = () => {
   };
 
   const getFieldClassName = (fieldName) => {
-    const baseClass = "w-full px-3.5 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-160 text-sm";
+    const baseClass = "w-full px-3.5 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-160 text-sm";
     if (fieldErrors[fieldName]) {
-      return `${baseClass} border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30`;
+      return `${baseClass} border-red-400 bg-red-50`;
     }
-    return `${baseClass} border-gray-300 dark:border-gray-600`;
+    return `${baseClass} border-gray-300`;
   };
 
   const PasswordStrengthIndicator = ({ strength }) => {
@@ -287,23 +287,23 @@ export const Signup = () => {
             <div
               key={i}
               className={`h-2.5 flex-1 rounded ${
-                i < strength.score ? colors[Math.min(strength.score - 1, 4)] : 'bg-gray-200 dark:bg-gray-600'
+                i < strength.score ? colors[Math.min(strength.score - 1, 4)] : 'bg-gray-200'
               }`}
             />
           ))}
         </div>
-        <div className="text-sm text-gray-600 dark:text-gray-300">
+        <div className="text-sm text-gray-600">
           Password strength: {labels[Math.min(strength.score, 4)]}
         </div>
         <div className="mt-1.5 space-y-1.5">
           {strength.feedback.map((item, i) => (
             <div key={i} className="flex items-center space-x-1.5 text-sm">
               {item.passed ? (
-                <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
+                <Check className="h-4 w-4 text-green-500" />
               ) : (
-                <X className="h-4 w-4 text-red-500 dark:text-red-400" />
+                <X className="h-4 w-4 text-red-500" />
               )}
-              <span className={item.passed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>
+              <span className={item.passed ? 'text-green-600' : 'text-red-600'}>
                 {item.message}
               </span>
             </div>
@@ -338,39 +338,39 @@ export const Signup = () => {
   if (isLoading) {
     return (
       <motion.div
-        className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center"
+        className="min-h-screen bg-gray-50 flex items-center justify-center"
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
       >
-        <div className="text-gray-600 dark:text-gray-300 text-base">Loading...</div>
+        <div className="text-gray-600 text-base">Loading...</div>
       </motion.div>
     );
   }
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8"
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
     >
       <motion.div className="max-w-xl w-full space-y-7" variants={fadeInUp}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-7 sm:p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-7 sm:p-8">
           {/* Header */}
           <motion.div className="text-center mb-8" variants={fadeInUp}>
             <div className="flex justify-center mb-5">
-              {/* <div className="flex items-center space-x-3 text-blue-600 dark:text-blue-400">
+              {/* <div className="flex items-center space-x-3 text-blue-600">
                 <Shield className="h-10 w-10" />
-                <span className="text-3xl font-bold text-gray-900 dark:text-white">Service Pro</span>
+                <span className="text-3xl font-bold text-gray-900">Service Pro</span>
               </div> */}
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Create Account</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Choose your account type and fill in your details</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Create Account</h2>
+            <p className="text-sm text-gray-600">Choose your account type and fill in your details</p>
           </motion.div>
 
           {/* Role Tabs */}
-          <motion.div className="flex space-x-2 mb-7 bg-gray-100 dark:bg-gray-700 rounded-lg p-2" variants={fadeInUp}>
+          <motion.div className="flex space-x-2 mb-7 bg-gray-100 rounded-lg p-2" variants={fadeInUp}>
             {[
               { key: 'homeowner', label: 'Homeowner' },
               { key: 'technician', label: 'Technician' }
@@ -380,8 +380,8 @@ export const Signup = () => {
                 onClick={() => handleRoleChange(roleOption.key)}
                 className={`flex-1 py-2.5 px-3.5 text-sm font-medium rounded-md transition-colors duration-160 ${
                   role === roleOption.key
-                    ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -396,7 +396,7 @@ export const Signup = () => {
           <motion.div className="space-y-5" variants={staggerContainer}>
             <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-5" variants={fadeInUp}>
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1.5">
                   First Name
                 </label>
                 <input
@@ -411,7 +411,7 @@ export const Signup = () => {
                 />
                 {fieldErrors.firstName && (
                   <motion.div
-                    className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                    className="flex items-center mt-1.5 text-sm text-red-600"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.25 }}
@@ -422,7 +422,7 @@ export const Signup = () => {
                 )}
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Last Name
                 </label>
                 <input
@@ -437,7 +437,7 @@ export const Signup = () => {
                 />
                 {fieldErrors.lastName && (
                   <motion.div
-                    className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                    className="flex items-center mt-1.5 text-sm text-red-600"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.25 }}
@@ -450,7 +450,7 @@ export const Signup = () => {
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Email Address
               </label>
               <input
@@ -466,7 +466,7 @@ export const Signup = () => {
               />
               {fieldErrors.email && (
                 <motion.div
-                  className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                  className="flex items-center mt-1.5 text-sm text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.25 }}
@@ -478,7 +478,7 @@ export const Signup = () => {
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Password
               </label>
               <div className="relative">
@@ -500,9 +500,9 @@ export const Signup = () => {
                   className="absolute inset-y-0 right-0 pr-3.5 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 dark:text-gray-300" />
+                    <EyeOff className="h-5 w-5 text-gray-400" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 dark:text-gray-300" />
+                    <Eye className="h-5 w-5 text-gray-400" />
                   )}
                 </button>
               </div>
@@ -511,7 +511,7 @@ export const Signup = () => {
               )}
               {fieldErrors.password && (
                 <motion.div
-                  className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                  className="flex items-center mt-1.5 text-sm text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.25 }}
@@ -525,7 +525,7 @@ export const Signup = () => {
             {role === 'homeowner' && (
               <>
                 <motion.div variants={fadeInUp}>
-                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Address
                   </label>
                   <input
@@ -540,7 +540,7 @@ export const Signup = () => {
                   />
                   {fieldErrors.address && (
                     <motion.div
-                      className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                      className="flex items-center mt-1.5 text-sm text-red-600"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -551,7 +551,7 @@ export const Signup = () => {
                   )}
                 </motion.div>
                 <motion.div variants={fadeInUp}>
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Phone Number
                   </label>
                   <input
@@ -566,7 +566,7 @@ export const Signup = () => {
                   />
                   {fieldErrors.phoneNumber && (
                     <motion.div
-                      className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                      className="flex items-center mt-1.5 text-sm text-red-600"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -582,48 +582,48 @@ export const Signup = () => {
             {role === 'technician' && (
               <>
                 <motion.div variants={fadeInUp}>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     Specializations (max 2)
                   </label>
                   <div ref={dropdownRef} className="relative">
                     <button
                       type="button"
-                      className={`w-full px-3.5 py-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-160 flex justify-between items-center bg-white dark:bg-gray-700 text-sm ${
-                        fieldErrors.specialization ? 'border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30' : 'border-gray-300 dark:border-gray-600'
+                      className={`w-full px-3.5 py-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-160 flex justify-between items-center bg-white text-sm ${
+                        fieldErrors.specialization ? 'border-red-400 bg-red-50' : 'border-gray-300'
                       }`}
                       onClick={() => setShowSpecializationDropdown(!showSpecializationDropdown)}
                       disabled={isSubmitting}
                       aria-expanded={showSpecializationDropdown}
                     >
-                      <span className="text-gray-600 dark:text-gray-300">Add specializations</span>
+                      <span className="text-gray-600">Add specializations</span>
                       <ChevronDown
-                        className={`h-4 w-4 text-gray-400 dark:text-gray-300 transition-transform duration-160 ml-auto ${
+                        className={`h-4 w-4 text-gray-400 transition-transform duration-160 ml-auto ${
                           showSpecializationDropdown ? 'rotate-180' : ''
                         }`}
                       />
                     </button>
                     {showSpecializationDropdown && (
-                      <div className="relative z-10 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-80 overflow-y-auto">
-                        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-3.5 border-b border-gray-300 dark:border-gray-600">
+                      <div className="relative z-10 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-xl max-h-80 overflow-y-auto">
+                        <div className="sticky top-0 z-10 bg-white p-3.5 border-b border-gray-300">
                           <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search specializations..."
-                            className="w-full px-3.5 py-3 text-sm border rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                            className="w-full px-3.5 py-3 text-sm border rounded-lg border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         </div>
                         <div className="px-3.5 py-3">
                           {filteredSpecializations.length === 0 ? (
-                            <div className="px-3.5 py-3 text-sm text-gray-500 dark:text-gray-400">
+                            <div className="px-3.5 py-3 text-sm text-gray-500">
                               No results found
                             </div>
                           ) : (
                             filteredSpecializations.map((option) => (
                               <label
                                 key={option.value}
-                                className={`flex items-center px-3.5 py-3 cursor-pointer transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm ${
-                                  form.specialization.includes(option.value) ? 'bg-blue-50 dark:bg-blue-900/50' : ''
+                                className={`flex items-center px-3.5 py-3 cursor-pointer transition-colors duration-150 hover:bg-gray-50 text-sm ${
+                                  form.specialization.includes(option.value) ? 'bg-blue-50' : ''
                                 } ${
                                   isSubmitting ||
                                   (!form.specialization.includes(option.value) &&
@@ -641,9 +641,9 @@ export const Signup = () => {
                                     (!form.specialization.includes(option.value) &&
                                       form.specialization.length >= 2)
                                   }
-                                  className="mr-2.5 h-4 w-4 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400"
+                                  className="mr-2.5 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                 />
-                                <span className="text-gray-700 dark:text-gray-200">{option.label}</span>
+                                <span className="text-gray-700">{option.label}</span>
                               </label>
                             ))
                           )}
@@ -663,19 +663,19 @@ export const Signup = () => {
                         return (
                           <div
                             key={value}
-                            className="group relative flex items-center bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-150"
+                            className="group relative flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1.5 rounded-full hover:bg-blue-200 transition-colors duration-150"
                           >
                             <span>{option?.shortLabel}</span>
                             <button
                               type="button"
                               onClick={() => handleSpecializationChange(value)}
-                              className="ml-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                              className="ml-1.5 text-blue-600 hover:text-blue-800"
                               disabled={isSubmitting}
                               aria-label={`Remove ${option?.label}`}
                             >
                               <X className="h-4 w-4" />
                             </button>
-                            <span className="absolute hidden group-hover:block -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 dark:bg-gray-700 text-white text-sm rounded py-1.5 px-2.5 whitespace-nowrap">
+                            <span className="absolute hidden group-hover:block -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded py-1.5 px-2.5 whitespace-nowrap">
                               {option?.label}
                             </span>
                           </div>
@@ -685,7 +685,7 @@ export const Signup = () => {
                   )}
                   {form.specialization.length >= 2 && (
                     <motion.p
-                      className="mt-2.5 text-sm text-gray-500 dark:text-gray-400"
+                      className="mt-2.5 text-sm text-gray-500"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -695,7 +695,7 @@ export const Signup = () => {
                   )}
                   {fieldErrors.specialization && (
                     <motion.div
-                      className="flex items-center mt-2.5 text-sm text-red-600 dark:text-red-400"
+                      className="flex items-center mt-2.5 text-sm text-red-600"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -706,7 +706,7 @@ export const Signup = () => {
                   )}
                 </motion.div>
                 <motion.div variants={fadeInUp} className="mt-6">
-                  <label htmlFor="experience" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  <label htmlFor="experience" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Experience (Years)
                   </label>
                   <input
@@ -723,7 +723,7 @@ export const Signup = () => {
                   />
                   {fieldErrors.experience && (
                     <motion.div
-                      className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                      className="flex items-center mt-1.5 text-sm text-red-600"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -734,7 +734,7 @@ export const Signup = () => {
                   )}
                 </motion.div>
                 <motion.div variants={fadeInUp} className="mt-6">
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Phone Number
                   </label>
                   <input
@@ -749,7 +749,7 @@ export const Signup = () => {
                   />
                   {fieldErrors.phoneNumber && (
                     <motion.div
-                      className="flex items-center mt-1.5 text-sm text-red-600 dark:text-red-400"
+                      className="flex items-center mt-1.5 text-sm text-red-600"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.25 }}
@@ -768,10 +768,10 @@ export const Signup = () => {
                 isSubmitting ||
                 (role === 'technician' && form.specialization.length > 2)
               }
-              className={`w-full font-semibold py-3.5 px-5 rounded-lg transition-colors duration-160 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-base ${
+              className={`w-full font-semibold py-3.5 px-5 rounded-lg transition-colors duration-160 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base ${
                 isSubmitting || (role === 'technician' && form.specialization.length > 2)
-                  ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed text-white'
-                  : 'bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white'
+                  ? 'bg-gray-400 cursor-not-allowed text-white'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
               variants={fadeInUp}
               whileHover={{ scale: 1.02 }}
@@ -782,24 +782,24 @@ export const Signup = () => {
 
             {error && (
               <motion.div
-                className="flex items-center justify-center mt-5 p-3.5 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg"
+                className="flex items-center justify-center mt-5 p-3.5 bg-red-50 border border-red-300 rounded-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.25 }}
               >
-                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mr-2.5" />
-                <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                <AlertCircle className="h-4 w-4 text-red-600 mr-2.5" />
+                <p className="text-red-600 text-sm">{error}</p>
               </motion.div>
             )}
           </motion.div>
 
           {/* Login Link */}
           <motion.p
-            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-7"
+            className="text-center text-gray-600 text-sm mt-7"
             variants={fadeInUp}
           >
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in
             </a>
           </motion.p>

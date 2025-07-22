@@ -82,32 +82,32 @@ export const ForgotPassword = () => {
   };
 
   const getFieldClassName = () => {
-    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-180 text-sm";
+    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-180 text-sm";
     if (touched && error) {
-      return `${baseClass} border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30`;
+      return `${baseClass} border-red-400 bg-red-50`;
     }
-    return `${baseClass} border-gray-300 dark:border-gray-600`;
+    return `${baseClass} border-gray-300`;
   };
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
     >
       <motion.div className="max-w-md w-full space-y-8" variants={fadeInUp}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
           <motion.div className="text-center mb-8" variants={fadeInUp}>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Forgot Your Password?</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Forgot Your Password?</h2>
+            <p className="text-sm text-gray-600">
               Enter your email address and we'll send you a link to reset your password.
             </p>
           </motion.div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <motion.div variants={fadeInUp}>
-              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
               </label>
               <input
@@ -124,7 +124,7 @@ export const ForgotPassword = () => {
               />
               {touched && error && (
                 <motion.div
-                  className="flex items-center mt-2 text-xs text-red-600 dark:text-red-400"
+                  className="flex items-center mt-2 text-xs text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.27 }}
@@ -137,7 +137,7 @@ export const ForgotPassword = () => {
 
             <motion.button
               type="submit"
-              className="w-full bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
               variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -149,36 +149,36 @@ export const ForgotPassword = () => {
 
           {message && (
             <motion.div
-              className="flex items-center justify-center mt-5 p-3 bg-green-50 dark:bg-green-900/30 border border-green-300 dark:border-green-700 rounded-lg"
+              className="flex items-center justify-center mt-5 p-3 bg-green-50 border border-green-300 rounded-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.27 }}
             >
-              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 mr-3" />
-              <p className="text-green-600 dark:text-green-400 text-sm">{message}</p>
+              <CheckCircle className="h-4 w-4 text-green-600 mr-3" />
+              <p className="text-green-600 text-sm">{message}</p>
             </motion.div>
           )}
 
           {error && !message && ( // Only show error if no success message
             <motion.div
-              className="flex items-center justify-center mt-5 p-3 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg"
+              className="flex items-center justify-center mt-5 p-3 bg-red-50 border border-red-300 rounded-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.27 }}
             >
-              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mr-3" />
-              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+              <AlertCircle className="h-4 w-4 text-red-600 mr-3" />
+              <p className="text-red-600 text-sm">{error}</p>
             </motion.div>
           )}
 
           <motion.p
-            className="text-center text-gray-600 dark:text-gray-300 text-sm mt-6"
+            className="text-center text-gray-600 text-sm mt-6"
             variants={fadeInUp}
           >
             Remembered your password?{' '}
             <button
               onClick={() => navigate('/login')}
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium bg-transparent border-none p-0 cursor-pointer"
+              className="text-blue-600 hover:text-blue-700 font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Back to Login
             </button>
