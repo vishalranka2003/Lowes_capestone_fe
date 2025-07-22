@@ -86,12 +86,16 @@ export default function ViewCompletionFormModal({ requestId, onClose }) {
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm font-medium text-gray-900 mb-2">Technician Notes</div>
-                <div className="text-sm text-gray-600 whitespace-pre-wrap">
-                  {completionForm.technicianNotes}
-                </div>
-              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg">  
+                <FileText className="h-5 w-5 text-gray-600 mt-1" />
+                  <div>
+                    <div className="text-sm font-medium text-gray-900 mb-1">Technician Notes</div>
+                      <div className="text-sm text-gray-600 whitespace-pre-wrap">
+                        {completionForm.technicianNotes}
+                      </div>
+                    </div>
+                  </div>
+
 
               <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
                 <CheckCircle className={`h-5 w-5 ${completionForm.confirmed ? 'text-green-600' : 'text-gray-400'}`} />
