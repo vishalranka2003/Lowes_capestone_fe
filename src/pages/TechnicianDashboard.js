@@ -182,8 +182,8 @@ const TechnicianDashboard = () => {
           </div>
           <button
             onClick={handleLogout}
-            className="mt-4 w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
-          >
+className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 rounded-lg text-sm font-medium transition-colors"
+>
             Logout
           </button>
         </div>
@@ -356,8 +356,9 @@ const TechnicianDashboard = () => {
           )}
 
           {activeTab === 'service-history' && (
+            <>
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">My Service History</h1>
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">My Service History</h2>
               {serviceHistory.length > 0 ? (
                 <div className="space-y-4">
                   {serviceHistory.map((item, idx) => (
@@ -408,6 +409,7 @@ const TechnicianDashboard = () => {
                 </div>
               )}
             </div>
+            </>
           )}
         </div>
       </main>
