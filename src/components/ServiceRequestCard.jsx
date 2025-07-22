@@ -64,7 +64,7 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
               Allocate Technician
             </label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors duration-200"
               value={selectedTechnician}
               onChange={(e) => setSelectedTechnician(e.target.value)}
             >
@@ -76,7 +76,7 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
               ))}
             </select>
             <button
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-lowesBlue-500 text-white font-medium rounded-lg hover:bg-lowesBlue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
               onClick={handleAllocate}
               disabled={!selectedTechnician}
             >

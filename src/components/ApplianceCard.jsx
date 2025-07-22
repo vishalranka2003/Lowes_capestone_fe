@@ -123,7 +123,7 @@ export const ApplianceCard = ({ appliance, onEdit, onDelete }) => {
       <div className="flex space-x-3">
         <button 
           onClick={() => onEdit && onEdit(appliance)}
-          className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+          className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 text-lowesBlue-500 border border-lowesBlue-500 rounded-lg hover:bg-blue-50 transition-colors duration-200"
         >
           <Edit className="h-4 w-4" />
           <span>Edit</span>

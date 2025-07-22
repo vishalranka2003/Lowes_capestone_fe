@@ -102,10 +102,10 @@ describe('Login Component', () => {
     const adminTab = screen.getByText('Admin');
 
     fireEvent.click(technicianTab);
-    expect(technicianTab).toHaveClass('bg-white text-blue-600');
+    expect(technicianTab).toHaveClass('bg-white text-lowesBlue-500');
 
     fireEvent.click(adminTab);
-    expect(adminTab).toHaveClass('bg-white text-blue-600');
+    expect(adminTab).toHaveClass('bg-white text-lowesBlue-500');
   });
 
   test('shows loading state initially when checking authentication', () => {

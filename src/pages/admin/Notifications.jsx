@@ -205,7 +205,7 @@ export const Notifications = () => {
         {/* Page Header */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            {/* <Bell className="h-8 w-8 text-blue-600" /> */}
+            {/* <Bell className="h-8 w-8 text-lowesBlue-500" /> */}
             Warranty Notifications
           </h2>
           <p className="text-gray-600">
@@ -228,7 +228,7 @@ export const Notifications = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <button 
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-lowesBlue-500 text-white rounded-lg hover:bg-lowesBlue-500 disabled:bg-gray-400 transition-colors"
               onClick={triggerWarrantyCheck}
               disabled={loading}
             >
@@ -243,7 +243,7 @@ export const Notifications = () => {
                 max="365"
                 value={customDays}
                 onChange={(e) => setCustomDays(parseInt(e.target.value) || 7)}
-                className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
                 placeholder="Days"
               />
               <button 
@@ -306,7 +306,7 @@ export const Notifications = () => {
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-blue-500" />
+              <Calendar className="h-5 w-5 text-lowesBlue-500" />
               Expiring Next Month (30 Days)
             </h3>
             <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">

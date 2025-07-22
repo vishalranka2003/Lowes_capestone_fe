@@ -35,10 +35,7 @@ export const Home = () => {
             {/* Hero Text */}
             <div className="space-y-8 animate-fade-in-up animation-delay-200 flex flex-col justify-center h-full items-start col-span-7 lg:col-span-4">
               <div className="flex items-center space-x-3 mb-6">
-                <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mr-2">
-                  <Shield className="h-7 w-7 text-blue-600" />
-                </span>
-                <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 drop-shadow-xl">
+                <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight text-lowesBlue-500 drop-shadow-xl">
                   Service Pro
                 </h1>
               </div>
@@ -51,7 +48,7 @@ export const Home = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
                   to="/signup" 
-                  className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-lg"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-lowesBlue-500 hover:bg-lowesBlue-500 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500 focus:ring-offset-2 text-lg"
                 >
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -103,7 +100,7 @@ export const Home = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Service Pro?
             </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto rounded"></div>
+            <div className="w-24 h-1 bg-loweslowesBlue-500 mx-auto rounded"></div>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -113,7 +110,7 @@ export const Home = () => {
                 className="bg-white/90 rounded-2xl p-6 shadow-xl border border-gray-200/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fade-in-up"
                 style={{ animationDelay: `${(index + 3) * 200}ms` }}
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-lowesBlue-100 text-loweslowesBlue-500 rounded-full mb-6">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>

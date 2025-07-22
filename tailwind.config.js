@@ -5,7 +5,16 @@ module.exports = {
     "./public/index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        lowesBlue: {
+          500: 'rgb(1,33,105)',
+          600: 'rgb(1,33,105)',
+          700: 'rgb(1,33,105)',
+        },
+        lowesWhite: '#ffffff',
+      },
+    },
   },
   plugins: [],
 }

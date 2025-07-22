@@ -68,7 +68,7 @@ export const TechnicianDetails = () => {
       <div className="max-w-7xl mx-auto">
         <button 
           onClick={() => navigate(-1)} 
-          className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium mb-6 transition-colors"
+          className="flex items-center space-x-2 text-lowesBlue-500 hover:text-lowesBlue-500 font-medium mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Go Back</span>
@@ -83,7 +83,7 @@ export const TechnicianDetails = () => {
           {/* Technician Info Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <User className="h-5 w-5 text-blue-600" />
+              <User className="h-5 w-5 text-lowesBlue-500" />
               Technician Information
             </h3>
             <div className="space-y-4">

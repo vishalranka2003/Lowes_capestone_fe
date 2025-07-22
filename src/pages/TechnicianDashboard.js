@@ -116,7 +116,7 @@ const TechnicianDashboard = () => {
         <div>
           <div className="p-6">
             <div className="flex items-center space-x-2 mb-8">
-              <Wrench className="h-8 w-8 text-blue-600" />
+              <Wrench className="h-8 w-8 text-lowesBlue-500" />
               <h2 className="text-xl font-bold text-gray-900">Service Pro</h2>
             </div>
             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Technician Panel</h3>
@@ -125,7 +125,7 @@ const TechnicianDashboard = () => {
             <button
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                 activeTab === 'assigned'
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                  ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
               onClick={() => setActiveTab('assigned')}
@@ -136,7 +136,7 @@ const TechnicianDashboard = () => {
             <button
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                 activeTab === 'in-progress'
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                  ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
               onClick={() => setActiveTab('in-progress')}
@@ -147,7 +147,7 @@ const TechnicianDashboard = () => {
             <button
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                 activeTab === 'completed'
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                  ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
               onClick={() => setActiveTab('completed')}
@@ -158,7 +158,7 @@ const TechnicianDashboard = () => {
             <button
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                 activeTab === 'service-history'
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                  ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
               onClick={() => setActiveTab('service-history')}
@@ -172,7 +172,7 @@ const TechnicianDashboard = () => {
         {/* User Info */}
         <div className="p-6 border-t border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lowesBlue-500 font-bold text-lg">
               {username.charAt(0).toUpperCase()}
             </div>
             <div>
@@ -216,9 +216,9 @@ className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 roun
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-2xl font-bold text-blue-800">{stats?.inProgressCount ?? 0}</div>
-                      <div className="text-sm text-blue-600">In Progress</div>
+                      <div className="text-sm text-lowesBlue-500">In Progress</div>
                     </div>
-                    <Wrench className="h-8 w-8 text-blue-600" />
+                    <Wrench className="h-8 w-8 text-lowesBlue-500" />
                   </div>
                 </div>
                 <div
@@ -315,7 +315,7 @@ className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 roun
                               <div className="flex gap-2">
                                 {request.status === 'ASSIGNED' && (
                                   <button
-                                    className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs font-medium"
+                                    className="px-3 py-1 bg-lowesBlue-500 text-white rounded-lg hover:bg-lowesBlue-500 text-xs font-medium"
                                     onClick={() => handleStatusUpdate(request.id, 'IN_PROGRESS')}
                                   >
                                     Start Work

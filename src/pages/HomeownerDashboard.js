@@ -1,6 +1,6 @@
 import React from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Home, Package, Wrench, LogOut } from 'lucide-react';
+import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
+import {  Package, Wrench } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 
@@ -25,8 +25,9 @@ export const HomeownerDashboard = () => {
         <div>
           <div className="p-6">
             <div className="flex items-center space-x-2 mb-8">
-              <Home className="h-8 w-8 text-blue-600" />
-              <h2 className="text-xl font-bold text-gray-900">Service Pro</h2>
+              <Link to="/dashboard/homeowner">
+                <img src="/Service-Pro.png" alt="Service Pro" className="w-30" />
+              </Link>
             </div>
             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Homeowner Panel</h3>
           </div>
@@ -38,7 +39,7 @@ export const HomeownerDashboard = () => {
               className={({ isActive }) => 
                 `flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                   isActive 
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
+                    ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500' 
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
@@ -53,7 +54,7 @@ export const HomeownerDashboard = () => {
               className={({ isActive }) => 
                 `flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors duration-200 ${
                   isActive 
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
+                    ? 'bg-blue-50 text-lowesBlue-500 border-r-2 border-lowesBlue-500' 
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
@@ -68,7 +69,7 @@ export const HomeownerDashboard = () => {
         {/* User Info at bottom */}
         <div className="p-6 border-t border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lowesBlue-500 font-bold text-lg">
               {username.charAt(0).toUpperCase()}
             </div>
             <div>

@@ -265,7 +265,7 @@ export const Signup = () => {
   };
 
   const getFieldClassName = (fieldName) => {
-    const baseClass = "w-full px-3.5 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-160 text-sm";
+    const baseClass = "w-full px-3.5 py-3 border rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors duration-160 text-sm";
     if (fieldErrors[fieldName]) {
       return `${baseClass} border-red-400 bg-red-50`;
     }
@@ -360,7 +360,7 @@ export const Signup = () => {
           {/* Header */}
           <motion.div className="text-center mb-8" variants={fadeInUp}>
             <div className="flex justify-center mb-5">
-              {/* <div className="flex items-center space-x-3 text-blue-600">
+              {/* <div className="flex items-center space-x-3 text-lowesBlue-500">
                 <Shield className="h-10 w-10" />
                 <span className="text-3xl font-bold text-gray-900">Service Pro</span>
               </div> */}
@@ -380,7 +380,7 @@ export const Signup = () => {
                 onClick={() => handleRoleChange(roleOption.key)}
                 className={`flex-1 py-2.5 px-3.5 text-sm font-medium rounded-md transition-colors duration-160 ${
                   role === roleOption.key
-                    ? 'bg-white text-blue-600 shadow-sm'
+                    ? 'bg-white text-lowesBlue-500 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -588,7 +588,7 @@ export const Signup = () => {
                   <div ref={dropdownRef} className="relative">
                     <button
                       type="button"
-                      className={`w-full px-3.5 py-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-160 flex justify-between items-center bg-white text-sm ${
+                      className={`w-full px-3.5 py-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors duration-160 flex justify-between items-center bg-white text-sm ${
                         fieldErrors.specialization ? 'border-red-400 bg-red-50' : 'border-gray-300'
                       }`}
                       onClick={() => setShowSpecializationDropdown(!showSpecializationDropdown)}
@@ -610,7 +610,7 @@ export const Signup = () => {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search specializations..."
-                            className="w-full px-3.5 py-3 text-sm border rounded-lg border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3.5 py-3 text-sm border rounded-lg border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500"
                           />
                         </div>
                         <div className="px-3.5 py-3">
@@ -641,7 +641,7 @@ export const Signup = () => {
                                     (!form.specialization.includes(option.value) &&
                                       form.specialization.length >= 2)
                                   }
-                                  className="mr-2.5 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                  className="mr-2.5 h-4 w-4 text-lowesBlue-500 border-gray-300 rounded focus:ring-lowesBlue-500"
                                 />
                                 <span className="text-gray-700">{option.label}</span>
                               </label>
@@ -669,7 +669,7 @@ export const Signup = () => {
                             <button
                               type="button"
                               onClick={() => handleSpecializationChange(value)}
-                              className="ml-1.5 text-blue-600 hover:text-blue-800"
+                              className="ml-1.5 text-lowesBlue-500 hover:text-blue-800"
                               disabled={isSubmitting}
                               aria-label={`Remove ${option?.label}`}
                             >
@@ -768,10 +768,10 @@ export const Signup = () => {
                 isSubmitting ||
                 (role === 'technician' && form.specialization.length > 2)
               }
-              className={`w-full font-semibold py-3.5 px-5 rounded-lg transition-colors duration-160 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base ${
+              className={`w-full font-semibold py-3.5 px-5 rounded-lg transition-colors duration-160 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500 focus:ring-offset-2 text-base ${
                 isSubmitting || (role === 'technician' && form.specialization.length > 2)
                   ? 'bg-gray-400 cursor-not-allowed text-white'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  : 'bg-lowesBlue-500 hover:bg-lowesBlue-500 text-white'
               }`}
               variants={fadeInUp}
               whileHover={{ scale: 1.02 }}
@@ -799,7 +799,7 @@ export const Signup = () => {
             variants={fadeInUp}
           >
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/login" className="text-lowesBlue-500 hover:text-lowesBlue-500 font-medium">
               Sign in
             </a>
           </motion.p>

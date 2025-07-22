@@ -39,7 +39,7 @@ export default function ViewCompletionFormModal({ requestId, onClose }) {
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-100 rounded-lg">
-              <FileText className="h-5 w-5 text-blue-600" />
+              <FileText className="h-5 w-5 text-lowesBlue-500" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900">
               Completion Form Details

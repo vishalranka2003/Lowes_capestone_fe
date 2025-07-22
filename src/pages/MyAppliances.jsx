@@ -75,7 +75,7 @@ export const MyAppliances = () => {
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <Package className="h-8 w-8 text-blue-600" />
+            <Package className="h-8 w-8 text-loweslowesBlue-500" />
             <h1 className="text-3xl font-bold text-gray-900">My Appliances</h1>
           </div>
           <p className="text-gray-600">Manage your registered appliances and track warranty information</p>
@@ -84,7 +84,7 @@ export const MyAppliances = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row justify-end gap-4 mb-8">
           <button 
-            className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+            className="flex items-center justify-center space-x-2 px-6 py-3 bg-loweslowesBlue-500 text-white font-medium rounded-lg hover:bg-loweslowesBlue-500 transition-colors duration-200"
             onClick={() => setShowRegisterModal(true)}
           >
             <Plus className="h-5 w-5" />
@@ -118,7 +118,7 @@ export const MyAppliances = () => {
             <h3 className="text-lg font-medium text-gray-900 mb-2">No appliances registered yet</h3>
             <p className="text-gray-600 mb-6">Start by registering your first appliance to track its warranty.</p>
             <button 
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-auto"
+              className="flex items-center space-x-2 px-4 py-2 bg-loweslowesBlue-500 text-white rounded-lg hover:bg-loweslowesBlue-500 transition-colors mx-auto"
               onClick={() => setShowRegisterModal(true)}
             >
               <Plus className="h-4 w-4" />
@@ -129,7 +129,7 @@ export const MyAppliances = () => {
 
         {/* Appliances Grid */}
         {!loading && appliances.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
             {appliances.map((item) => (
               <ApplianceCard
                 key={item.id}
