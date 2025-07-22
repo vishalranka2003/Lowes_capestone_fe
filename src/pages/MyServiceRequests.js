@@ -65,7 +65,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                 name="serialNumber"
                 value={form.serialNumber}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
                 required
                 disabled={!!initialData}
               >
@@ -91,7 +91,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                   const time = form.preferredSlot ? form.preferredSlot.split('T')[1] || '09:00' : '09:00';
                   setForm(prev => ({ ...prev, preferredSlot: `${date}T${time}` }));
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
                 required
               />
             </div>
@@ -107,7 +107,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                   const date = form.preferredSlot ? form.preferredSlot.split('T')[0] : new Date().toISOString().split('T')[0];
                   setForm(prev => ({ ...prev, preferredSlot: `${date}T${e.target.value}` }));
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
                 required
               >
                 <option value="">Select time slot</option>
@@ -131,7 +131,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                 name="issueDescription"
                 value={form.issueDescription}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 resize-none"
                 rows="4"
                 required
                 placeholder="Describe the problem..."
@@ -152,7 +152,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                className="flex-1 px-4 py-2 bg-lowesBlue-500 text-white rounded-lg font-medium hover:bg-lowesBlue-500 disabled:bg-gray-400 transition-colors"
                 disabled={submitting}
               >
                 {submitting ? 'Submitting...' : 'Submit Request'}
@@ -306,7 +306,7 @@ const MyServiceRequests = () => {
               <p className="text-gray-600 mt-1">Manage your appliance service requests and appointments.</p>
             </div>
             <button
-              className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              className="flex items-center space-x-2 px-6 py-3 bg-lowesBlue-500 text-white font-medium rounded-lg hover:bg-lowesBlue-500 transition-colors duration-200"
               onClick={() => {
                 setEditRequest(null);
                 setShowForm(true);
@@ -327,7 +327,7 @@ const MyServiceRequests = () => {
                 onClick={() => setActiveFilter(filter)}
                 className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
                   activeFilter === filter
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-lowesBlue-500 text-lowesBlue-500'
                     : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
               >
@@ -400,7 +400,7 @@ const MyServiceRequests = () => {
                               setEditRequest(req);
                               setShowForm(true);
                             }}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                            className="px-4 py-2 bg-lowesBlue-500 text-white rounded-lg hover:bg-lowesBlue-500 transition-colors font-medium text-sm"
                           >
                             Reschedule
                           </button>

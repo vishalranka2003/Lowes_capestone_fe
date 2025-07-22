@@ -103,7 +103,7 @@
 //       <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
 //         <div className="flex items-center justify-between p-6 border-b border-gray-200">
 //           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-//             <Package className="h-5 w-5 text-blue-600" />
+//             <Package className="h-5 w-5 text-lowesBlue-500" />
 //             {isEditMode ? 'Edit Appliance' : 'Register New Appliance'}
 //           </h2>
 //           <button
@@ -119,7 +119,7 @@
 //             <input
 //               name="brand"
 //               type="text"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               placeholder="Brand"
 //               value={form.brand}
 //               onChange={handleChange}
@@ -131,7 +131,7 @@
 //             <input
 //               name="category"
 //               type="text"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               placeholder="Category"
 //               value={form.category}
 //               onChange={handleChange}
@@ -143,7 +143,7 @@
 //             <input
 //               name="modelNumber"
 //               type="text"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               placeholder="Model Number"
 //               value={form.modelNumber}
 //               onChange={handleChange}
@@ -155,7 +155,7 @@
 //             <input
 //               name="serialNumber"
 //               type="text"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               placeholder="Serial Number"
 //               value={form.serialNumber}
 //               onChange={handleChange}
@@ -171,7 +171,7 @@
 //             <input
 //               name="purchaseDate"
 //               type="date"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               value={form.purchaseDate}
 //               onChange={handleChange}
 //               required
@@ -186,7 +186,7 @@
 //             <input
 //               name="warrantyExpiryDate"
 //               type="date"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               value={form.warrantyExpiryDate}
 //               onChange={handleChange}
 //               required
@@ -201,7 +201,7 @@
 //             <input
 //               name="invoice"
 //               type="file"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
 //               accept="application/pdf"
 //               onChange={handleChange}
 //             />
@@ -224,7 +224,7 @@
 //             </button>
 //             <button 
 //               type="submit" 
-//               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+//               className="flex-1 px-4 py-2 bg-lowesBlue-500 text-white rounded-lg hover:bg-lowesBlue-500 transition-colors disabled:bg-gray-400"
 //               disabled={submitting}
 //             >
 //               {submitting
@@ -369,7 +369,7 @@ export default function RegisterModal({
       >
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <Package className="h-5 w-5 text-blue-600" />
+            <Package className="h-5 w-5 text-lowesBlue-500" />
             {isEditMode ? 'Edit Appliance' : 'Register New Appliance'}
           </h2>
           <button
@@ -385,7 +385,7 @@ export default function RegisterModal({
             <input
               name="brand"
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               placeholder="Brand"
               value={form.brand}
               onChange={handleChange}
@@ -397,7 +397,7 @@ export default function RegisterModal({
             <input
               name="category"
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               placeholder="Category"
               value={form.category}
               onChange={handleChange}
@@ -409,7 +409,7 @@ export default function RegisterModal({
             <input
               name="modelNumber"
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               placeholder="Model Number"
               value={form.modelNumber}
               onChange={handleChange}
@@ -421,7 +421,7 @@ export default function RegisterModal({
             <input
               name="serialNumber"
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               placeholder="Serial Number"
               value={form.serialNumber}
               onChange={handleChange}
@@ -437,7 +437,7 @@ export default function RegisterModal({
             <input
               name="purchaseDate"
               type="date"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               value={form.purchaseDate}
               onChange={handleChange}
               required
@@ -452,7 +452,7 @@ export default function RegisterModal({
   <input
     name="warrantyExpiryDate"
     type="date"
-    className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+    className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 ${
       !form.purchaseDate ? 'cursor-not-allowed bg-gray-100' : ''
     }`}
     value={form.warrantyExpiryDate}
@@ -477,7 +477,7 @@ export default function RegisterModal({
             <input
               name="invoice"
               type="file"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               accept="application/pdf"
               onChange={handleChange}
             />
@@ -500,7 +500,7 @@ export default function RegisterModal({
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+              className="flex-1 px-4 py-2 bg-lowesBlue-500 text-white rounded-lg hover:bg-lowesBlue-500 transition-colors disabled:bg-gray-400"
               disabled={submitting || !isDateValid}
             >
               {submitting

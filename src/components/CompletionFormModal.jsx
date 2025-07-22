@@ -94,7 +94,7 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
                 value={completionDate}
                 onChange={(e) => setCompletionDate(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors"
               />
             </div>
 
@@ -109,7 +109,7 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
                 value={completionTime}
                 onChange={(e) => setCompletionTime(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors"
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
                 required
                 rows={4}
                 placeholder="Describe the work performed, any issues encountered, and recommendations..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors resize-none"
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
                 checked={confirmed}
                 onChange={(e) => setConfirmed(e.target.checked)}
                 required
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-lowesBlue-500 border-gray-300 rounded focus:ring-lowesBlue-500"
               />
               <label htmlFor="confirmed" className="text-sm font-medium text-gray-700">
                 I confirm that the service request has been completed successfully

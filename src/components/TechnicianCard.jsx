@@ -23,7 +23,7 @@ export const TechnicianCard = ({ technician, isAvailable, onViewRequests }) => {
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <h3 
-          className="text-lg font-semibold text-blue-600 hover:text-blue-700 cursor-pointer underline transition-colors duration-200"
+          className="text-lg font-semibold text-lowesBlue-500 hover:text-lowesBlue-500 cursor-pointer underline transition-colors duration-200"
           onClick={handleNameClick}
         >
           {technician.firstName} {technician.lastName}
@@ -62,7 +62,7 @@ export const TechnicianCard = ({ technician, isAvailable, onViewRequests }) => {
         className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
           isAvailable
             ? 'bg-gray-400 text-white cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'
+            : 'bg-lowesBlue-500 hover:bg-lowesBlue-500 text-white'
         }`}
         onClick={handleClick}
         disabled={isAvailable}

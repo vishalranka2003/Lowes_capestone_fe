@@ -7,7 +7,7 @@ export const AssignedRequestsModal = ({ requests, onClose }) => {
       <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <Wrench className="h-5 w-5 text-blue-600" />
+            <Wrench className="h-5 w-5 text-lowesBlue-500" />
             Assigned Service Requests
           </h3>
           <button 

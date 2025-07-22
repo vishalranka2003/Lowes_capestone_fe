@@ -1,8 +1,20 @@
 // src/pages/admin/AdminServiceHistory.js
 import React, { useState } from "react";
 import axios from "axios";
+import DataTable from '../../components/DataTable';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
+
+const getStatusColor = (status) => {
+  switch (status.toLowerCase()) {
+    case 'completed':
+      return 'bg-green-100 text-green-800';
+    case 'cancelled':
+      return 'bg-red-100 text-red-800';
+    default:
+      return 'bg-gray-100 text-gray-800';
+  }
+};
 
 export const AdminServiceHistory = () => {
   const [historyData, setHistoryData] = useState([]);
@@ -44,6 +56,14 @@ export const AdminServiceHistory = () => {
     }
   };
 
+  const headers = [
+    { label: 'ID', key: 'id' },
+    { label: 'Date & Time', key: 'serviceDate' },
+    { label: 'Homeowner', key: 'homeownerName' },
+    { label: 'Appliance', key: 'applianceInfo' },
+    { label: 'Status', key: 'status' },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -54,7 +74,7 @@ export const AdminServiceHistory = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
       <div className="flex space-x-4">
         <button
-          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "homeowner" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
+          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "homeowner" ? "bg-lowesBlue-500 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
           onClick={() => {
             setType("homeowner");
             setInput("");
@@ -66,7 +86,7 @@ export const AdminServiceHistory = () => {
         </button>
 
         <button
-          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "technician" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
+          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "technician" ? "bg-lowesBlue-500 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
           onClick={() => {
             setType("technician");
             setInput("");
@@ -78,7 +98,7 @@ export const AdminServiceHistory = () => {
         </button>
 
         <button
-          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "appliance" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
+          className={`px-4 py-2 rounded transition-colors duration-200 ${type === "appliance" ? "bg-lowesBlue-500 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
           onClick={() => {
             setType("appliance");
             setInput("");
@@ -99,9 +119,9 @@ export const AdminServiceHistory = () => {
             placeholder={`Enter ${type === "homeowner" ? "username" : "ID"}`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="border rounded px-3 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded px-3 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500"
           />
-          <button type="submit" className="btn-primary px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200">
+          <button type="submit" className="btn-primary px-4 py-2 bg-lowesBlue-500 text-white rounded hover:bg-lowesBlue-500 transition-colors duration-200">
             Search
           </button>
         </form>
@@ -111,36 +131,12 @@ export const AdminServiceHistory = () => {
       {loading && <p className="text-center text-gray-500">Loading...</p>}
 
       {historyData.length > 0 && (
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr className="w-full bg-gray-100 text-left">
-              <th className="py-2 px-4">ID</th>
-              <th className="py-2 px-4">Date & Time</th>
-              <th className="py-2 px-4">Homeowner</th>
-              <th className="py-2 px-4">Appliance</th>
-              <th className="py-2 px-4">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historyData.map((item, idx) => (
-              <tr key={idx} className="border-t">
-                <td className="py-2 px-4">{item.id}</td>
-                <td className="py-2 px-4">{new Date(item.serviceDate).toLocaleString("en-IN")}</td>
-                <td className="py-2 px-4">{item.homeownerName}</td>
-                <td className="py-2 px-4">{item.applianceInfo}</td>
-                <td className="py-2 px-4">
-  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-    item.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-    item.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-    'bg-gray-100 text-gray-800'
-  }`}>
-    {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
-  </span>
-</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DataTable 
+          title={`Service History for ${type.charAt(0).toUpperCase() + type.slice(1)}`}
+          headers={headers}
+          data={historyData} 
+          getStatusColor={getStatusColor} 
+        />
       )}
 
       {!loading && historyData.length === 0 && type && hasSearched && (

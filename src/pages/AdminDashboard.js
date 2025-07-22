@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Users, Wrench, CheckCircle, Package, Clock } from 'lucide-react';
+import DataTable from '../components/DataTable';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -55,7 +56,7 @@ export const AdminDashboard = () => {
       title: 'Total Technicians', 
       value: stats.totalTechnicians, 
       icon: Users,
-      color: 'bg-blue-500'
+      color: 'bg-lowesBlue-500'
     },
     { 
       title: 'Open Service Requests', 
@@ -101,6 +102,15 @@ export const AdminDashboard = () => {
     }
   };
 
+  const headers = [
+    { label: 'Request ID', key: 'id' },
+    { label: 'Created At', key: 'createdAt' },
+    { label: 'Homeowner', key: 'homeownerName' },
+    { label: 'Appliance', key: 'applianceName' },
+    { label: 'Technician', key: 'technicianName' },
+    { label: 'Status', key: 'status' },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -129,73 +139,12 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Recent Service Requests */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Service Requests</h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Request ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Created At
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Homeowner
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Appliance
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Technician
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {Array.isArray(recentRequests) && recentRequests.map((req, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      #{req.id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(req.createdAt).toLocaleString('en-IN', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {req.homeownerName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>
-                        <div className="font-medium">{req.applianceName}</div>
-                        <div className="text-gray-500 text-xs">({req.serialNumber})</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {req.technicianName || <span className="text-gray-400">—</span>}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(req.status)}`}>
-                        {req.status.replace(/_/g, ' ').toLowerCase()
-                                   .replace(/\b\w/g, c => c.toUpperCase())}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DataTable 
+          title="Recent Service Requests"
+          headers={headers}
+          data={recentRequests} 
+          getStatusColor={getStatusColor} 
+        />
 
         {/* Technician Availability */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200">

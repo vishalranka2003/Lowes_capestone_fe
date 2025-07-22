@@ -170,7 +170,7 @@ export const ResetPassword = () => {
   };
 
   const getFieldClassName = (fieldName) => {
-    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-180 text-sm";
+    const baseClass = "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500 transition-colors duration-180 text-sm";
     if (touched[fieldName] && fieldErrors[fieldName]) {
       return `${baseClass} border-red-400 bg-red-50`;
     }
@@ -301,7 +301,7 @@ export const ResetPassword = () => {
 
               <motion.button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
+                className="w-full bg-lowesBlue-500 hover:bg-lowesBlue-500 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500 focus:ring-offset-2 text-sm"
                 variants={fadeInUp}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -342,7 +342,7 @@ export const ResetPassword = () => {
           >
             <button
               onClick={() => navigate('/login')}
-              className="text-blue-600 hover:text-blue-700 font-medium bg-transparent border-none p-0 cursor-pointer"
+              className="text-lowesBlue-500 hover:text-lowesBlue-500 font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Back to Login
             </button>
