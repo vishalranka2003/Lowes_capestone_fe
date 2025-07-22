@@ -45,10 +45,14 @@ export const AdminServiceHistory = () => {
   };
 
   return (
-    <div className="admin-service-history p-6 max-w-4xl">
-     <h2 className="text-3xl font-bold text-gray-900 mb-8">Service History</h2>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="mb-8">
+      <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">Service History</h2>
+      </div>
+     
 
-      <div className="flex space-x-4 mb-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+      <div className="flex space-x-4">
         <button
           className={`px-4 py-2 rounded transition-colors duration-200 ${type === "homeowner" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
           onClick={() => {
@@ -85,8 +89,10 @@ export const AdminServiceHistory = () => {
           Appliance
         </button>
       </div>
+      </div>
 
       {type && (
+        <div className="newflex items-center space-x-2 mb-4 w-full max-w-md">
         <form onSubmit={(e) => { e.preventDefault(); fetchHistory(); }} className="flex items-center space-x-2 mb-4">
           <input
             type="text"
@@ -96,9 +102,10 @@ export const AdminServiceHistory = () => {
             className="border rounded px-3 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button type="submit" className="btn-primary px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200">
-            Fetch History
+            Search
           </button>
         </form>
+        </div>
       )}
 
       {loading && <p className="text-center text-gray-500">Loading...</p>}

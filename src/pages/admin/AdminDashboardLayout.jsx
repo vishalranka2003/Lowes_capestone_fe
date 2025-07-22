@@ -132,7 +132,7 @@ export const AdminDashboardLayout = () => {
           </div>
           <button 
             onClick={handleLogout}
-            className="mt-4 w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+            className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 rounded-lg text-sm font-medium transition-colors"
           >
             Logout
           </button>
