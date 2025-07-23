@@ -16,6 +16,15 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Helper to get today's date in YYYY-MM-DD format
+  const getToday = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -93,6 +102,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                 }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
                 required
+                min={getToday()}
               />
             </div>
 
