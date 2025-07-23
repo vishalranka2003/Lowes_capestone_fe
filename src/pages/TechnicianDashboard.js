@@ -4,8 +4,9 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import CompletionFormModal from '../components/CompletionFormModal.jsx';
 import ViewCompletionFormModal from '../components/ViewCompletionFormModal.jsx';
-import { Clock, Wrench, CheckCircle, History, Package, User, Calendar } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Clock, Wrench, CheckCircle, History } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import DataTable from '../components/DataTable';
 
 const TechnicianDashboard = () => {
   const navigate = useNavigate();
@@ -109,6 +110,26 @@ const TechnicianDashboard = () => {
     navigate('/');
   };
 
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return 'bg-green-100 text-green-800';
+      case 'cancelled':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const headers = [
+    { label: 'ID', key: 'id' },
+    { label: 'Issue', key: 'issueDescription' },
+    { label: 'Status', key: 'status' },
+    { label: 'Appliance', key: 'applianceInfo' },
+    { label: 'Homeowner', key: 'homeownerName' },
+    { label: 'Date', key: 'serviceDate' },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
@@ -116,8 +137,9 @@ const TechnicianDashboard = () => {
         <div>
           <div className="p-6">
             <div className="flex items-center space-x-2 mb-8">
-              <Wrench className="h-8 w-8 text-lowesBlue-500" />
-              <h2 className="text-xl font-bold text-gray-900">Service Pro</h2>
+              <Link to="/dashboard/technician">
+                <img src="/Service-Pro.png" alt="Service Pro" className="w-30" />
+              </Link>
             </div>
             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Technician Panel</h3>
           </div>
@@ -182,7 +204,7 @@ const TechnicianDashboard = () => {
           </div>
           <button
             onClick={handleLogout}
-className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 rounded-lg text-sm font-medium transition-colors"
+className="mt-4 w-full px-3 py-2 bg-lowesBlue-500 hover:bg-lowesBlue-500/80 text-white rounded-lg text-sm font-medium transition-colors"
 >
             Logout
           </button>
@@ -358,51 +380,18 @@ className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 roun
           {activeTab === 'service-history' && (
             <>
               <h1 className="text-3xl font-bold text-gray-900 mb-6">My Service History</h1>
-            <div className="p-6">
+              <div>
+                
               {serviceHistory.length > 0 ? (
-                <div className="space-y-4">
-                  {serviceHistory.map((item, idx) => (
-                    <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-600">ID:</span>
-                            <span className="text-sm text-gray-900">{item.id}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-600">Issue:</span>
-                            <span className="text-sm text-gray-900">{item.issueDescription}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-600">Status:</span>
-                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                              item.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                              item.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>{item.status}</span>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <Package className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm font-medium text-gray-600">Appliance:</span>
-                            <span className="text-sm text-gray-900">{item.applianceInfo}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <User className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm font-medium text-gray-600">Homeowner:</span>
-                            <span className="text-sm text-gray-900">{item.homeownerName}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm font-medium text-gray-600">Date:</span>
-                            <span className="text-sm text-gray-900">{new Date(item.serviceDate).toLocaleString()}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <DataTable 
+                  title="Service History"
+                    headers={headers}
+                    data={serviceHistory.map(request => ({
+                      ...request,
+                      serviceDate: new Date(request.serviceDate).toLocaleString()
+                    }))}
+                  getStatusColor={getStatusColor}
+                />
               ) : (
                 <div className="text-center py-8">
                   <p className="text-gray-600">No service history found.</p>

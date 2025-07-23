@@ -79,7 +79,7 @@ export const HomeownerDashboard = () => {
           </div>
           <button 
             onClick={handleLogout}
-            className="mt-4 w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white-700 rounded-lg text-sm font-medium transition-colors"
+            className="mt-4 w-full px-3 py-2 bg-lowesBlue-500 hover:bg-lowesBlue-500/80 text-white rounded-lg text-sm font-medium transition-colors"
           >
             Logout
           </button>
