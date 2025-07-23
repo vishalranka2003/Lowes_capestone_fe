@@ -100,7 +100,7 @@ export const Home = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Service Pro?
             </h2>
-            <div className="w-24 h-1 bg-loweslowesBlue-500 mx-auto rounded"></div>
+            <div className="w-24 h-1 bg-lowesBlue-500 mx-auto rounded"></div>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -110,7 +110,7 @@ export const Home = () => {
                 className="bg-white/90 rounded-2xl p-6 shadow-xl border border-gray-200/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fade-in-up"
                 style={{ animationDelay: `${(index + 3) * 200}ms` }}
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-lowesBlue-100 text-loweslowesBlue-500 rounded-full mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-lowesBlue-100 text-lowesBlue-500 rounded-full mb-6">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>

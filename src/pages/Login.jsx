@@ -185,7 +185,7 @@ export const Login = () => {
                 onClick={() => setRole(roleOption.key)}
                 className={`flex-1 py-3 px-3 text-sm font-medium rounded-md transition-colors duration-180 ${
                   role === roleOption.key
-                    ? 'bg-white text-loweslowesBlue-500 shadow-sm'
+                    ? 'bg-white text-lowesBlue-500 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
                 whileHover={{ scale: 1.05 }}
@@ -251,7 +251,7 @@ export const Login = () => {
 
             <motion.button
               onClick={handleLogin}
-              className="w-full bg-loweslowesBlue-500 hover:bg-loweslowesBlue-500 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-loweslowesBlue-500 focus:ring-offset-2 text-sm"
+              className="w-full bg-lowesBlue-500 hover:bg-lowesBlue-500 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-180 focus:outline-none focus:ring-2 focus:ring-lowesBlue-500 focus:ring-offset-2 text-sm"
               variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -279,7 +279,7 @@ export const Login = () => {
           >
             <button
               onClick={() => navigate('/forgot-password')}
-              className="text-loweslowesBlue-500 hover:text-loweslowesBlue-500 font-medium bg-transparent border-none p-0 cursor-pointer"
+              className="text-lowesBlue-500 hover:text-lowesBlue-500 font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Forgot password?
             </button>
@@ -291,7 +291,7 @@ export const Login = () => {
             variants={fadeInUp}
           >
             Don't have an account?{' '}
-            <a href="/signup" className="text-loweslowesBlue-500 hover:text-loweslowesBlue-500 font-medium">
+            <a href="/signup" className="text-lowesBlue-500 hover:text-lowesBlue-500 font-medium">
               Sign up
             </a>
           </motion.p>
