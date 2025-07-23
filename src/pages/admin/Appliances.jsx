@@ -36,7 +36,7 @@ export const Appliances = () => {
   );
 
   return (
-    <div className="min-h-screen bg-lowesWhite py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Appliances</h2>
 
@@ -51,7 +51,7 @@ export const Appliances = () => {
               placeholder="Search by brand, model, or homeowner..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-lowesWhite placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
             />
           </div>
         </div>

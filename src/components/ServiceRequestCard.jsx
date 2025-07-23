@@ -42,7 +42,8 @@ export const ServiceRequestCard = ({ request, availableTechnicians, onAllocate }
           {formattedApplianceTitle}
         </h3>
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColors(request.status)}`}>
-          {request.status.replace('_', ' ').toLowerCase()}
+          {request.status.replace(/_/g, ' ').toLowerCase()
+            .replace(/\b\w/g, c => c.toUpperCase())}
         </span>
       </div>
 

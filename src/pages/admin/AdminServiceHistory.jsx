@@ -134,7 +134,11 @@ export const AdminServiceHistory = () => {
         <DataTable 
           title={`Service History for ${type.charAt(0).toUpperCase() + type.slice(1)}`}
           headers={headers}
-          data={historyData} 
+          data={historyData.map(item => ({
+            ...item,
+            serviceDate: new Date(item.serviceDate).toLocaleString()
+          }))}
+          
           getStatusColor={getStatusColor} 
         />
       )}

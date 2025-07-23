@@ -68,7 +68,7 @@ export const TechnicianDetails = () => {
       <div className="max-w-7xl mx-auto">
         <button 
           onClick={() => navigate(-1)} 
-          className="flex items-center space-x-2 text-lowesBlue-500 hover:text-lowesBlue-500 font-medium mb-6 transition-colors"
+          className="flex items-center space-x-2 text-lowesBlue-500 hover:text-blue-700 font-medium mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Go Back</span>

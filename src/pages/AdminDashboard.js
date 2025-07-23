@@ -142,7 +142,11 @@ export const AdminDashboard = () => {
         <DataTable 
           title="Recent Service Requests"
           headers={headers}
-          data={recentRequests} 
+          
+          data={recentRequests.map(request => ({
+            ...request,
+            createdAt: new Date(request.createdAt).toLocaleString()
+          }))}
           getStatusColor={getStatusColor} 
         />
 

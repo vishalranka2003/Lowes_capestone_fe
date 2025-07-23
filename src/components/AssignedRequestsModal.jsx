@@ -40,7 +40,8 @@ export const AssignedRequestsModal = ({ requests, onClose }) => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-gray-600">Status:</span>
                         <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                          {req.status}
+                          {req.status.replace(/_/g, ' ').toLowerCase()
+                            .replace(/\b\w/g, c => c.toUpperCase())}
                         </span>
                       </div>
                     </div>
