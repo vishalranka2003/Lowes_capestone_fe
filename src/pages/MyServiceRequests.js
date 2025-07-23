@@ -79,7 +79,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
                 disabled={!!initialData}
               >
                 <option value="">Select appliance</option>
-                {applianceOptions.map((appl) => (
+                {applianceOptions.filter((appl) => new Date(appl.warrantyExpiryDate) > new Date()).map((appl) => (
                   <option key={appl.serialNumber} value={appl.serialNumber}>
                     {appl.brand} - {appl.modelNumber} ({appl.serialNumber})
                   </option>
