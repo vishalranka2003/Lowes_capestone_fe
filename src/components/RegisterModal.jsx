@@ -435,13 +435,22 @@ export default function RegisterModal({
               Purchase Date:
             </label>
             <input
+  name="purchaseDate"
+  type="date"
+  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
+  value={form.purchaseDate}
+  onChange={handleChange}
+  required
+  max={new Date().toISOString().split('T')[0]}  // ✅ today's date in YYYY-MM-DD format
+/>
+            {/* <input
               name="purchaseDate"
               type="date"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
               value={form.purchaseDate}
               onChange={handleChange}
               required
-            />
+            /> */}
           </div>
 
           <div>
