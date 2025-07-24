@@ -66,26 +66,28 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Appliance
-              </label>
-              <select
-                name="serialNumber"
-                value={form.serialNumber}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
-                required
-                disabled={!!initialData}
-              >
-                <option value="">Select appliance</option>
-                {applianceOptions.filter((appl) => new Date(appl.warrantyExpiryDate) > new Date()).map((appl) => (
-                  <option key={appl.serialNumber} value={appl.serialNumber}>
-                    {appl.brand} - {appl.modelNumber} ({appl.serialNumber})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className={initialData ? 'hidden' : ''}>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Appliance</label>
+                          <select
+                            name="serialNumber"
+                            value={form.serialNumber}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lowesBlue-500 focus:border-lowesBlue-500"
+                            required={!initialData}
+                            disabled={!!initialData}
+                          >
+                            <option value="">Select appliance</option>
+                            {applianceOptions
+                              .filter(({ warrantyExpiryDate }) => new Date(warrantyExpiryDate) > new Date())
+                              .map(({ serialNumber, brand, modelNumber }) => (
+                                <option key={serialNumber} value={serialNumber}>
+                                  {brand} - {modelNumber} ({serialNumber})
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+
+                        <input type="hidden" name="serialNumber" value={initialData?.serialNumber} />
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
