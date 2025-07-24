@@ -301,30 +301,6 @@ export const Notifications = () => {
             </div>
           </section>
         )}
-
-        {/* Expiring Next Month Section */}
-        <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-lowesBlue-500" />
-              Expiring Next Month (30 Days)
-            </h3>
-            <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-              {expiringNextMonth.length}
-            </span>
-          </div>
-          
-          {expiringNextMonth.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {expiringNextMonth.map(renderApplianceCard)}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-              <p className="text-gray-600">No appliances expiring in the next 30 days</p>
-            </div>
-          )}
-        </section>
       </div>
     </div>
   );

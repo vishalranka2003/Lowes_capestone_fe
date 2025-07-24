@@ -163,12 +163,12 @@ export default function CompletionFormModal({ requestId, onSuccess, onClose }) {
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Submitting...</span>
+                  <span>Completing...</span>
                 </>
               ) : (
                 <>
                   <CheckCircle className="h-4 w-4" />
-                  <span>Submit</span>
+                  <span>Complete</span>
                 </>
               )}
             </button>

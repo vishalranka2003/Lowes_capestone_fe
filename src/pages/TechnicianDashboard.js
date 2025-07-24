@@ -72,10 +72,9 @@ const TechnicianDashboard = () => {
     fetchServiceHistory();
   }, [activeTab]);
 
-  const handleStatusUpdate = (requestId, newStatus) => {
+ const handleStatusUpdate = (requestId, newStatus) => {
     const token = localStorage.getItem('token');
     const API_BASE_URL = process.env.REACT_APP_API_URL;
-
     axios
       .put(
         `${API_BASE_URL}/technician/update-status`,
@@ -83,18 +82,26 @@ const TechnicianDashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
+        // Refetch assigned requests
         return axios.get(`${API_BASE_URL}/technician/assigned-requests`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       })
-      .then(res => {
-        setRequests(res.data);
+      .then((requestsRes) => {
+        setRequests(requestsRes.data);
+        // Now fetch stats
+        return axios.get(`${API_BASE_URL}/technician/stats`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       })
-      .catch(err => {
+      .then((statsRes) => {
+        setStats(statsRes.data);
+      })
+      .catch((err) => {
         console.error(err);
       });
   };
-
+ 
   const getRequestsForTab = () => {
     return requests.filter(req => {
       if (activeTab === 'assigned') return req.status === 'ASSIGNED';
