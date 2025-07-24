@@ -445,6 +445,8 @@ const MyServiceRequests = () => {
         )}
         {confirmId && (
                   <ConfirmDeleteModal
+                    heading="Cancel Request"
+                    description="Are you sure you want to cancel this request?"
                     onCancel={() => setConfirmId(null)}
                     onConfirm={async () => {
                       await cancelRequest(confirmId);
