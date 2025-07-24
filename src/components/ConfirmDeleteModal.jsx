@@ -1,14 +1,15 @@
 import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 
-const ConfirmDeleteModal = ({ onConfirm, onCancel }) => {
+const ConfirmDeleteModal = ({ onConfirm, onCancel, heading = "Cancel Request",description  }) => {
+    const descriptionText = description || "This action is permanent and cannot be undone.";
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-red-500" />
-            Delete Appliance?
+            {heading || "Delete Appliance?"}
           </h2>
           <button
             onClick={onCancel}
@@ -19,7 +20,7 @@ const ConfirmDeleteModal = ({ onConfirm, onCancel }) => {
         </div>
         
         <p className="text-gray-600 mb-6">
-          This action is <strong>permanent</strong> and cannot be undone.
+          {descriptionText}
         </p>
         
         <div className="flex gap-3">

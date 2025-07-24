@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { X, Plus } from 'lucide-react';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
 const API_URL = `${process.env.REACT_APP_API_URL}/homeowner`;
 
@@ -43,6 +44,7 @@ const ServiceRequestForm = ({ onClose, onSubmit, initialData, applianceOptions }
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -187,6 +189,7 @@ const MyServiceRequests = () => {
   const [editRequest, setEditRequest] = useState(null);
   const [appliances, setAppliances] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
+  const [confirmId, setConfirmId] = useState(null);
 
   const filters = ['All', 'Requested','Assigned', 'In Progress', 'Completed', 'Cancelled'];
 
@@ -256,13 +259,13 @@ const MyServiceRequests = () => {
     fetchRequests();
   };
 
-  const handleCancel = async (id) => {
-    if (!window.confirm('Cancel this service request?')) return;
-    await axios.delete(`${API_URL}/service-request/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchRequests();
-  };
+ const handleCancel = async (id) => {
+   await axios.delete(`${API_URL}/service-request/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+   });
+   fetchRequests();
+ };
+ const cancelRequest = handleCancel;
 
   const getStatusColor = (status) => {
     const statusUpper = (status || 'REQUESTED').toUpperCase();
@@ -417,7 +420,7 @@ const MyServiceRequests = () => {
                             Reschedule
                           </button>
                           <button
-                            onClick={() => handleCancel(req.id)}
+                            onClick={() => setConfirmId(req.id)}
                             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm"
                           >
                             Cancel
@@ -440,6 +443,17 @@ const MyServiceRequests = () => {
             applianceOptions={appliances}
           />
         )}
+        {confirmId && (
+                  <ConfirmDeleteModal
+                    heading="Cancel Request"
+                    description="Are you sure you want to cancel this request?"
+                    onCancel={() => setConfirmId(null)}
+                    onConfirm={async () => {
+                      await cancelRequest(confirmId);
+                      setConfirmId(null);
+                    }}
+                  />
+                )}
       </div>
     </div>
   );
