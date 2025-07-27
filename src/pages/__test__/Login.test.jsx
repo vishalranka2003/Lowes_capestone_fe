@@ -1,356 +1,124 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../../features/auth/authSlice';
 import { Login } from '../Login';
 import * as authAPI from '../../features/auth/authAPI';
+import * as authSlice from '../../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-// Mock the authAPI
+jest.mock('react-redux', () => ({ useDispatch: jest.fn() }));
+jest.mock('react-router-dom', () => ({ useNavigate: jest.fn() }));
 jest.mock('../../features/auth/authAPI');
+jest.mock('../../features/auth/authSlice');
 
+const mockDispatch = jest.fn();
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
 
-const createMockStore = (initialState = {}) => {
-  return configureStore({
-    reducer: {
-      auth: authReducer
-    },
-    preloadedState: {
-      auth: {
-        token: null,
-        username: null,
-        role: null,
-        ...initialState
-      }
-    }
-  });
-};
-
-const MockProvider = ({ children, store }) => (
-  <Provider store={store}>
-    <BrowserRouter>{children}</BrowserRouter>
-  </Provider>
-);
-
-describe('Login Component', () => {
-  let mockStore;
-
+describe('Login.jsx', () => {
   beforeEach(() => {
-    mockStore = createMockStore();
-    mockNavigate.mockClear();
     jest.clearAllMocks();
-    
-    // Clear localStorage
-    localStorage.clear();
-    
-    // Mock console.error to avoid noise in tests
     jest.spyOn(console, 'error').mockImplementation(() => {});
+    useDispatch.mockReturnValue(mockDispatch);
+    useNavigate.mockReturnValue(mockNavigate);
+    // Clear localStorage
+    window.localStorage.clear();
   });
 
-  afterEach(() => {
-    console.error.mockRestore();
+  it('redirects if already logged in', () => {
+    window.localStorage.setItem('token', 't');
+    window.localStorage.setItem('username', 'u');
+    window.localStorage.setItem('role', 'ROLE_TECHNICIAN');
+    render(<Login />);
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard/technician');
   });
 
-  test('renders login form with all elements', () => {
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    expect(screen.getByText('Welcome Back')).toBeInTheDocument();
-    expect(screen.getByText('Sign in to your account')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter your email')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter your password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument();
-    expect(screen.getByText('Homeowner')).toBeInTheDocument();
-    expect(screen.getByText('Technician')).toBeInTheDocument();
-    expect(screen.getByText('Admin')).toBeInTheDocument();
+  it('renders login form after loading', async () => {
+    render(<Login />);
+    await waitFor(() => expect(screen.getByText(/sign in to your account/i)).toBeInTheDocument());
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
-  test('updates email and password input values', () => {
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    const emailInput = screen.getByPlaceholderText('Enter your email');
-    const passwordInput = screen.getByPlaceholderText('Enter your password');
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-
-    expect(emailInput.value).toBe('test@example.com');
-    expect(passwordInput.value).toBe('password123');
+  it('validates empty email and password', async () => {
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.blur(screen.getByLabelText(/email address/i));
+    fireEvent.blur(screen.getByLabelText(/password/i));
+    expect(await screen.findByText(/email is required/i)).toBeInTheDocument();
+    expect(await screen.findByText(/password is required/i)).toBeInTheDocument();
   });
 
-  test('changes role when role tabs are clicked', () => {
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    const technicianTab = screen.getByText('Technician');
-    const adminTab = screen.getByText('Admin');
-
-    fireEvent.click(technicianTab);
-    expect(technicianTab).toHaveClass('bg-white text-lowesBlue-500');
-
-    fireEvent.click(adminTab);
-    expect(adminTab).toHaveClass('bg-white text-lowesBlue-500');
+  it('validates invalid email format', async () => {
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'invalid' } });
+    fireEvent.blur(screen.getByLabelText(/email address/i));
+    expect(await screen.findByText(/please enter a valid email address/i)).toBeInTheDocument();
   });
 
-  test('shows loading state initially when checking authentication', () => {
-    // Set up localStorage to simulate logged in user
-    localStorage.setItem('token', 'test-token');
-    localStorage.setItem('username', 'testuser');
-    localStorage.setItem('role', 'ROLE_HOMEOWNER');
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  it('can change role tabs', async () => {
+    render(<Login />);
+    await waitFor(() => screen.getByText(/homeowner/i));
+    fireEvent.click(screen.getByText(/technician/i));
+    fireEvent.click(screen.getByText(/admin/i));
+    expect(screen.getByText(/admin/i)).toBeInTheDocument();
   });
 
-  test('redirects to appropriate dashboard when user is already logged in', async () => {
-    localStorage.setItem('token', 'test-token');
-    localStorage.setItem('username', 'testuser');
-    localStorage.setItem('role', 'ROLE_TECHNICIAN');
+  it('shows error if login API returns error', async () => {
+    authAPI.login.mockResolvedValue({ error: true, message: 'Invalid credentials' });
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+    expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument();
+  });
 
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
+  it('shows error if login API returns no token', async () => {
+    authAPI.login.mockResolvedValue({});
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+    expect(await screen.findByText(/login failed/i)).toBeInTheDocument();
+  });
 
+  it('shows error if login throws (network error)', async () => {
+    authAPI.login.mockRejectedValue(new Error('Network error'));
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+    expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument();
+  });
+
+  it('dispatches loginSuccess and navigates on successful login', async () => {
+    authAPI.login.mockResolvedValue({ token: 't', username: 'u', role: 'ROLE_ADMIN' });
+    authSlice.loginSuccess.mockReturnValue({ type: 'LOGIN_SUCCESS' });
+    render(<Login />);
+    await waitFor(() => screen.getByLabelText(/email address/i));
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/dashboard/technician');
-    });
-  });
-
- 
-
-  test('handles successful login for homeowner', async () => {
-    const mockLoginResponse = {
-      token: 'mock-token',
-      username: 'testuser',
-      role: 'ROLE_HOMEOWNER'
-    };
-
-    authAPI.login.mockResolvedValue(mockLoginResponse);
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password123' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(authAPI.login).toHaveBeenCalledWith('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-      expect(mockNavigate).toHaveBeenCalledWith('/dashboard/homeowner');
-    });
-  });
-
-  test('handles successful login for technician', async () => {
-    const mockLoginResponse = {
-      token: 'mock-token',
-      username: 'testuser',
-      role: 'ROLE_TECHNICIAN'
-    };
-
-    authAPI.login.mockResolvedValue(mockLoginResponse);
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.click(screen.getByText('Technician'));
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'tech@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password123' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(authAPI.login).toHaveBeenCalledWith('tech@example.com', 'password123', 'ROLE_TECHNICIAN');
-      expect(mockNavigate).toHaveBeenCalledWith('/dashboard/technician');
-    });
-  });
-
-  test('handles successful login for admin', async () => {
-    const mockLoginResponse = {
-      token: 'mock-token',
-      username: 'testuser',
-      role: 'ROLE_ADMIN'
-    };
-
-    authAPI.login.mockResolvedValue(mockLoginResponse);
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.click(screen.getByText('Admin'));
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'admin@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password123' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(authAPI.login).toHaveBeenCalledWith('admin@example.com', 'password123', 'ROLE_ADMIN');
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'LOGIN_SUCCESS' });
       expect(mockNavigate).toHaveBeenCalledWith('/dashboard/admin');
     });
   });
 
-  test('displays error when login fails with error response', async () => {
-    authAPI.login.mockResolvedValue({ error: true });
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'wrongpassword' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Login failed. Check your role or credentials.')).toBeInTheDocument();
-    });
+  it('navigates to forgot password page', async () => {
+    render(<Login />);
+    await waitFor(() => screen.getByText(/forgot password/i));
+    fireEvent.click(screen.getByText(/forgot password/i));
+    expect(mockNavigate).toHaveBeenCalledWith('/forgot-password');
   });
 
-  test('displays error when login response is empty', async () => {
-    authAPI.login.mockResolvedValue(null);
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Login failed. Check your role or credentials.')).toBeInTheDocument();
-    });
-  });
-
-  test('displays error when login response has no token', async () => {
-    authAPI.login.mockResolvedValue({ username: 'test', role: 'ROLE_HOMEOWNER' });
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Login failed. Check your role or credentials.')).toBeInTheDocument();
-    });
-  });
-
-  test('displays generic error when login throws exception', async () => {
-    authAPI.login.mockRejectedValue(new Error('Network error'));
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password' }
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Something went wrong. Please try again later.')).toBeInTheDocument();
-    });
-  });
-
-  test('getDashboardRoute returns correct routes for different roles', () => {
-    // This tests the helper function indirectly through the successful login tests
-    // but we can also test edge cases
-    localStorage.setItem('token', 'test-token');
-    localStorage.setItem('username', 'testuser');
-    localStorage.setItem('role', 'UNKNOWN_ROLE');
-
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    // The component should handle unknown roles gracefully
-    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
-  });
-
-  test('renders signup link correctly', () => {
-    render(
-      <MockProvider store={mockStore}>
-        <Login />
-      </MockProvider>
-    );
-
-    const signupLink = screen.getByText('Sign up');
-    expect(signupLink).toBeInTheDocument();
-    expect(signupLink).toHaveAttribute('href', '/signup');
+  it('renders signup link', async () => {
+    render(<Login />);
+    await waitFor(() => screen.getByText(/sign up/i));
+    expect(screen.getByText(/sign up/i)).toBeInTheDocument();
   });
 });

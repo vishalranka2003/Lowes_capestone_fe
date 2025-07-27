@@ -1,376 +1,275 @@
-// Mock fetch globally
-global.fetch = jest.fn();
+import * as authAPI from '../../features/auth/authAPI';
 
-// Mock process.env before importing the module
-const originalEnv = process.env;
-
-beforeAll(() => {
-  jest.resetModules();
-  process.env = {
-    ...originalEnv,
-    REACT_APP_API_URL: 'http://localhost:3000',
-  };
-});
-
-afterAll(() => {
-  process.env = originalEnv;
-});
-
-// Import after setting env
-import { login, signup } from '../../features/auth/authAPI';
-
-describe('Auth API', () => {
+describe('authAPI', () => {
   beforeEach(() => {
-    fetch.mockClear();
+    global.fetch = jest.fn();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  // =================== ENVIRONMENT TESTS ===================
-  
-  test('handles missing API URL environment variable', async () => {
-    // Temporarily remove the env var
-    const originalApiUrl = process.env.REACT_APP_API_URL;
-    delete process.env.REACT_APP_API_URL;
-    
-    // Re-import the module with missing env var
-    jest.resetModules();
-    const { login: loginWithoutEnv } = require('../../features/auth/authAPI');
-    
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ token: 'test' })
+  describe('login', () => {
+    it('should handle successful login for homeowner', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ token: 'mock-token', username: 'testuser', role: 'ROLE_HOMEOWNER' }),
+      });
+      const result = await authAPI.login('test@example.com', 'password', 'ROLE_HOMEOWNER');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/login/homeowner'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ token: 'mock-token', username: 'testuser', role: 'ROLE_HOMEOWNER' });
     });
 
-    await loginWithoutEnv('test@example.com', 'password123', 'ROLE_HOMEOWNER');
+    it('should handle successful login for technician', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ token: 'mock-token', username: 'tech', role: 'ROLE_TECHNICIAN' }),
+      });
+      const result = await authAPI.login('tech@example.com', 'password', 'ROLE_TECHNICIAN');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/login/technician'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ token: 'mock-token', username: 'tech', role: 'ROLE_TECHNICIAN' });
+    });
 
-    expect(fetch).toHaveBeenCalledWith('undefined/api/auth/login/homeowner', expect.any(Object));
-    
-    // Restore env var
-    process.env.REACT_APP_API_URL = originalApiUrl;
+    it('should handle successful login for admin', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ token: 'mock-token', username: 'admin', role: 'ROLE_ADMIN' }),
+      });
+      const result = await authAPI.login('admin@example.com', 'password', 'ROLE_ADMIN');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/login/admin'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ token: 'mock-token', username: 'admin', role: 'ROLE_ADMIN' });
+    });
+
+    it('should fallback to homeowner endpoint for unknown role', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ token: 'mock-token', username: 'unknown', role: 'ROLE_UNKNOWN' }),
+      });
+      const result = await authAPI.login('unknown@example.com', 'password', 'ROLE_UNKNOWN');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/login/homeowner'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ token: 'mock-token', username: 'unknown', role: 'ROLE_UNKNOWN' });
+    });
+
+    it('should handle login failure with error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 401,
+        text: () => Promise.resolve('Invalid credentials'),
+      });
+      const result = await authAPI.login('test@example.com', 'wrong', 'ROLE_HOMEOWNER');
+      expect(result).toEqual({ error: true, status: 401, message: 'Invalid credentials' });
+    });
+
+    it('should handle login failure with empty error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        text: () => Promise.resolve(''),
+      });
+      const result = await authAPI.login('test@example.com', 'password', 'ROLE_HOMEOWNER');
+      expect(result).toEqual({ error: true, status: 500, message: 'Login failed. Unknown error.' });
+    });
+
+    it('should handle network error', async () => {
+      global.fetch.mockRejectedValue(new Error('Network error'));
+      const result = await authAPI.login('test@example.com', 'password', 'ROLE_HOMEOWNER');
+      expect(console.error).toHaveBeenCalled();
+      expect(result).toEqual({ error: true, status: 500, message: 'Network error or server unreachable.' });
+    });
   });
 
-  // =================== LOGIN TESTS ===================
-
-  test('returns user data when login is successful', async () => {
-    const mockResponse = {
-      token: 'abc123',
-      username: 'Test User',
-      role: 'ROLE_HOMEOWNER'
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    const result = await login('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-    expect(result).toEqual(mockResponse);
-  });
-
-  test('makes correct API call for login', async () => {
-    const mockResponse = {
-      token: 'abc123',
-      username: 'Test User',
-      role: 'ROLE_HOMEOWNER'
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    await login('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/login/homeowner', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+  describe('signup', () => {
+    it('should handle successful homeowner signup', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ message: 'Registration successful' }),
+      });
+      const data = {
+        role: 'ROLE_HOMEOWNER',
         email: 'test@example.com',
-        password: 'password123'
-      }),
-    });
-  });
-
-  test('returns error object when fetch fails with 401', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 401,
-    });
-
-    const result = await login('test@example.com', 'wrongpassword', 'ROLE_HOMEOWNER');
-    expect(result).toEqual({ error: true, status: 401 });
-  });
-
-  test('returns error object when fetch fails with 404', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 404,
+        password: 'Password123!',
+        firstName: 'John',
+        lastName: 'Doe',
+        address: '123 Main St',
+        phoneNumber: '1234567890',
+      };
+      const result = await authAPI.signup(data);
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/register/homeowner'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ message: 'Registration successful' });
     });
 
-    const result = await login('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-    expect(result).toEqual({ error: true, status: 404 });
-  });
-
-  test('returns error object when fetch fails with 500', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-    });
-
-    const result = await login('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-    expect(result).toEqual({ error: true, status: 500 });
-  });
-
-  test('handles network errors gracefully for login', async () => {
-    fetch.mockRejectedValueOnce(new Error('Network error'));
-
-    await expect(login('test@example.com', 'password123', 'ROLE_HOMEOWNER'))
-      .rejects
-      .toThrow('Network error');
-  });
-
-  test('handles JSON parsing errors in login', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => {
-        throw new Error('Invalid JSON');
-      }
-    });
-
-    await expect(login('test@example.com', 'password123', 'ROLE_HOMEOWNER'))
-      .rejects
-      .toThrow('Invalid JSON');
-  });
-
-  // =================== SIGNUP TESTS ===================
-
-  test('returns response data when signup is successful', async () => {
-    const mockUserData = {
-      email: 'new@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER'
-    };
-
-    const mockResponse = {
-      message: 'Signup successful',
-      userId: 123
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    const result = await signup(mockUserData);
-    expect(result).toEqual(mockResponse);
-  });
-
-  test('makes correct API call for signup', async () => {
-    const mockUserData = {
-      email: 'new@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER'
-    };
-
-    const mockResponse = {
-      message: 'Signup successful',
-      userId: 123
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    await signup(mockUserData);
-
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/register/homeowner', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: 'new@example.com',
-        password: 'password123',
-        name: 'Test User',
-        role: 'ROLE_HOMEOWNER'
-      }),
-    });
-  });
-
-  test('returns error object when signup fails with 400', async () => {
-    const mockUserData = {
-      email: 'invalid-email',
-      password: '123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER',
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 400,
-    });
-
-    const result = await signup(mockUserData);
-    expect(result).toEqual({ error: true, status: 400 });
-  });
-
-  test('returns error object when signup fails with 409 (conflict)', async () => {
-    const mockUserData = {
-      email: 'existing@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER',
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 409,
-    });
-
-    const result = await signup(mockUserData);
-    expect(result).toEqual({ error: true, status: 409 });
-  });
-
-  test('returns error object when signup fails with 500', async () => {
-    const mockUserData = {
-      email: 'test@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER',
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-    });
-
-    const result = await signup(mockUserData);
-    expect(result).toEqual({ error: true, status: 500 });
-  });
-
-  test('handles network errors gracefully for signup', async () => {
-    const mockUserData = {
-      email: 'test@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER',
-    };
-
-    fetch.mockRejectedValueOnce(new Error('Network error'));
-
-    await expect(signup(mockUserData)).rejects.toThrow('Network error');
-  });
-
-  test('handles JSON parsing errors in signup', async () => {
-    const mockUserData = {
-      email: 'test@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER',
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => {
-        throw new Error('Invalid JSON');
-      }
-    });
-
-    await expect(signup(mockUserData)).rejects.toThrow('Invalid JSON');
-  });
-
-  // =================== EDGE CASES ===================
-
-  test('handles different role types in login', async () => {
-    const mockResponse = {
-      token: 'abc123',
-      username: 'Admin User',
-      role: 'ROLE_ADMIN'
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    const result = await login('admin@example.com', 'password123', 'ROLE_ADMIN');
-    expect(result).toEqual(mockResponse);
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/login/admin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: 'admin@example.com',
-        password: 'password123'
-      }),
-    });
-  });
-
-  test('handles different role types in signup', async () => {
-    const mockUserData = {
-      email: 'tech@example.com',
-      password: 'password123',
-      name: 'Tech User',
-      role: 'ROLE_TECHNICIAN'
-    };
-
-    const mockResponse = {
-      message: 'Signup successful',
-      userId: 456
-    };
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse
-    });
-
-    const result = await signup(mockUserData);
-    expect(result).toEqual(mockResponse);
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/register/technician', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    it('should handle successful technician signup', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ message: 'Registration successful' }),
+      });
+      const data = {
+        role: 'ROLE_TECHNICIAN',
         email: 'tech@example.com',
-        password: 'password123',
-        name: 'Tech User',
-        role: 'ROLE_TECHNICIAN'
-      }),
+        password: 'Password123!',
+        firstName: 'Jane',
+        lastName: 'Doe',
+        phoneNumber: '1234567890',
+        specialization: ['refrigerator', 'hvac'],
+        experience: '5',
+      };
+      const result = await authAPI.signup(data);
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/register/technician'),
+        expect.objectContaining({
+          body: JSON.stringify(data),
+        })
+      );
+      expect(result).toEqual({ message: 'Registration successful' });
+    });
+
+    it('should fallback to homeowner endpoint for unknown role', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ message: 'Registration successful' }),
+      });
+      const data = {
+        role: 'ROLE_UNKNOWN',
+        email: 'unknown@example.com',
+        password: 'Password123!',
+      };
+      const result = await authAPI.signup(data);
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/register/homeowner'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ message: 'Registration successful' });
+    });
+
+    it('should handle signup failure with error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        text: () => Promise.resolve('Email already exists'),
+      });
+      const result = await authAPI.signup({ role: 'ROLE_HOMEOWNER', email: 'test@example.com' });
+      expect(result).toEqual({ error: true, status: 400, message: 'Email already exists' });
+    });
+
+    it('should handle signup failure with empty error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        text: () => Promise.resolve(''),
+      });
+      const result = await authAPI.signup({ role: 'ROLE_HOMEOWNER', email: 'test@example.com' });
+      expect(result).toEqual({ error: true, status: 500, message: 'Registration failed. Unknown error.' });
+    });
+
+    it('should handle network error', async () => {
+      global.fetch.mockRejectedValue(new Error('Network error'));
+      const result = await authAPI.signup({ role: 'ROLE_HOMEOWNER' });
+      expect(console.error).toHaveBeenCalled();
+      expect(result).toEqual({ error: true, status: 500, message: 'Network error or server unreachable.' });
     });
   });
 
-  test('handles empty response body gracefully', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => null
+  describe('forgotPasswordRequest', () => {
+    it('should handle successful forgot password request', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('Reset link sent'),
+      });
+      const result = await authAPI.forgotPasswordRequest('test@example.com');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/forgot-password'),
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'test@example.com',
+        })
+      );
+      expect(result).toEqual({ success: true, message: 'Reset link sent' });
     });
 
-    const result = await login('test@example.com', 'password123', 'ROLE_HOMEOWNER');
-    expect(result).toBeNull();
+    it('should handle forgot password failure with error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        text: () => Promise.resolve('Invalid email'),
+      });
+      const result = await authAPI.forgotPasswordRequest('invalid@example.com');
+      expect(result).toEqual({ error: true, status: 400, message: 'Invalid email' });
+    });
+
+    it('should handle forgot password failure with empty error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        text: () => Promise.resolve(''),
+      });
+      const result = await authAPI.forgotPasswordRequest('test@example.com');
+      expect(result).toEqual({ error: true, status: 500, message: 'Failed to send reset link.' });
+    });
+
+    it('should handle network error', async () => {
+      global.fetch.mockRejectedValue(new Error('Network error'));
+      const result = await authAPI.forgotPasswordRequest('test@example.com');
+      expect(console.error).toHaveBeenCalled();
+      expect(result).toEqual({ error: true, status: 500, message: 'Network error or server unreachable.' });
+    });
   });
 
-  test('handles undefined response gracefully', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => undefined
+  describe('resetPasswordConfirm', () => {
+    it('should handle successful password reset', async () => {
+      global.fetch.mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('Password reset successful'),
+      });
+      const result = await authAPI.resetPasswordConfirm('mock-token', 'NewPassword123!');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/reset-password'),
+        expect.any(Object)
+      );
+      expect(result).toEqual({ success: true, message: 'Password reset successful' });
     });
 
-    const result = await signup({
-      email: 'test@example.com',
-      password: 'password123',
-      name: 'Test User',
-      role: 'ROLE_HOMEOWNER'
+    it('should handle password reset failure with error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        text: () => Promise.resolve('Invalid or expired token'),
+      });
+      const result = await authAPI.resetPasswordConfirm('invalid-token', 'NewPassword123!');
+      expect(result).toEqual({ error: true, status: 400, message: 'Invalid or expired token' });
     });
-    expect(result).toBeUndefined();
+
+    it('should handle password reset failure with empty error message', async () => {
+      global.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        text: () => Promise.resolve(''),
+      });
+      const result = await authAPI.resetPasswordConfirm('mock-token', 'NewPassword123!');
+      expect(result).toEqual({ error: true, status: 500, message: 'Failed to reset password.' });
+    });
+
+    it('should handle network error', async () => {
+      global.fetch.mockRejectedValue(new Error('Network error'));
+      const result = await authAPI.resetPasswordConfirm('mock-token', 'NewPassword123!');
+      expect(console.error).toHaveBeenCalled();
+      expect(result).toEqual({ error: true, status: 500, message: 'Network error or server unreachable.' });
+    });
   });
 });

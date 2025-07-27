@@ -1,92 +1,59 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Home } from '../Home';
 
-// Mock router
-const MockRouter = ({ children }) => (
-  <BrowserRouter>{children}</BrowserRouter>
-);
+describe('Home', () => {
+  
 
-describe('Home Component', () => {
-  test('renders main heading correctly', () => {
+  it('Get Started button links to /signup', () => {
     render(
-      <MockRouter>
+      <MemoryRouter>
         <Home />
-      </MockRouter>
+      </MemoryRouter>
     );
-    
-    expect(screen.getByText('Welcome to')).toBeInTheDocument();
-    expect(screen.getByText('Service Pro')).toBeInTheDocument();
+    const getStarted = screen.getByRole('link', { name: /get started free/i });
+    expect(getStarted).toHaveAttribute('href', '/signup');
   });
 
-  test('renders hero description', () => {
+  it('renders the hero visual with image and product info', () => {
     render(
-      <MockRouter>
+      <MemoryRouter>
         <Home />
-      </MockRouter>
+      </MemoryRouter>
     );
-    
-    expect(screen.getByText(/Track your appliances, manage service requests/)).toBeInTheDocument();
+    expect(screen.getByAltText(/modern tv/i)).toBeInTheDocument();
+    expect(screen.getByText(/Apple iPhone 16 Pro/i)).toBeInTheDocument();
+    expect(screen.getByText(/Active/i)).toBeInTheDocument();
+    expect(screen.getByText(/Model:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Warranty Start:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Warranty Expires:/i)).toBeInTheDocument();
   });
 
-  test('renders Get Started Free button with correct link', () => {
+  it('renders the features section heading and divider', () => {
     render(
-      <MockRouter>
+      <MemoryRouter>
         <Home />
-      </MockRouter>
+      </MemoryRouter>
     );
-    
-    const getStartedButton = screen.getByRole('link', { name: /get started free/i });
-    expect(getStartedButton).toBeInTheDocument();
-    expect(getStartedButton).toHaveAttribute('href', '/signup');
+    expect(screen.getByRole('heading', { name: /why choose service pro/i })).toBeInTheDocument();
+    // Divider is a styled div, so we check for its presence by class
+    expect(document.querySelector('.w-24.h-1.bg-lowesBlue-500')).toBeInTheDocument();
   });
 
-  test('renders all feature cards', () => {
+  it('renders all features with correct titles and descriptions', () => {
     render(
-      <MockRouter>
+      <MemoryRouter>
         <Home />
-      </MockRouter>
+      </MemoryRouter>
     );
-    
-    expect(screen.getByText('Warranty Protection')).toBeInTheDocument();
-    expect(screen.getByText('Smart Reminders')).toBeInTheDocument();
-    expect(screen.getByText('Easy Service Booking')).toBeInTheDocument();
-    expect(screen.getByText('Expert Support')).toBeInTheDocument();
+    expect(screen.getByText(/warranty protection/i)).toBeInTheDocument();
+    expect(screen.getByText(/never lose track of your appliance warranties/i)).toBeInTheDocument();
+    expect(screen.getByText(/smart reminders/i)).toBeInTheDocument();
+    expect(screen.getByText(/get notified before your warranties expire/i)).toBeInTheDocument();
+    expect(screen.getByText(/easy service booking/i)).toBeInTheDocument();
+    expect(screen.getByText(/schedule maintenance and repairs/i)).toBeInTheDocument();
+    expect(screen.getByText(/expert support/i)).toBeInTheDocument();
+    expect(screen.getByText(/access to verified professionals/i)).toBeInTheDocument();
   });
-
-  test('renders feature descriptions', () => {
-    render(
-      <MockRouter>
-        <Home />
-      </MockRouter>
-    );
-    
-    expect(screen.getByText(/Never lose track of your appliance warranties/)).toBeInTheDocument();
-    expect(screen.getByText(/Get notified before your warranties expire/)).toBeInTheDocument();
-    expect(screen.getByText(/Schedule maintenance and repairs/)).toBeInTheDocument();
-    expect(screen.getByText(/Access to verified professionals/)).toBeInTheDocument();
-  });
-
-  test('renders hero visual with appliance example', () => {
-    render(
-      <MockRouter>
-        <Home />
-      </MockRouter>
-    );
-    
-    expect(screen.getByText('Samsung Refrigerator')).toBeInTheDocument();
-    expect(screen.getByText('Warranty expires in 45 days')).toBeInTheDocument();
-    expect(screen.getByText('Active')).toBeInTheDocument();
-  });
-
-  test('renders Why Choose Service Pro section', () => {
-    render(
-      <MockRouter>
-        <Home />
-      </MockRouter>
-    );
-    
-    expect(screen.getByText('Why Choose Service Pro?')).toBeInTheDocument();
-  });
-});
+}); 
