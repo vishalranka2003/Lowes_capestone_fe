@@ -11,6 +11,7 @@ export const AssignedRequestsModal = ({ requests, onClose }) => {
             Assigned Service Requests
           </h3>
           <button 
+            aria-label="Close"
             className="text-gray-400 hover:text-gray-600 transition-colors"
             onClick={onClose}
           >
