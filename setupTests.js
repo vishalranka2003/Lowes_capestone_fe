@@ -5,3 +5,10 @@ global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
 process.env.REACT_APP_API_URL = 'http://localhost:3000';
 global.fetch = jest.fn();
+class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  
+  global.ResizeObserver = ResizeObserver;
